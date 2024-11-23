@@ -1,3 +1,3 @@
-# PhotoHaul
+# Photohaul
 
 Effortless photo management.

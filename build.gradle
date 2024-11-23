@@ -1,0 +1,19 @@
+plugins {
+    id 'java'
+}
+
+group = 'io.huangsam'
+version = '0.1-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform(libs.junit.bom)
+    testImplementation libs.junit.jupiter
+}
+
+test {
+    useJUnitPlatform()
+}

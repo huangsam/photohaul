@@ -1,2 +1,3 @@
-# photohaul
-For no-frills management of photos
+# PhotoHaul
+
+Effortless photo management.

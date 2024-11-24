@@ -21,7 +21,11 @@ public class Main {
     }
 
     private static boolean isPhoto(Path path) {
-        String pathName = path.toString();
-        return Stream.of("jpg", "png", "svg").anyMatch(pathName::endsWith);
+        try {
+            return Files.probeContentType(path).startsWith("image/");
+        } catch (IOException e) {
+            String pathName = path.toString();
+            return Stream.of("jpg", "png", "svg").anyMatch(pathName::endsWith);
+        }
     }
 }

@@ -14,11 +14,7 @@ public class Main {
 
     private static void printPhotos(Path path) {
         try (Stream<Path> fileStream = Files.walk(path)) {
-            fileStream.filter(Main::isPhoto).forEach(filePath -> {
-                if (Files.isRegularFile(filePath)) {
-                    System.out.println(filePath);
-                }
-            });
+            fileStream.filter(Files::isRegularFile).filter(Main::isPhoto).forEach(System.out::println);
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }

@@ -1,7 +1,8 @@
 package io.huangsam.photohaul;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,7 +12,7 @@ import java.util.Comparator;
 import java.util.stream.Stream;
 
 public class Main {
-    private static final Logger LOG = LoggerFactory.getLogger(Main.class.getName());
+    private static final Logger LOG = getLogger(Main.class);
 
     public static void main(String[] args) {
         String homeDirectory = System.getProperty("user.home");

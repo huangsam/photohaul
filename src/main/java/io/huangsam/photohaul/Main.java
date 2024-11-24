@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Comparator;
 import java.util.stream.Stream;
 
 public class Main {
@@ -22,6 +23,7 @@ public class Main {
             fileStream
                     .filter(Files::isRegularFile)
                     .filter(Main::isPhoto)
+                    .sorted(Comparator.comparingLong(Main::getLastModified))
                     .forEach(filePath -> LOG.info(filePath.toString()));
         } catch (IOException e) {
             System.err.println(e.getMessage());
@@ -38,6 +40,15 @@ public class Main {
         } catch (NullPointerException e) {
             LOG.trace(e.getMessage());
             return false;
+        }
+    }
+
+    private static long getLastModified(Path path) {
+        try {
+            return Files.getLastModifiedTime(path).toMillis();
+        } catch (IOException e) {
+            LOG.trace(e.getMessage());
+            return Long.MAX_VALUE; // Handle errors appropriately
         }
     }
 }

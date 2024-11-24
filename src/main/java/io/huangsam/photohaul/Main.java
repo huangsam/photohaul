@@ -1,7 +1,31 @@
 package io.huangsam.photohaul;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.stream.Stream;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello, World!");
+        String homeDirectory = System.getProperty("user.home");
+        Main.printPhotos(Paths.get(homeDirectory + "/Pictures"));
+    }
+
+    private static void printPhotos(Path path) {
+        try (Stream<Path> fileStream = Files.walk(path)) {
+            fileStream.filter(Main::isPhoto).forEach(filePath -> {
+                if (Files.isRegularFile(filePath)) {
+                    System.out.println(filePath);
+                }
+            });
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    private static boolean isPhoto(Path path) {
+        String pathName = path.toString();
+        return Stream.of("jpg", "png", "svg").anyMatch(pathName::endsWith);
     }
 }

@@ -27,7 +27,7 @@ public class Main {
                     .sorted(Comparator.comparingLong(Main::getLastModified))
                     .forEach(filePath -> LOG.info(filePath.toString()));
         } catch (IOException e) {
-            System.err.println(e.getMessage());
+            LOG.error(e.getMessage());
         }
     }
 

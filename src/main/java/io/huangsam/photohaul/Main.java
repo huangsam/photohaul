@@ -1,14 +1,16 @@
 package io.huangsam.photohaul;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 public class Main {
-    private static final Logger LOG = Logger.getGlobal();
+    private static final Logger LOG = LoggerFactory.getLogger(Main.class.getName());
 
     public static void main(String[] args) {
         String homeDirectory = System.getProperty("user.home");
@@ -30,11 +32,11 @@ public class Main {
         try {
             return Files.probeContentType(path).startsWith("image/");
         } catch (IOException e) {
-            LOG.fine(e.getMessage());
+            LOG.trace(e.getMessage());
             String pathName = path.toString();
             return Stream.of("jpg", "png", "svg").anyMatch(pathName::endsWith);
         } catch (NullPointerException e) {
-            LOG.fine(e.getMessage());
+            LOG.trace(e.getMessage());
             return false;
         }
     }

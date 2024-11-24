@@ -10,6 +10,8 @@ repositories {
 }
 
 dependencies {
+    implementation libs.logback.classic
+    implementation libs.slf4j.api
     testImplementation platform(libs.junit.bom)
     testImplementation libs.junit.jupiter
 }

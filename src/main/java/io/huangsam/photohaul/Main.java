@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collection;
 import java.util.stream.Stream;
 
 import org.slf4j.Logger;
@@ -22,9 +23,9 @@ public class Main {
 
         Main.traversePhotos(picturePath, visitor);
 
-        for (Photo photo : visitor.getPhotos()) {
-            LOG.info(photo.name());
-        }
+        Collection<Photo> photoList = visitor.getPhotos();
+
+        LOG.info("Found {} photos", photoList.size());
     }
 
     // Traversal

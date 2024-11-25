@@ -11,23 +11,23 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
 public class PhotoVisitor {
     private static final Logger LOG = getLogger(PhotoVisitor.class);
-    private final List<Photo> photoList;
+    private final ConcurrentHashMap<Path, Photo> photoMap;
 
     public PhotoVisitor() {
-        this.photoList = new ArrayList<>();
+        this.photoMap = new ConcurrentHashMap<>();
     }
 
-    public List<Photo> getPhotos() {
-        return photoList;
+    public Collection<Photo> getPhotos() {
+        return photoMap.values();
     }
 
     public void visitPhoto(Path path) {
@@ -44,7 +44,7 @@ public class PhotoVisitor {
                     (String) properties.get("Aperture Value"),
                     (String) properties.get("Flash")
             );
-            photoList.add(photo);
+            photoMap.put(path, photo);
         }
     }
 

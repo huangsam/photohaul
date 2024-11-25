@@ -30,55 +30,28 @@ public class Main {
         String homeDirectory = System.getProperty("user.home");
         Path picturePath = Paths.get(homeDirectory + "/Pictures");
 
-        List<Photo> photoList = new ArrayList<>();
+        PhotoVisitor visitor = new PhotoVisitor(new ArrayList<>());
 
-        Main.traversePhotos(picturePath, photoList);
+        Main.traversePhotos(picturePath, visitor);
 
-        for (Photo photo : photoList) {
+        for (Photo photo : visitor.getPhotos()) {
             LOG.info(photo.name());
         }
     }
 
     // Traversal
-    private static void traversePhotos(Path path, List<Photo> photoList) {
+    private static void traversePhotos(Path path, PhotoVisitor visitor) {
         LOG.info("Start scanning {}", path);
         try (Stream<Path> fileStream = Files.walk(path)) {
             fileStream
                     .filter(Files::isRegularFile)
                     .filter(Main::isPhoto)
                     .sorted(Comparator.comparingLong(Main::getLastModified))
-                    .forEach(photoPath -> visitPhoto(photoPath, photoList));
+                    .forEach(visitor::visitPhoto);
         } catch (IOException e) {
             LOG.error(e.getMessage());
         }
         LOG.info("Finish scanning {}", path);
-    }
-
-    // Collector
-    private static void visitPhoto(Path path, List<Photo> photoList) {
-        LOG.trace(path.toString());
-        Map<String, Object> properties = new HashMap<>();
-        try (InputStream input = Files.newInputStream(path)) {
-            Metadata metadata = ImageMetadataReader.readMetadata(input);
-            for (Directory directory : metadata.getDirectories()) {
-                for (Tag tag : directory.getTags()) {
-                    properties.put(tag.getTagName(), tag.getDescription());
-                }
-            }
-            Photo photo = new Photo(
-                    path.toString(),
-                    (String) properties.get("Date/Time"),
-                    (String) properties.get("Make"),
-                    (String) properties.get("Model"),
-                    (String) properties.get("Focal Length"),
-                    (String) properties.get("Shutter Speed Value"),
-                    (String) properties.get("Aperture Value"),
-                    (String) properties.get("Flash")
-            );
-            photoList.add(photo);
-        } catch (IOException | ImageProcessingException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     // Filter

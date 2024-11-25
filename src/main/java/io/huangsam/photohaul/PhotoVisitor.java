@@ -32,11 +32,8 @@ public class PhotoVisitor {
 
     public void visitPhoto(Path path) {
         LOG.trace(path.toString());
-        try (InputStream input = Files.newInputStream(path)) {
-            Map<String, Object> properties = getPhotoProperties(input);
-            if (properties.isEmpty()) {
-                return;
-            }
+        Map<String, Object> properties = getPhotoProperties(path);
+        if (!properties.isEmpty()) {
             Photo photo = new Photo(
                     path.toString(),
                     (String) properties.get("Date/Time"),
@@ -48,17 +45,18 @@ public class PhotoVisitor {
                     (String) properties.get("Flash")
             );
             photoList.add(photo);
-        } catch (IOException e) {
-            LOG.warn("Cannot open photo: {}", e.getMessage());
         }
     }
 
-    private Map<String, Object> getPhotoProperties(InputStream input) {
+    private Map<String, Object> getPhotoProperties(Path path) {
         Map<String, Object> properties = new HashMap<>();
-        try {
+        try (InputStream input = Files.newInputStream(path)) {
             Metadata metadata = ImageMetadataReader.readMetadata(input);
             for (Directory directory : metadata.getDirectories()) {
                 for (Tag tag : directory.getTags()) {
+                    if (LOG.isTraceEnabled()) {
+                        LOG.trace("{} -> Store tag {}", path, tag.getTagName());
+                    }
                     properties.put(tag.getTagName(), tag.getDescription());
                 }
             }

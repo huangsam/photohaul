@@ -34,13 +34,10 @@ public class Main {
     private static boolean isPhoto(Path path) {
         try {
             return Files.probeContentType(path).startsWith("image/");
-        } catch (IOException e) {
+        } catch (IOException | NullPointerException e) {
             LOG.trace(e.getMessage());
             String pathName = path.toString();
             return Stream.of("jpg", "png", "svg").anyMatch(pathName::endsWith);
-        } catch (NullPointerException e) {
-            LOG.trace(e.getMessage());
-            return false;
         }
     }
 

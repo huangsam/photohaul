@@ -49,7 +49,7 @@ public class Main {
             return Files.getLastModifiedTime(path).toMillis();
         } catch (IOException e) {
             LOG.trace(e.getMessage());
-            return Long.MAX_VALUE; // Handle errors appropriately
+            return Long.MAX_VALUE;
         }
     }
 }

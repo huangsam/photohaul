@@ -33,6 +33,9 @@ public class PhotoVisitor {
         LOG.trace(path.toString());
         try (InputStream input = Files.newInputStream(path)) {
             Map<String, Object> properties = getPhotoProperties(input);
+            if (properties.isEmpty()) {
+                return;
+            }
             Photo photo = new Photo(
                     path.toString(),
                     (String) properties.get("Date/Time"),

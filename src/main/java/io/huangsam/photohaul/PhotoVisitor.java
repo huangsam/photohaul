@@ -31,7 +31,7 @@ public class PhotoVisitor {
     }
 
     public void visitPhoto(Path path) {
-        LOG.trace(path.toString());
+        LOG.trace("Visit photo {}", path.toString());
         Map<String, Object> properties = getPhotoProperties(path);
         if (!properties.isEmpty()) {
             Photo photo = new Photo(
@@ -61,7 +61,7 @@ public class PhotoVisitor {
                 }
             }
         } catch (IOException | ImageProcessingException e) {
-            LOG.warn("Cannot get photo properties: {}", e.getMessage());
+            LOG.warn("Cannot get properties for {}: {}", path, e.getMessage());
         }
         return properties;
     }

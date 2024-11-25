@@ -30,26 +30,21 @@ public class Main {
 
     // Traversal
     private static void traversePhotos(Path path, PhotoVisitor visitor) {
-        LOG.info("Start scanning {}", path);
+        LOG.info("Start traversal of {}", path);
         try (Stream<Path> fileStream = Files.walk(path)) {
             fileStream.parallel()
                     .filter(Files::isRegularFile)
                     .filter(Main::isPhoto)
                     .forEach(visitor::visitPhoto);
         } catch (IOException e) {
-            LOG.error(e.getMessage());
+            LOG.error("Abort traversal of {}: {}", path, e.getMessage());
         }
-        LOG.info("Finish scanning {}", path);
+        LOG.info("Finish traversal of {}", path);
     }
 
     // Filter
     private static boolean isPhoto(Path path) {
-        try {
-            return Files.probeContentType(path).startsWith("image/");
-        } catch (IOException | NullPointerException e) {
-            LOG.trace(e.getMessage());
-            String pathName = path.toString().toLowerCase();
-            return Stream.of("jpg", "jpeg", "png").anyMatch(pathName::endsWith);
-        }
+        String pathName = path.toString().toLowerCase();
+        return Stream.of("jpg", "jpeg", "png").anyMatch(pathName::endsWith);
     }
 }

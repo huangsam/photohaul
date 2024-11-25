@@ -19,7 +19,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 public class PhotoVisitor {
     private static final Logger LOG = getLogger(PhotoVisitor.class);
-    private List<Photo> photoList;
+    private final List<Photo> photoList;
 
     public PhotoVisitor(List<Photo> photoList) {
         this.photoList = photoList;

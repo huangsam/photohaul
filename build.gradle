@@ -10,6 +10,7 @@ repositories {
 }
 
 dependencies {
+    compileOnly libs.jetbrains.annotations
     implementation libs.logback.classic
     implementation libs.metadata.extractor
     implementation libs.slf4j.api

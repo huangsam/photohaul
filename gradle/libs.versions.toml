@@ -1,10 +1,12 @@
 [versions]
+jetbrains-annotations = "26.0.1"
 junit-bom = "5.10.2"
 logback-classic = "1.5.12"
 metadata-extractor = "2.19.0"
 slf4j-api = "2.0.16"
 
 [libraries]
+jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "jetbrains-annotations" }
 junit-bom = { module = "org.junit:junit-bom", version.ref = "junit-bom" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback-classic" }

@@ -20,11 +20,13 @@ import java.util.stream.Stream;
 public class Main {
     private static final Logger LOG = getLogger(Main.class);
 
+    // Runner
     public static void main(String[] args) {
         String homeDirectory = System.getProperty("user.home");
         Main.printPhotos(Paths.get(homeDirectory + "/Pictures"));
     }
 
+    // Traversal
     private static void printPhotos(Path path) {
         try (Stream<Path> fileStream = Files.walk(path)) {
             fileStream
@@ -37,6 +39,7 @@ public class Main {
         }
     }
 
+    // Collector
     private static void visitPhoto(Path path) {
         LOG.info(path.toString());
         try (InputStream input = Files.newInputStream(path)) {
@@ -54,6 +57,7 @@ public class Main {
         }
     }
 
+    // Filter
     private static boolean isPhoto(Path path) {
         try {
             return Files.probeContentType(path).startsWith("image/");
@@ -64,6 +68,7 @@ public class Main {
         }
     }
 
+    // Sorter
     private static long getLastModified(Path path) {
         try {
             return Files.getLastModifiedTime(path).toMillis();

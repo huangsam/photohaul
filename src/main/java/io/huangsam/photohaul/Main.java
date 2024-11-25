@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Comparator;
 import java.util.stream.Stream;
 
 import org.slf4j.Logger;
@@ -32,10 +31,9 @@ public class Main {
     private static void traversePhotos(Path path, PhotoVisitor visitor) {
         LOG.info("Start scanning {}", path);
         try (Stream<Path> fileStream = Files.walk(path)) {
-            fileStream
+            fileStream.parallel()
                     .filter(Files::isRegularFile)
                     .filter(Main::isPhoto)
-                    .sorted(Comparator.comparingLong(Main::getLastModified))
                     .forEach(visitor::visitPhoto);
         } catch (IOException e) {
             LOG.error(e.getMessage());
@@ -51,16 +49,6 @@ public class Main {
             LOG.trace(e.getMessage());
             String pathName = path.toString().toLowerCase();
             return Stream.of("jpg", "jpeg", "png").anyMatch(pathName::endsWith);
-        }
-    }
-
-    // Sorter
-    private static long getLastModified(Path path) {
-        try {
-            return Files.getLastModifiedTime(path).toMillis();
-        } catch (IOException e) {
-            LOG.trace(e.getMessage());
-            return Long.MAX_VALUE;
         }
     }
 }

@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,8 +22,8 @@ public class PhotoVisitor {
     private static final Logger LOG = getLogger(PhotoVisitor.class);
     private final List<Photo> photoList;
 
-    public PhotoVisitor(List<Photo> photoList) {
-        this.photoList = photoList;
+    public PhotoVisitor() {
+        this.photoList = new ArrayList<>();
     }
 
     public List<Photo> getPhotos() {

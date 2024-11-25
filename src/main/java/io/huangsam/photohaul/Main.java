@@ -20,7 +20,7 @@ public class Main {
         String homeDirectory = System.getProperty("user.home");
         Path picturePath = Paths.get(homeDirectory + "/Pictures");
 
-        PhotoVisitor visitor = new PhotoVisitor(new ArrayList<>());
+        PhotoVisitor visitor = new PhotoVisitor();
 
         Main.traversePhotos(picturePath, visitor);
 

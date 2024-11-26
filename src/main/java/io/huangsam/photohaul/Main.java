@@ -36,16 +36,16 @@ public class Main {
         LOG.info("Start traversal of {}", path);
         try (Stream<Path> fileStream = Files.walk(path)) {
             fileStream.parallel().filter(pathRules::matches).forEach(visitor::visitPhoto);
+            LOG.info("Finish traversal of {}", path);
         } catch (IOException e) {
             LOG.error("Abort traversal of {}: {}", path, e.getMessage());
         }
-        LOG.info("Finish traversal of {}", path);
     }
 
     private static void migratePhotos(Path targetPath, PhotoVisitor visitor) {
-        LOG.info("Start photo migration");
+        LOG.info("Start migration");
         PhotoMigrator migrator = new YearPhotoMigrator(targetPath);
         visitor.getPhotos().forEach(migrator::performMigration);
-        LOG.info("Finish photo migration with {} successful", migrator.getSuccessCount());
+        LOG.info("Finish migration with {} successful", migrator.getSuccessCount());
     }
 }

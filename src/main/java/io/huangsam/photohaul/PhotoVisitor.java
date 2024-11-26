@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -25,8 +26,8 @@ public class PhotoVisitor {
         this.photoIndex = new ConcurrentHashMap<>();
     }
 
-    public Map<Path, Photo> getPhotoIndex() {
-        return photoIndex;
+    public Collection<Photo> getPhotos() {
+        return photoIndex.values();
     }
 
     public void visitPhoto(Path path) {
@@ -34,7 +35,7 @@ public class PhotoVisitor {
         Map<String, Object> properties = getPhotoProperties(path);
         if (!properties.isEmpty()) {
             Photo photo = new Photo(
-                    path.getFileName().toString(),
+                    path,
                     (String) properties.get("Date/Time Original"),
                     (String) properties.get("Make"),
                     (String) properties.get("Model"),

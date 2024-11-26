@@ -4,10 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Stream;
 
 import org.slf4j.Logger;
@@ -41,23 +38,10 @@ public class Main {
     }
 
     private static void migratePhotos(PhotoVisitor visitor) {
-        Map<Path, Photo> photoIndex = visitor.getPhotoIndex();
-        visitor.getPhotoIndex().forEach((source, photo) -> {
-            String photoName = photo.name();
-            LocalDate photoDate = photo.date();
-            if (photoDate != null) {
-                String photoYear = String.valueOf(photoDate.getYear());
-                Path yearPath = getTargetPath().resolve(photoYear);
-                try {
-                    LOG.info("Move {} over to {}", photoName, yearPath);
-                    Files.createDirectories(yearPath);
-                    Files.move(source, yearPath.resolve(photoName), StandardCopyOption.REPLACE_EXISTING);
-                } catch (IOException e) {
-                    LOG.warn("Cannot migrate {} to {}: {}", photoName, yearPath, e.getMessage());
-                }
-            }
+        visitor.getPhotos().forEach(photo -> {
+            PhotoMigrator migration = new YearBasedPhotoMigrator(getTargetPath());
+            migration.performMigration(photo);
         });
-        LOG.info("Processed {} photos", photoIndex.size());
     }
 
     private static Path getSourcePath() {

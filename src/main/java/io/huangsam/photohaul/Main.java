@@ -3,7 +3,6 @@ package io.huangsam.photohaul;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -19,6 +18,8 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class Main {
     private static final Logger LOG = getLogger(Main.class);
 
+    private static final Settings SETTINGS = new Settings();
+
     public static void main(String[] args) {
         PhotoVisitor visitor = new PhotoVisitor();
 
@@ -27,9 +28,9 @@ public class Main {
                 PathRule.allowedExtensions("jpg", "jpeg", "png").or(PathRule.isImageContent()),
                 PathRule.minimumBytes(100L)));
 
-        traversePhotos(getSourcePath(), visitor, pathRules);
+        traversePhotos(SETTINGS.getSourcePath(), visitor, pathRules);
 
-        migratePhotos(visitor);
+        migratePhotos(SETTINGS.getTargetPath(), visitor);
     }
 
     private static void traversePhotos(Path path, PhotoVisitor visitor, PathRuleSet pathRules) {
@@ -42,20 +43,10 @@ public class Main {
         LOG.info("Finish traversal of {}", path);
     }
 
-    private static void migratePhotos(PhotoVisitor visitor) {
+    private static void migratePhotos(Path targetPath, PhotoVisitor visitor) {
         LOG.info("Start photo migration");
-        visitor.getPhotos().forEach(photo -> {
-            PhotoMigrator migrator = new YearBasedPhotoMigrator(getTargetPath());
-            migrator.performMigration(photo);
-        });
+        PhotoMigrator migrator = new YearBasedPhotoMigrator(targetPath);
+        visitor.getPhotos().forEach(migrator::performMigration);
         LOG.info("Finish photo migration");
-    }
-
-    private static Path getSourcePath() {
-        return Paths.get(System.getProperty("user.home") + '/' + "Pictures/Camera OLD");
-    }
-
-    private static Path getTargetPath() {
-        return Paths.get(System.getProperty("user.home") + '/' + "Pictures/Camera NEW");
     }
 }

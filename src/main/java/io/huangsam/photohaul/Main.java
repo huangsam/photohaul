@@ -24,7 +24,7 @@ public class Main {
                 PathRule.allowedExtensions("jpg", "jpeg", "png").or(PathRule.isImageContent()),
                 PathRule.minimumBytes(100L)));
 
-        traversePhotos(getHomePath("Pictures"), visitor, pathRules);
+        traversePhotos(getTraversalPath(), visitor, pathRules);
 
         Set<Map.Entry<Path, Photo>> photoSet = visitor.getPhotosByPath();
 
@@ -41,7 +41,7 @@ public class Main {
         LOG.info("Finish traversal of {}", path);
     }
 
-    private static Path getHomePath(String target) {
-        return Paths.get(System.getProperty("user.home") + '/' + target);
+    private static Path getTraversalPath() {
+        return Paths.get(System.getProperty("user.home") + '/' + "Pictures");
     }
 }

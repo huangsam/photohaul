@@ -4,10 +4,10 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class PhotoRuleSet {
+public class PathRuleSet {
     private final List<Predicate<Path>> rules;
 
-    public PhotoRuleSet(List<Predicate<Path>> rules) {
+    public PathRuleSet(List<Predicate<Path>> rules) {
         this.rules = rules;
     }
 

@@ -6,7 +6,7 @@ import java.nio.file.Path;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-public class PhotoRule {
+public class PathRule {
     public static Predicate<Path> allowedExtensions(String... extensions) {
         return path -> {
             String pathName = path.toString().toLowerCase();
@@ -14,7 +14,7 @@ public class PhotoRule {
         };
     }
 
-    public static Predicate<Path> isValidContent() {
+    public static Predicate<Path> isImageContent() {
         return path -> {
             try {
                 return Files.probeContentType(path).startsWith("image/");

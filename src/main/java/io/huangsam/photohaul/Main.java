@@ -18,24 +18,24 @@ public class Main {
     public static void main(String[] args) {
         PhotoVisitor visitor = new PhotoVisitor();
 
-        PhotoRuleSet ruleSet = new PhotoRuleSet(List.of(
+        PathRuleSet pathRules = new PathRuleSet(List.of(
                 Files::isRegularFile,
-                PhotoRule.allowedExtensions("jpg", "jpeg", "png"),
-                PhotoRule.isValidContent(),
-                PhotoRule.minimumBytes(100L)));
+                PathRule.allowedExtensions("jpg", "jpeg", "png"),
+                PathRule.isImageContent(),
+                PathRule.minimumBytes(100L)));
 
-        traversePhotos(getHomePath("Pictures"), visitor, ruleSet);
-        traversePhotos(getHomePath("Phone"), visitor, ruleSet);
+        traversePhotos(getHomePath("Pictures"), visitor, pathRules);
+        traversePhotos(getHomePath("Phone"), visitor, pathRules);
 
         Collection<Photo> photoList = visitor.getPhotos();
 
         LOG.info("Found {} photos", photoList.size());
     }
 
-    private static void traversePhotos(Path path, PhotoVisitor visitor, PhotoRuleSet ruleSet) {
+    private static void traversePhotos(Path path, PhotoVisitor visitor, PathRuleSet pathRules) {
         LOG.info("Start traversal of {}", path);
         try (Stream<Path> fileStream = Files.walk(path)) {
-            fileStream.parallel().filter(ruleSet::matches).forEach(visitor::visitPhoto);
+            fileStream.parallel().filter(pathRules::matches).forEach(visitor::visitPhoto);
         } catch (IOException e) {
             LOG.error("Abort traversal of {}: {}", path, e.getMessage());
         }

@@ -5,8 +5,8 @@ import io.huangsam.photohaul.model.Photo;
 import java.nio.file.Path;
 import java.time.LocalDate;
 
-public class YearBasedPhotoMigrator extends PhotoMigrator {
-    public YearBasedPhotoMigrator(Path targetRoot) {
+public class YearPhotoMigrator extends PhotoMigrator {
+    public YearPhotoMigrator(Path targetRoot) {
         super(targetRoot);
     }
 

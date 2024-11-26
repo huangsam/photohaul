@@ -14,7 +14,7 @@ public class YearPhotoMigrator extends PhotoMigrator {
     Path getTargetLocation(Photo photo) {
         LocalDate photoDate = photo.date();
         if (photoDate == null) {
-            return targetRoot;
+            return targetRoot.resolve("Other");
         }
         String photoYear = String.valueOf(photoDate.getYear());
         return targetRoot.resolve(photoYear);

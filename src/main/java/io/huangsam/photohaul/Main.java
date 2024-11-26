@@ -47,13 +47,13 @@ public class Main {
             LocalDate photoDate = photo.date();
             if (photoDate != null) {
                 String photoYear = String.valueOf(photoDate.getYear());
-                Path targetPath = getTargetPath().resolve(photoYear);
+                Path yearPath = getTargetPath().resolve(photoYear);
                 try {
-                    LOG.info("Move {} over to {}", photoName, targetPath);
-                    Files.createDirectories(targetPath);
-                    Files.move(source, targetPath.resolve(photoName), StandardCopyOption.REPLACE_EXISTING);
+                    LOG.info("Move {} over to {}", photoName, yearPath);
+                    Files.createDirectories(yearPath);
+                    Files.move(source, yearPath.resolve(photoName), StandardCopyOption.REPLACE_EXISTING);
                 } catch (IOException e) {
-                    LOG.warn("Cannot migrate {} to {}: {}", photoName, targetPath, e.getMessage());
+                    LOG.warn("Cannot migrate {} to {}: {}", photoName, yearPath, e.getMessage());
                 }
             }
         });

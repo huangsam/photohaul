@@ -4,8 +4,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import org.slf4j.Logger;
@@ -24,11 +25,10 @@ public class Main {
                 PathRule.minimumBytes(100L)));
 
         traversePhotos(getHomePath("Pictures"), visitor, pathRules);
-        traversePhotos(getHomePath("Phone"), visitor, pathRules);
 
-        Collection<Photo> photoList = visitor.getPhotos();
+        Set<Map.Entry<Path, Photo>> photoSet = visitor.getPhotosByPath();
 
-        LOG.info("Found {} photos", photoList.size());
+        LOG.info("Found {} photos", photoSet.size());
     }
 
     private static void traversePhotos(Path path, PhotoVisitor visitor, PathRuleSet pathRules) {

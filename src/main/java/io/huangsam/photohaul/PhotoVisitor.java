@@ -11,9 +11,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static org.slf4j.LoggerFactory.getLogger;
@@ -26,8 +26,8 @@ public class PhotoVisitor {
         this.photoIndex = new ConcurrentHashMap<>();
     }
 
-    public Collection<Photo> getPhotos() {
-        return photoIndex.values();
+    public Set<Map.Entry<Path, Photo>> getPhotosByPath() {
+        return photoIndex.entrySet();
     }
 
     public void visitPhoto(Path path) {
@@ -35,7 +35,7 @@ public class PhotoVisitor {
         Map<String, Object> properties = getPhotoProperties(path);
         if (!properties.isEmpty()) {
             Photo photo = new Photo(
-                    path.toString(),
+                    path.getFileName().toString(),
                     (String) properties.get("Date/Time"),
                     (String) properties.get("Make"),
                     (String) properties.get("Model"),

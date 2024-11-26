@@ -20,14 +20,14 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 public class PhotoVisitor {
     private static final Logger LOG = getLogger(PhotoVisitor.class);
-    private final ConcurrentHashMap<Path, Photo> photoMap;
+    private final ConcurrentHashMap<Path, Photo> photoIndex;
 
     public PhotoVisitor() {
-        this.photoMap = new ConcurrentHashMap<>();
+        this.photoIndex = new ConcurrentHashMap<>();
     }
 
     public Collection<Photo> getPhotos() {
-        return photoMap.values();
+        return photoIndex.values();
     }
 
     public void visitPhoto(Path path) {
@@ -44,7 +44,7 @@ public class PhotoVisitor {
                     (String) properties.get("Aperture Value"),
                     (String) properties.get("Flash")
             );
-            photoMap.put(path, photo);
+            photoIndex.put(path, photo);
         }
     }
 

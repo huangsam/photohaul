@@ -17,7 +17,6 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 public class Main {
     private static final Logger LOG = getLogger(Main.class);
-
     private static final Settings SETTINGS = new Settings();
 
     public static void main(String[] args) {
@@ -47,6 +46,6 @@ public class Main {
         LOG.info("Start photo migration");
         PhotoMigrator migrator = new YearBasedPhotoMigrator(targetPath);
         visitor.getPhotos().forEach(migrator::performMigration);
-        LOG.info("Finish photo migration");
+        LOG.info("Finish photo migration with {} successful", migrator.getSuccessCount());
     }
 }

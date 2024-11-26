@@ -21,6 +21,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 public class PhotoVisitor {
     private static final Logger LOG = getLogger(PhotoVisitor.class);
+
     private final ConcurrentHashMap<Path, Photo> photoIndex;
 
     public PhotoVisitor() {

@@ -13,7 +13,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static org.slf4j.LoggerFactory.getLogger;
@@ -26,8 +25,8 @@ public class PhotoVisitor {
         this.photoIndex = new ConcurrentHashMap<>();
     }
 
-    public Set<Map.Entry<Path, Photo>> getPhotosByPath() {
-        return photoIndex.entrySet();
+    public Map<Path, Photo> getPhotoIndex() {
+        return photoIndex;
     }
 
     public void visitPhoto(Path path) {

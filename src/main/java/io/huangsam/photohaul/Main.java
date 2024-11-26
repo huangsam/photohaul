@@ -4,9 +4,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.format.TextStyle;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Stream;
 
 import org.slf4j.Logger;
@@ -24,14 +26,12 @@ public class Main {
                 PathRule.allowedExtensions("jpg", "jpeg", "png").or(PathRule.isImageContent()),
                 PathRule.minimumBytes(100L)));
 
-        traversePhotos(getTraversalPath(), visitor, pathRules);
+        visitPhotos(getSourcePath(), visitor, pathRules);
 
-        Set<Map.Entry<Path, Photo>> photoSet = visitor.getPhotosByPath();
-
-        LOG.info("Found {} photos", photoSet.size());
+        migratePhotos(visitor);
     }
 
-    private static void traversePhotos(Path path, PhotoVisitor visitor, PathRuleSet pathRules) {
+    private static void visitPhotos(Path path, PhotoVisitor visitor, PathRuleSet pathRules) {
         LOG.info("Start traversal of {}", path);
         try (Stream<Path> fileStream = Files.walk(path)) {
             fileStream.parallel().filter(pathRules::matches).forEach(visitor::visitPhoto);
@@ -41,7 +41,25 @@ public class Main {
         LOG.info("Finish traversal of {}", path);
     }
 
-    private static Path getTraversalPath() {
-        return Paths.get(System.getProperty("user.home") + '/' + "Pictures");
+    private static void migratePhotos(PhotoVisitor visitor) {
+        Map<Path, Photo> photoIndex = visitor.getPhotoIndex();
+        visitor.getPhotoIndex().forEach((path, photo) -> {
+            String photoName = photo.name();
+            LocalDate photoDate = photo.date();
+            if (photoDate != null) {
+                Integer photoYear = photoDate.getYear();
+                String photoMonth = photoDate.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
+                LOG.debug("Move {} over to {}/{}/{}", photoName, getDestinationPath(), photoYear, photoMonth);
+            }
+        });
+        LOG.info("Processed {} photos", photoIndex.size());
+    }
+
+    private static Path getSourcePath() {
+        return Paths.get(System.getProperty("user.home") + '/' + "Pictures/Camera PNG");
+    }
+
+    private static Path getDestinationPath() {
+        return Paths.get(System.getProperty("user.home") + '/' + "Pictures/Camera FIN");
     }
 }

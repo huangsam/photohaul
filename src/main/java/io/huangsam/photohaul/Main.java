@@ -4,10 +4,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
-import java.time.format.TextStyle;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -26,12 +25,12 @@ public class Main {
                 PathRule.allowedExtensions("jpg", "jpeg", "png").or(PathRule.isImageContent()),
                 PathRule.minimumBytes(100L)));
 
-        visitPhotos(getSourcePath(), visitor, pathRules);
+        traversePhotos(getSourcePath(), visitor, pathRules);
 
         migratePhotos(visitor);
     }
 
-    private static void visitPhotos(Path path, PhotoVisitor visitor, PathRuleSet pathRules) {
+    private static void traversePhotos(Path path, PhotoVisitor visitor, PathRuleSet pathRules) {
         LOG.info("Start traversal of {}", path);
         try (Stream<Path> fileStream = Files.walk(path)) {
             fileStream.parallel().filter(pathRules::matches).forEach(visitor::visitPhoto);
@@ -43,23 +42,29 @@ public class Main {
 
     private static void migratePhotos(PhotoVisitor visitor) {
         Map<Path, Photo> photoIndex = visitor.getPhotoIndex();
-        visitor.getPhotoIndex().forEach((path, photo) -> {
+        visitor.getPhotoIndex().forEach((source, photo) -> {
             String photoName = photo.name();
             LocalDate photoDate = photo.date();
             if (photoDate != null) {
-                Integer photoYear = photoDate.getYear();
-                String photoMonth = photoDate.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
-                LOG.debug("Move {} over to {}/{}/{}", photoName, getDestinationPath(), photoYear, photoMonth);
+                String photoYear = String.valueOf(photoDate.getYear());
+                Path targetPath = getTargetPath().resolve(photoYear);
+                try {
+                    LOG.info("Move {} over to {}", photoName, targetPath);
+                    Files.createDirectories(targetPath);
+                    Files.move(source, targetPath.resolve(photoName), StandardCopyOption.REPLACE_EXISTING);
+                } catch (IOException e) {
+                    LOG.warn("Cannot migrate {} to {}: {}", photoName, targetPath, e.getMessage());
+                }
             }
         });
         LOG.info("Processed {} photos", photoIndex.size());
     }
 
     private static Path getSourcePath() {
-        return Paths.get(System.getProperty("user.home") + '/' + "Pictures/Camera PNG");
+        return Paths.get(System.getProperty("user.home") + '/' + "Pictures/Camera OLD");
     }
 
-    private static Path getDestinationPath() {
-        return Paths.get(System.getProperty("user.home") + '/' + "Pictures/Camera FIN");
+    private static Path getTargetPath() {
+        return Paths.get(System.getProperty("user.home") + '/' + "Pictures/Camera NEW");
     }
 }

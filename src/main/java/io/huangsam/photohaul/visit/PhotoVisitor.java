@@ -1,10 +1,11 @@
-package io.huangsam.photohaul;
+package io.huangsam.photohaul.visit;
 
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;
 import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.Tag;
+import io.huangsam.photohaul.model.Photo;
 import org.slf4j.Logger;
 
 import java.io.IOException;

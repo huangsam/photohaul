@@ -1,4 +1,4 @@
-package io.huangsam.photohaul;
+package io.huangsam.photohaul.visit;
 
 import java.io.IOException;
 import java.nio.file.Files;

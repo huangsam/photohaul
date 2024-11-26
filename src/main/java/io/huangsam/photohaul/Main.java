@@ -7,6 +7,11 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Stream;
 
+import io.huangsam.photohaul.migrate.PhotoMigrator;
+import io.huangsam.photohaul.migrate.YearBasedPhotoMigrator;
+import io.huangsam.photohaul.visit.PathRule;
+import io.huangsam.photohaul.visit.PathRuleSet;
+import io.huangsam.photohaul.visit.PhotoVisitor;
 import org.slf4j.Logger;
 
 import static org.slf4j.LoggerFactory.getLogger;

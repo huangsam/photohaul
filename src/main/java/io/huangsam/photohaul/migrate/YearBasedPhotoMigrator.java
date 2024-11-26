@@ -1,5 +1,6 @@
-package io.huangsam.photohaul;
+package io.huangsam.photohaul.migrate;
 
+import io.huangsam.photohaul.model.Photo;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Path;

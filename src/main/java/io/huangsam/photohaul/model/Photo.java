@@ -1,4 +1,4 @@
-package io.huangsam.photohaul;
+package io.huangsam.photohaul.model;
 
 import org.jetbrains.annotations.Nullable;
 

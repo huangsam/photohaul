@@ -16,9 +16,6 @@ public class Main {
     private static final Logger LOG = getLogger(Main.class);
 
     public static void main(String[] args) {
-        String homeDirectory = System.getProperty("user.home");
-        Path picturePath = Paths.get(homeDirectory + "/Pictures");
-
         PhotoVisitor visitor = new PhotoVisitor();
 
         PhotoRuleSet ruleSet = new PhotoRuleSet(List.of(Files::isRegularFile, path -> {
@@ -26,7 +23,8 @@ public class Main {
             return Stream.of("jpg", "jpeg", "png").anyMatch(pathName::endsWith);
         }));
 
-        Main.traversePhotos(picturePath, visitor, ruleSet);
+        traversePhotos(getHomePath("Pictures"), visitor, ruleSet);
+        traversePhotos(getHomePath("Phone"), visitor, ruleSet);
 
         Collection<Photo> photoList = visitor.getPhotos();
 
@@ -41,5 +39,9 @@ public class Main {
             LOG.error("Abort traversal of {}: {}", path, e.getMessage());
         }
         LOG.info("Finish traversal of {}", path);
+    }
+
+    private static Path getHomePath(String target) {
+        return Paths.get(System.getProperty("user.home") + '/' + target);
     }
 }

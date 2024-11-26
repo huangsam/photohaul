@@ -18,10 +18,11 @@ public class Main {
     public static void main(String[] args) {
         PhotoVisitor visitor = new PhotoVisitor();
 
-        PhotoRuleSet ruleSet = new PhotoRuleSet(List.of(Files::isRegularFile, path -> {
-            String pathName = path.toString().toLowerCase();
-            return Stream.of("jpg", "jpeg", "png").anyMatch(pathName::endsWith);
-        }));
+        PhotoRuleSet ruleSet = new PhotoRuleSet(List.of(
+                Files::isRegularFile,
+                PhotoRule.allowedExtensions("jpg", "jpeg", "png"),
+                PhotoRule.isValidContent(),
+                PhotoRule.minimumBytes(100L)));
 
         traversePhotos(getHomePath("Pictures"), visitor, ruleSet);
         traversePhotos(getHomePath("Phone"), visitor, ruleSet);

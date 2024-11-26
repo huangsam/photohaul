@@ -44,8 +44,8 @@ public class Main {
 
     private static void migratePhotos(PhotoVisitor visitor) {
         visitor.getPhotos().forEach(photo -> {
-            PhotoMigrator migration = new YearBasedPhotoMigrator(getTargetPath());
-            migration.performMigration(photo);
+            PhotoMigrator migrator = new YearBasedPhotoMigrator(getTargetPath());
+            migrator.performMigration(photo);
         });
     }
 

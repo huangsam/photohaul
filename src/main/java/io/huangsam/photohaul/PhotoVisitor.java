@@ -35,7 +35,7 @@ public class PhotoVisitor {
         if (!properties.isEmpty()) {
             Photo photo = new Photo(
                     path.getFileName().toString(),
-                    (String) properties.get("Date/Time"),
+                    (String) properties.get("Date/Time Original"),
                     (String) properties.get("Make"),
                     (String) properties.get("Model"),
                     (String) properties.get("Focal Length"),

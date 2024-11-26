@@ -20,8 +20,7 @@ public class Main {
 
         PathRuleSet pathRules = new PathRuleSet(List.of(
                 Files::isRegularFile,
-                PathRule.allowedExtensions("jpg", "jpeg", "png"),
-                PathRule.isImageContent(),
+                PathRule.allowedExtensions("jpg", "jpeg", "png").or(PathRule.isImageContent()),
                 PathRule.minimumBytes(100L)));
 
         traversePhotos(getHomePath("Pictures"), visitor, pathRules);

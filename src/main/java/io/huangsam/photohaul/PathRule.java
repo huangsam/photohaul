@@ -18,7 +18,7 @@ public class PathRule {
         return path -> {
             try {
                 return Files.probeContentType(path).startsWith("image/");
-            } catch (IOException e) {
+            } catch (IOException | NullPointerException e) {
                 return false;
             }
         };

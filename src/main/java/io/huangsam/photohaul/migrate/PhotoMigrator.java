@@ -23,7 +23,7 @@ public abstract class PhotoMigrator {
     public void performMigration(Photo photo) {
         Path targetLocation = getTargetLocation(photo);
         try {
-            LOG.info("Move {} over to {}", photo.name(), targetLocation);
+            LOG.trace("Move {} over to {}", photo.name(), targetLocation);
             Files.createDirectories(targetLocation);
             Files.move(photo.path(), targetLocation.resolve(photo.name()), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {

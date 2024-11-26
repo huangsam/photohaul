@@ -43,10 +43,12 @@ public class Main {
     }
 
     private static void migratePhotos(PhotoVisitor visitor) {
+        LOG.info("Start photo migration");
         visitor.getPhotos().forEach(photo -> {
             PhotoMigrator migrator = new YearBasedPhotoMigrator(getTargetPath());
             migrator.performMigration(photo);
         });
+        LOG.info("Finish photo migration");
     }
 
     private static Path getSourcePath() {

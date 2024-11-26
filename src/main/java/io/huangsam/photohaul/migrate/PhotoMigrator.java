@@ -1,7 +1,6 @@
 package io.huangsam.photohaul.migrate;
 
 import io.huangsam.photohaul.model.Photo;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -37,5 +36,5 @@ public abstract class PhotoMigrator {
         return successCount;
     }
 
-    abstract @NotNull Path getTargetLocation(Photo photo);
+    abstract Path getTargetLocation(Photo photo);
 }

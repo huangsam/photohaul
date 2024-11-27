@@ -12,11 +12,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class PhotoVisitor {
     private static final Logger LOG = getLogger(PhotoVisitor.class);
 
-    private final ConcurrentHashMap<Path, Photo> photoIndex;
-
-    public PhotoVisitor() {
-        photoIndex = new ConcurrentHashMap<>();
-    }
+    private final ConcurrentHashMap<Path, Photo> photoIndex = new ConcurrentHashMap<>();
 
     public Collection<Photo> getPhotos() {
         return photoIndex.values();

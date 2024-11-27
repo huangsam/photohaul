@@ -31,10 +31,10 @@ public class Main {
 
         traversePhotos(SETTINGS.getSourcePath(), pathVisitor, pathRuleSet);
 
-        PathMigrator migrator = new CameraPathMigrator(
+        PathMigrator pathMigrator = new CameraPathMigrator(
                 SETTINGS.getTargetPath(), StandardCopyOption.REPLACE_EXISTING);
 
-        migratePhotos(migrator, pathVisitor);
+        migratePhotos(pathMigrator, pathVisitor);
     }
 
     private static void traversePhotos(Path source, PhotoPathVisitor pathVisitor, PathRuleSet pathRuleSet) {

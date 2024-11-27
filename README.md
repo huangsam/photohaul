@@ -2,7 +2,7 @@
 
 Effortless photo management.
 
-Can reorganize 10K+ photos (30 GB) in 5-10 seconds! 🚀
+Can reorganize 10K+ photos (30 GB) in under 10 seconds! 🚀
 
 Using this project for your needs is as simple as:
 

@@ -10,14 +10,14 @@ import java.nio.file.Path;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-public abstract class FileMigrator implements Migrator {
-    private static final Logger LOG = getLogger(FileMigrator.class);
+public abstract class PathMigrator implements Migrator {
+    private static final Logger LOG = getLogger(PathMigrator.class);
 
     protected final Path targetRoot;
     private final CopyOption copyOption;
     private long successCount = 0L;
 
-    public FileMigrator(Path targetRoot, CopyOption copyOption) {
+    public PathMigrator(Path targetRoot, CopyOption copyOption) {
         this.targetRoot = targetRoot;
         this.copyOption = copyOption;
     }

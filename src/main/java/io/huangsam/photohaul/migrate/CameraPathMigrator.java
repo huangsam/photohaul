@@ -6,8 +6,8 @@ import java.nio.file.CopyOption;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 
-public class CameraFileMigrator extends FileMigrator {
-    public CameraFileMigrator(Path targetRoot, CopyOption copyOption) {
+public class CameraPathMigrator extends PathMigrator {
+    public CameraPathMigrator(Path targetRoot, CopyOption copyOption) {
         super(targetRoot, copyOption);
     }
 

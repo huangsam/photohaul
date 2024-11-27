@@ -5,8 +5,8 @@ import io.huangsam.photohaul.model.Photo;
 import java.nio.file.CopyOption;
 import java.nio.file.Path;
 
-public class FlatPhotoMigrator extends PhotoMigrator {
-    public FlatPhotoMigrator(Path targetRoot, CopyOption copyOption) {
+public class FlatFileMigrator extends FileMigrator {
+    public FlatFileMigrator(Path targetRoot, CopyOption copyOption) {
         super(targetRoot, copyOption);
     }
 

@@ -10,18 +10,19 @@ import java.nio.file.Path;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-public abstract class PhotoMigrator {
-    private static final Logger LOG = getLogger(PhotoMigrator.class);
+public abstract class FileMigrator implements Migrator {
+    private static final Logger LOG = getLogger(FileMigrator.class);
 
     protected final Path targetRoot;
     private final CopyOption copyOption;
     private long successCount = 0L;
 
-    public PhotoMigrator(Path targetRoot, CopyOption copyOption) {
+    public FileMigrator(Path targetRoot, CopyOption copyOption) {
         this.targetRoot = targetRoot;
         this.copyOption = copyOption;
     }
 
+    @Override
     public final void migratePhoto(Photo photo) {
         Path targetLocation = getTargetLocation(photo);
         try {
@@ -34,6 +35,7 @@ public abstract class PhotoMigrator {
         }
     }
 
+    @Override
     public final long getSuccessCount() {
         return successCount;
     }

@@ -7,8 +7,8 @@ import java.nio.file.Path;
 import java.nio.file.attribute.FileTime;
 import java.time.ZoneId;
 
-public class SimplePhotoMigrator extends PhotoMigrator {
-    public SimplePhotoMigrator(Path targetRoot, CopyOption copyOption) {
+public class BasicPhotoMigrator extends PhotoMigrator {
+    public BasicPhotoMigrator(Path targetRoot, CopyOption copyOption) {
         super(targetRoot, copyOption);
     }
 

@@ -29,13 +29,13 @@ public class PhotoBuilder {
             for (Directory directory : metadata.getDirectories()) {
                 for (Tag tag : directory.getTags()) {
                     if (LOG.isTraceEnabled()) {
-                        LOG.trace("{} -> Store tag {}", photoPath, tag.getTagName());
+                        LOG.trace("Store tag {} for {}", tag.getTagName(), photoPath);
                     }
                     info.put(tag.getTagName(), tag.getDescription());
                 }
             }
         } catch (IOException | ImageProcessingException e) {
-            LOG.warn("Cannot get properties for {}: {}", photoPath, e.getMessage());
+            LOG.warn("Cannot process {}: {}", photoPath, e.getMessage());
         }
     }
 

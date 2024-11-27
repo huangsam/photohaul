@@ -6,4 +6,6 @@ public interface Migrator {
     void migratePhoto(Photo photo);
 
     long getSuccessCount();
+
+    long getFailureCount();
 }

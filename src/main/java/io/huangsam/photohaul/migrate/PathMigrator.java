@@ -16,6 +16,7 @@ public abstract class PathMigrator implements Migrator {
     protected final Path targetRoot;
     private final CopyOption copyOption;
     private long successCount = 0L;
+    private long failureCount = 0L;
 
     public PathMigrator(Path targetRoot, CopyOption copyOption) {
         this.targetRoot = targetRoot;
@@ -32,12 +33,18 @@ public abstract class PathMigrator implements Migrator {
             successCount++;
         } catch (IOException e) {
             LOG.warn("Cannot migrate {} to {}: {}", photo.name(), targetLocation, e.getMessage());
+            failureCount++;
         }
     }
 
     @Override
     public final long getSuccessCount() {
         return successCount;
+    }
+
+    @Override
+    public final long getFailureCount() {
+        return failureCount;
     }
 
     Path fallback() {

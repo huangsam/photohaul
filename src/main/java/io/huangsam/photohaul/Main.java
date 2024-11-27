@@ -9,6 +9,7 @@ import java.util.stream.Stream;
 
 import io.huangsam.photohaul.migrate.CameraPathMigrator;
 import io.huangsam.photohaul.migrate.Migrator;
+import io.huangsam.photohaul.migrate.PathMigrator;
 import io.huangsam.photohaul.visit.PathRule;
 import io.huangsam.photohaul.visit.PathRuleSet;
 import io.huangsam.photohaul.visit.PhotoPathVisitor;
@@ -30,7 +31,7 @@ public class Main {
 
         traversePhotos(SETTINGS.getSourcePath(), pathVisitor, pathRuleSet);
 
-        Migrator migrator = new CameraPathMigrator(
+        PathMigrator migrator = new CameraPathMigrator(
                 SETTINGS.getTargetPath(), StandardCopyOption.REPLACE_EXISTING);
 
         migratePhotos(migrator, pathVisitor);
@@ -49,6 +50,6 @@ public class Main {
     private static void migratePhotos(Migrator migrator, PhotoPathVisitor visitor) {
         LOG.info("Start migration");
         visitor.getPhotos().forEach(migrator::migratePhoto);
-        LOG.info("Finish migration with {} successful", migrator.getSuccessCount());
+        LOG.info("Finish migration with success={} failure={}", migrator.getSuccessCount(), migrator.getFailureCount());
     }
 }

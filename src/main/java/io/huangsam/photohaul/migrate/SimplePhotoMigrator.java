@@ -16,13 +16,13 @@ public class SimplePhotoMigrator extends PhotoMigrator {
     Path getTargetLocation(Photo photo) {
         FileTime creationTime = photo.createdAt();
         if (creationTime != null) {
-            return getTargetPath(parseYear(creationTime).toString());
+            return resolve(parseYear(creationTime).toString());
         }
         FileTime modifiedTime = photo.modifiedAt();
         if (modifiedTime != null) {
-            return getTargetPath(parseYear(modifiedTime).toString());
+            return resolve(parseYear(modifiedTime).toString());
         }
-        return getFallbackPath();
+        return fallback();
     }
 
     private Year parseYear(FileTime time) {

@@ -14,7 +14,7 @@ public abstract class PhotoMigrator {
     private static final Logger LOG = getLogger(PhotoMigrator.class);
 
     private final Path targetRoot;
-    private int successCount = 0;
+    private long successCount = 0L;
 
     public PhotoMigrator(Path targetRoot) {
         this.targetRoot = targetRoot;
@@ -32,11 +32,11 @@ public abstract class PhotoMigrator {
         }
     }
 
-    public final int getSuccessCount() {
+    public final long getSuccessCount() {
         return successCount;
     }
 
-    Path getTargetPath(String... qualifiers) {
+    Path resolve(String... qualifiers) {
         Path result = targetRoot;
         for (String qualifier : qualifiers) {
             result = result.resolve(qualifier);
@@ -44,7 +44,7 @@ public abstract class PhotoMigrator {
         return result;
     }
 
-    Path getFallbackPath() {
+    Path fallback() {
         return targetRoot.resolve("Other");
     }
 

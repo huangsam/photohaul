@@ -2,14 +2,17 @@ package io.huangsam.photohaul.model;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.LocalDate;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileTime;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public record Photo(
         Path path,
-        @Nullable String dateTime,
+        @Nullable String taken,
         @Nullable String make,
         @Nullable String model,
         @Nullable String focalLength,
@@ -21,12 +24,29 @@ public record Photo(
         return path.getFileName().toString();
     }
 
-    public @Nullable LocalDate date() {
-        if (dateTime == null) {
+    public @Nullable FileTime createdAt() {
+        BasicFileAttributes attributes = attributes();
+        return (attributes == null) ? null : attributes.creationTime();
+    }
+
+    public @Nullable FileTime modifiedAt() {
+        BasicFileAttributes attributes = attributes();
+        return (attributes == null) ? null : attributes.lastModifiedTime();
+    }
+
+    public @Nullable LocalDateTime takenAt() {
+        if (taken == null) {
             return null;
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss");
-        LocalDateTime localDateTime = LocalDateTime.parse(dateTime, formatter);
-        return localDateTime.toLocalDate();
+        return LocalDateTime.parse(taken, formatter);
+    }
+
+    private @Nullable BasicFileAttributes attributes() {
+        try {
+            return Files.readAttributes(path, BasicFileAttributes.class);
+        } catch (IOException e) {
+            return null;
+        }
     }
 }

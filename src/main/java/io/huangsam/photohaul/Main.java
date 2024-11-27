@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import io.huangsam.photohaul.migrate.PhotoMigrator;
-import io.huangsam.photohaul.migrate.YearPhotoMigrator;
+import io.huangsam.photohaul.migrate.CameraPhotoMigrator;
 import io.huangsam.photohaul.visit.PathRule;
 import io.huangsam.photohaul.visit.PathRuleSet;
 import io.huangsam.photohaul.visit.PhotoVisitor;
@@ -44,7 +44,7 @@ public class Main {
 
     private static void migratePhotos(Path targetPath, PhotoVisitor visitor) {
         LOG.info("Start migration");
-        PhotoMigrator migrator = new YearPhotoMigrator(targetPath);
+        PhotoMigrator migrator = new CameraPhotoMigrator(targetPath);
         visitor.getPhotos().forEach(migrator::performMigration);
         LOG.info("Finish migration with {} successful", migrator.getSuccessCount());
     }

@@ -36,5 +36,9 @@ public abstract class PhotoMigrator {
         return successCount;
     }
 
+    Path getFallbackPath() {
+        return targetRoot.resolve("Other");
+    }
+
     abstract Path getTargetLocation(Photo photo);
 }

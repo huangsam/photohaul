@@ -35,11 +35,8 @@ public record Photo(
     }
 
     public @Nullable LocalDateTime takenAt() {
-        if (taken == null) {
-            return null;
-        }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss");
-        return LocalDateTime.parse(taken, formatter);
+        return (taken == null) ? null : LocalDateTime.parse(taken, formatter);
     }
 
     private @Nullable BasicFileAttributes attributes() {

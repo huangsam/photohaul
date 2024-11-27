@@ -14,7 +14,7 @@ public class CameraPhotoMigrator extends PhotoMigrator {
     Path getTargetLocation(Photo photo) {
         LocalDateTime takenTime = photo.takenAt();
         if (takenTime != null) {
-            return resolve(String.valueOf(takenTime.getYear()));
+            return targetRoot.resolve(String.valueOf(takenTime.getYear()));
         }
         return fallback();
     }

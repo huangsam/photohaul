@@ -1,6 +1,8 @@
 package io.huangsam.photohaul.model;
 
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -20,6 +22,8 @@ public record Photo(
         @Nullable String aperture,
         @Nullable String flash
 ) {
+    private static final Logger LOG = LoggerFactory.getLogger(Photo.class);
+
     public String name() {
         return path.getFileName().toString();
     }

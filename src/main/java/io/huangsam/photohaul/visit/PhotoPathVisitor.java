@@ -9,8 +9,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-public class PhotoVisitor {
-    private static final Logger LOG = getLogger(PhotoVisitor.class);
+public class PhotoPathVisitor {
+    private static final Logger LOG = getLogger(PhotoPathVisitor.class);
 
     private final ConcurrentHashMap<Path, Photo> photoIndex = new ConcurrentHashMap<>();
 
@@ -20,7 +20,7 @@ public class PhotoVisitor {
 
     public void visitPhoto(Path path) {
         LOG.trace("Visit photo {}", path.toString());
-        PhotoBuilder pb = new PhotoBuilder();
+        PhotoPathBuilder pb = new PhotoPathBuilder();
         pb.fillInfo(path);
         photoIndex.put(path, pb.build());
     }

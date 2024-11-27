@@ -11,7 +11,7 @@ import io.huangsam.photohaul.migrate.CameraPathMigrator;
 import io.huangsam.photohaul.migrate.Migrator;
 import io.huangsam.photohaul.visit.PathRule;
 import io.huangsam.photohaul.visit.PathRuleSet;
-import io.huangsam.photohaul.visit.PhotoVisitor;
+import io.huangsam.photohaul.visit.PhotoPathVisitor;
 import org.slf4j.Logger;
 
 import static org.slf4j.LoggerFactory.getLogger;
@@ -21,7 +21,7 @@ public class Main {
     private static final Settings SETTINGS = new Settings();
 
     public static void main(String[] args) {
-        PhotoVisitor visitor = new PhotoVisitor();
+        PhotoPathVisitor visitor = new PhotoPathVisitor();
 
         PathRuleSet pathRules = new PathRuleSet(List.of(
                 Files::isRegularFile,
@@ -36,7 +36,7 @@ public class Main {
         migratePhotos(migrator, visitor);
     }
 
-    private static void traversePhotos(Path source, PhotoVisitor visitor, PathRuleSet pathRules) {
+    private static void traversePhotos(Path source, PhotoPathVisitor visitor, PathRuleSet pathRules) {
         LOG.info("Start traversal of {}", source);
         try (Stream<Path> fileStream = Files.walk(source)) {
             fileStream.parallel().filter(pathRules::matches).forEach(visitor::visitPhoto);
@@ -46,7 +46,7 @@ public class Main {
         }
     }
 
-    private static void migratePhotos(Migrator migrator, PhotoVisitor visitor) {
+    private static void migratePhotos(Migrator migrator, PhotoPathVisitor visitor) {
         LOG.info("Start migration");
         visitor.getPhotos().forEach(migrator::migratePhoto);
         LOG.info("Finish migration with {} successful", migrator.getSuccessCount());

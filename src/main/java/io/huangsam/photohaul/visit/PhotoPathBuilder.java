@@ -16,8 +16,8 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PhotoBuilder {
-    private static final Logger LOG = LoggerFactory.getLogger(PhotoBuilder.class);
+public class PhotoPathBuilder {
+    private static final Logger LOG = LoggerFactory.getLogger(PhotoPathBuilder.class);
 
     private Path path;
     private final Map<String, Object> info = new HashMap<>();

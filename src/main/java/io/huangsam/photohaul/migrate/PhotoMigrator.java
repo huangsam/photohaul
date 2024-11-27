@@ -20,7 +20,7 @@ public abstract class PhotoMigrator {
         this.targetRoot = targetRoot;
     }
 
-    public final void performMigration(Photo photo) {
+    public final void migratePhoto(Photo photo) {
         Path targetLocation = getTargetLocation(photo);
         try {
             LOG.trace("Move {} over to {}", photo.name(), targetLocation);

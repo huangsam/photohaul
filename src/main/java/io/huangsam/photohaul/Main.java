@@ -46,7 +46,7 @@ public class Main {
 
     private static void migratePhotos(PhotoMigrator migrator, PhotoVisitor visitor) {
         LOG.info("Start migration");
-        visitor.getPhotos().forEach(migrator::performMigration);
+        visitor.getPhotos().forEach(migrator::migratePhoto);
         LOG.info("Finish migration with {} successful", migrator.getSuccessCount());
     }
 }

@@ -4,9 +4,9 @@ import io.huangsam.photohaul.model.Photo;
 import org.slf4j.Logger;
 
 import java.io.IOException;
+import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -14,10 +14,12 @@ public abstract class PhotoMigrator {
     private static final Logger LOG = getLogger(PhotoMigrator.class);
 
     protected final Path targetRoot;
+    private final CopyOption copyOption;
     private long successCount = 0L;
 
-    public PhotoMigrator(Path targetRoot) {
+    public PhotoMigrator(Path targetRoot, CopyOption copyOption) {
         this.targetRoot = targetRoot;
+        this.copyOption = copyOption;
     }
 
     public final void migratePhoto(Photo photo) {
@@ -25,7 +27,7 @@ public abstract class PhotoMigrator {
         try {
             LOG.trace("Move {} over to {}", photo.name(), targetLocation);
             Files.createDirectories(targetLocation);
-            Files.move(photo.path(), targetLocation.resolve(photo.name()), StandardCopyOption.REPLACE_EXISTING);
+            Files.move(photo.path(), targetLocation.resolve(photo.name()), copyOption);
             successCount++;
         } catch (IOException e) {
             LOG.warn("Cannot migrate {} to {}: {}", photo.name(), targetLocation, e.getMessage());

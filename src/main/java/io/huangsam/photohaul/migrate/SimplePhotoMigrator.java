@@ -2,13 +2,14 @@ package io.huangsam.photohaul.migrate;
 
 import io.huangsam.photohaul.model.Photo;
 
+import java.nio.file.CopyOption;
 import java.nio.file.Path;
 import java.nio.file.attribute.FileTime;
 import java.time.ZoneId;
 
 public class SimplePhotoMigrator extends PhotoMigrator {
-    public SimplePhotoMigrator(Path targetRoot) {
-        super(targetRoot);
+    public SimplePhotoMigrator(Path targetRoot, CopyOption copyOption) {
+        super(targetRoot, copyOption);
     }
 
     @Override

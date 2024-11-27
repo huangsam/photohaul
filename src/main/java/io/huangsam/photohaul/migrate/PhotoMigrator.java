@@ -13,7 +13,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 public abstract class PhotoMigrator {
     private static final Logger LOG = getLogger(PhotoMigrator.class);
 
-    protected final Path targetRoot;
+    private final Path targetRoot;
     private int successCount = 0;
 
     public PhotoMigrator(Path targetRoot) {
@@ -34,6 +34,14 @@ public abstract class PhotoMigrator {
 
     public final int getSuccessCount() {
         return successCount;
+    }
+
+    Path getTargetPath(String... qualifiers) {
+        Path result = targetRoot;
+        for (String qualifier : qualifiers) {
+            result = result.resolve(qualifier);
+        }
+        return result;
     }
 
     Path getFallbackPath() {

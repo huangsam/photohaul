@@ -6,8 +6,8 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Stream;
 
-import io.huangsam.photohaul.migrate.PhotoMigrator;
 import io.huangsam.photohaul.migrate.CameraPhotoMigrator;
+import io.huangsam.photohaul.migrate.PhotoMigrator;
 import io.huangsam.photohaul.visit.PathRule;
 import io.huangsam.photohaul.visit.PathRuleSet;
 import io.huangsam.photohaul.visit.PhotoVisitor;
@@ -29,22 +29,23 @@ public class Main {
 
         traversePhotos(SETTINGS.getSourcePath(), visitor, pathRules);
 
-        migratePhotos(SETTINGS.getTargetPath(), visitor);
+        PhotoMigrator migrator = new CameraPhotoMigrator(SETTINGS.getTargetPath());
+
+        migratePhotos(migrator, visitor);
     }
 
-    private static void traversePhotos(Path path, PhotoVisitor visitor, PathRuleSet pathRules) {
-        LOG.info("Start traversal of {}", path);
-        try (Stream<Path> fileStream = Files.walk(path)) {
+    private static void traversePhotos(Path source, PhotoVisitor visitor, PathRuleSet pathRules) {
+        LOG.info("Start traversal of {}", source);
+        try (Stream<Path> fileStream = Files.walk(source)) {
             fileStream.parallel().filter(pathRules::matches).forEach(visitor::visitPhoto);
-            LOG.info("Finish traversal of {}", path);
+            LOG.info("Finish traversal of {}", source);
         } catch (IOException e) {
-            LOG.error("Abort traversal of {}: {}", path, e.getMessage());
+            LOG.error("Abort traversal of {}: {}", source, e.getMessage());
         }
     }
 
-    private static void migratePhotos(Path targetPath, PhotoVisitor visitor) {
+    private static void migratePhotos(PhotoMigrator migrator, PhotoVisitor visitor) {
         LOG.info("Start migration");
-        PhotoMigrator migrator = new CameraPhotoMigrator(targetPath);
         visitor.getPhotos().forEach(migrator::performMigration);
         LOG.info("Finish migration with {} successful", migrator.getSuccessCount());
     }

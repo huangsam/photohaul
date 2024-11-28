@@ -1,4 +1,4 @@
-package io.huangsam.photohaul.migrate;
+package io.huangsam.photohaul.migration;
 
 import io.huangsam.photohaul.model.Photo;
 

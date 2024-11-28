@@ -1,4 +1,4 @@
-package io.huangsam.photohaul.visit;
+package io.huangsam.photohaul.traversal;
 
 import io.huangsam.photohaul.model.Photo;
 import org.slf4j.Logger;

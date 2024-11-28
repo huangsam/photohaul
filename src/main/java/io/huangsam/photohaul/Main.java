@@ -7,12 +7,12 @@ import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.stream.Stream;
 
-import io.huangsam.photohaul.migrate.CameraPathMigrator;
-import io.huangsam.photohaul.migrate.Migrator;
-import io.huangsam.photohaul.migrate.PathMigrator;
-import io.huangsam.photohaul.visit.PathRule;
-import io.huangsam.photohaul.visit.PathRuleSet;
-import io.huangsam.photohaul.visit.PhotoPathVisitor;
+import io.huangsam.photohaul.migration.CameraPathMigrator;
+import io.huangsam.photohaul.migration.Migrator;
+import io.huangsam.photohaul.migration.PathMigrator;
+import io.huangsam.photohaul.traversal.PathRule;
+import io.huangsam.photohaul.traversal.PathRuleSet;
+import io.huangsam.photohaul.traversal.PhotoPathVisitor;
 import org.slf4j.Logger;
 
 import static org.slf4j.LoggerFactory.getLogger;

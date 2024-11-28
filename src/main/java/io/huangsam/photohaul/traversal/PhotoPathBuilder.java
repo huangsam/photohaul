@@ -1,4 +1,4 @@
-package io.huangsam.photohaul.visit;
+package io.huangsam.photohaul.traversal;
 
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;

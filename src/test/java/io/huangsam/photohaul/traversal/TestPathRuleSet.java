@@ -1,4 +1,4 @@
-package io.huangsam.photohaul.visit;
+package io.huangsam.photohaul.traversal;
 
 import org.junit.jupiter.api.Test;
 

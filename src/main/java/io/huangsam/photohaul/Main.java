@@ -1,17 +1,14 @@
 package io.huangsam.photohaul;
 
-import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
-import java.util.stream.Stream;
 
 import io.huangsam.photohaul.migration.CameraPathMigrator;
 import io.huangsam.photohaul.migration.Migrator;
-import io.huangsam.photohaul.migration.PathMigrator;
 import io.huangsam.photohaul.traversal.PathRule;
 import io.huangsam.photohaul.traversal.PathRuleSet;
+import io.huangsam.photohaul.traversal.PathTraversal;
 import io.huangsam.photohaul.traversal.PhotoPathVisitor;
 import org.slf4j.Logger;
 
@@ -29,27 +26,13 @@ public class Main {
                 PathRule.allowedExtensions("jpg", "jpeg", "png").or(PathRule.isImageContent()),
                 PathRule.minimumBytes(100L)));
 
-        traversePhotos(SETTINGS.getSourcePath(), pathVisitor, pathRuleSet);
+        PathTraversal pathTraversal = new PathTraversal(SETTINGS.getSourcePath(), pathRuleSet);
+        pathTraversal.traverse(pathVisitor);
 
-        PathMigrator pathMigrator = new CameraPathMigrator(
+        Migrator migrator = new CameraPathMigrator(
                 SETTINGS.getTargetPath(), StandardCopyOption.REPLACE_EXISTING);
-
-        migratePhotos(pathMigrator, pathVisitor);
-    }
-
-    private static void traversePhotos(Path source, PhotoPathVisitor pathVisitor, PathRuleSet pathRuleSet) {
-        LOG.info("Start traversal of {}", source);
-        try (Stream<Path> fileStream = Files.walk(source)) {
-            fileStream.parallel().filter(pathRuleSet::matches).forEach(pathVisitor::visitPhoto);
-            LOG.info("Finish traversal of {}", source);
-        } catch (IOException e) {
-            LOG.error("Abort traversal of {}: {}", source, e.getMessage());
-        }
-    }
-
-    private static void migratePhotos(Migrator migrator, PhotoPathVisitor pathVisitor) {
-        LOG.info("Start migration");
         pathVisitor.getPhotos().forEach(migrator::migratePhoto);
-        LOG.info("Finish migration with success={} failure={}", migrator.getSuccessCount(), migrator.getFailureCount());
+
+        LOG.info("Finish with success={} failure={}", migrator.getSuccessCount(), migrator.getFailureCount());
     }
 }

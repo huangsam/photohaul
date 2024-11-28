@@ -47,9 +47,9 @@ public class Main {
         }
     }
 
-    private static void migratePhotos(Migrator migrator, PhotoPathVisitor visitor) {
+    private static void migratePhotos(Migrator migrator, PhotoPathVisitor pathVisitor) {
         LOG.info("Start migration");
-        visitor.getPhotos().forEach(migrator::migratePhoto);
+        pathVisitor.getPhotos().forEach(migrator::migratePhoto);
         LOG.info("Finish migration with success={} failure={}", migrator.getSuccessCount(), migrator.getFailureCount());
     }
 }

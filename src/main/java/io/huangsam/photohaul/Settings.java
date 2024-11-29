@@ -18,13 +18,19 @@ public class Settings {
         }
     }
 
-    public Path getSourcePath() {
-        String targetPath = properties.getProperty("source.path");
-        return Paths.get(System.getProperty("user.home")).resolve(targetPath);
+    public Path getSourceRoot() {
+        String sourceRoot = properties.getProperty("source.root");
+        if (sourceRoot == null) {
+            throw new IllegalArgumentException("Missing source root");
+        }
+        return Paths.get(System.getProperty("user.home")).resolve(sourceRoot);
     }
 
-    public Path getTargetPath() {
-        String targetPath = properties.getProperty("target.path");
-        return Paths.get(System.getProperty("user.home")).resolve(targetPath);
+    public Path getTargetRoot() {
+        String targetRoot = properties.getProperty("target.root");
+        if (targetRoot == null) {
+            throw new IllegalArgumentException("Missing target root");
+        }
+        return Paths.get(System.getProperty("user.home")).resolve(targetRoot);
     }
 }

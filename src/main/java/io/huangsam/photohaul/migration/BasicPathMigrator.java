@@ -1,6 +1,7 @@
 package io.huangsam.photohaul.migration;
 
 import io.huangsam.photohaul.model.Photo;
+import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.CopyOption;
 import java.nio.file.Path;
@@ -13,7 +14,7 @@ public class BasicPathMigrator extends PathMigrator {
     }
 
     @Override
-    Path getTargetLocation(Photo photo) {
+    @Nullable Path getTargetLocation(Photo photo) {
         FileTime creationTime = photo.createdAt();
         if (creationTime != null) {
             return targetRoot.resolve(parseYear(creationTime));
@@ -22,7 +23,7 @@ public class BasicPathMigrator extends PathMigrator {
         if (modifiedTime != null) {
             return targetRoot.resolve(parseYear(modifiedTime));
         }
-        return fallback();
+        return null;
     }
 
     private String parseYear(FileTime time) {

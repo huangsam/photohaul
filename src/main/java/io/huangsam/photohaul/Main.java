@@ -1,6 +1,7 @@
 package io.huangsam.photohaul;
 
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 
@@ -26,12 +27,14 @@ public class Main {
                 PathRule.allowedExtensions("jpg", "jpeg", "png").or(PathRule.isImageContent()),
                 PathRule.minimumBytes(100L)));
 
-        PathTraversal pathTraversal = new PathTraversal(SETTINGS.getSourcePath(), pathRuleSet);
+        Path sourceRoot = SETTINGS.getSourceRoot();
+        Path targetRoot = SETTINGS.getTargetRoot();
+
+        PathTraversal pathTraversal = new PathTraversal(sourceRoot, pathRuleSet);
         pathTraversal.traverse(pathVisitor);
 
-        Migrator migrator = new CameraPathMigrator(
-                SETTINGS.getTargetPath(), StandardCopyOption.REPLACE_EXISTING);
-        pathVisitor.getPhotos().forEach(migrator::migratePhoto);
+        Migrator migrator = new CameraPathMigrator(targetRoot, StandardCopyOption.REPLACE_EXISTING);
+        migrator.migratePhotos(pathVisitor.getPhotos());
 
         LOG.info("Finish with success={} failure={}", migrator.getSuccessCount(), migrator.getFailureCount());
     }

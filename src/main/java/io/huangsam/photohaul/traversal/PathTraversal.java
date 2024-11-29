@@ -12,19 +12,20 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class PathTraversal {
     private static final Logger LOG = getLogger(PathTraversal.class);
 
-    private final Path sourcePath;
+    private final Path sourceRoot;
     private final PathRuleSet pathRuleSet;
 
-    public PathTraversal(Path path, PathRuleSet pathRuleSet) {
-        this.sourcePath = path;
+    public PathTraversal(Path sourceRoot, PathRuleSet pathRuleSet) {
+        this.sourceRoot = sourceRoot;
         this.pathRuleSet = pathRuleSet;
     }
 
     public void traverse(PhotoPathVisitor pathVisitor) {
-        try (Stream<Path> sourceStream = Files.walk(sourcePath)) {
+        LOG.debug("Start traversal of {}", sourceRoot);
+        try (Stream<Path> sourceStream = Files.walk(sourceRoot)) {
             sourceStream.parallel().filter(pathRuleSet::matches).forEach(pathVisitor::visitPhoto);
         } catch (IOException e) {
-            LOG.error("Abort traversal of {}: {}", sourcePath, e.getMessage());
+            LOG.error("Abort traversal of {}: {}", sourceRoot, e.getMessage());
         }
     }
 }

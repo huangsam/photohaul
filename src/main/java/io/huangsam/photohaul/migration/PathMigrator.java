@@ -1,12 +1,14 @@
 package io.huangsam.photohaul.migration;
 
 import io.huangsam.photohaul.model.Photo;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collection;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -24,17 +26,24 @@ public abstract class PathMigrator implements Migrator {
     }
 
     @Override
-    public final void migratePhoto(Photo photo) {
-        Path targetLocation = getTargetLocation(photo);
-        try {
-            LOG.trace("Move {} over to {}", photo.name(), targetLocation);
-            Files.createDirectories(targetLocation);
-            Files.move(photo.path(), targetLocation.resolve(photo.name()), copyOption);
-            successCount++;
-        } catch (IOException e) {
-            LOG.warn("Cannot migrate {} to {}: {}", photo.name(), targetLocation, e.getMessage());
-            failureCount++;
-        }
+    public final void migratePhotos(Collection<Photo> photos) {
+        LOG.debug("Start migration to {}", targetRoot);
+        photos.forEach(photo -> {
+            Path targetLocation = getTargetLocation(photo);
+            if (targetLocation == null) {
+                LOG.warn("Resort to fallback for {}", photo);
+                targetLocation = fallback();
+            }
+            try {
+                LOG.trace("Move {} to {}", photo.name(), targetLocation);
+                Files.createDirectories(targetLocation);
+                Files.move(photo.path(), targetLocation.resolve(photo.name()), copyOption);
+                successCount++;
+            } catch (IOException e) {
+                LOG.warn("Cannot move {}: {}", photo.name(), e.getMessage());
+                failureCount++;
+            }
+        });
     }
 
     @Override
@@ -51,5 +60,5 @@ public abstract class PathMigrator implements Migrator {
         return targetRoot.resolve("Other");
     }
 
-    abstract Path getTargetLocation(Photo photo);
+    abstract @Nullable Path getTargetLocation(Photo photo);
 }

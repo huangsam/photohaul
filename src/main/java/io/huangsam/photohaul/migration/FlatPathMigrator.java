@@ -1,6 +1,7 @@
 package io.huangsam.photohaul.migration;
 
 import io.huangsam.photohaul.model.Photo;
+import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.CopyOption;
 import java.nio.file.Path;
@@ -11,7 +12,7 @@ public class FlatPathMigrator extends PathMigrator {
     }
 
     @Override
-    Path getTargetLocation(Photo photo) {
+    @Nullable Path getTargetLocation(Photo photo) {
         return targetRoot;
     }
 }

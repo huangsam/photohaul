@@ -1,5 +1,6 @@
-package io.huangsam.photohaul.migration;
+package io.huangsam.photohaul.migration.path;
 
+import io.huangsam.photohaul.migration.Migrator;
 import io.huangsam.photohaul.model.Photo;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;

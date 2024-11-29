@@ -5,7 +5,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 
-import io.huangsam.photohaul.migration.CameraPathMigrator;
+import io.huangsam.photohaul.migration.path.CameraPathMigrator;
 import io.huangsam.photohaul.migration.Migrator;
 import io.huangsam.photohaul.traversal.PathRule;
 import io.huangsam.photohaul.traversal.PathRuleSet;

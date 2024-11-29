@@ -24,22 +24,26 @@ public record Photo(
         return path.getFileName().toString();
     }
 
-    public @Nullable FileTime createdAt() {
+    @Nullable
+    public FileTime createdAt() {
         BasicFileAttributes attributes = attributes();
         return (attributes == null) ? null : attributes.creationTime();
     }
 
-    public @Nullable FileTime modifiedAt() {
+    @Nullable
+    public FileTime modifiedAt() {
         BasicFileAttributes attributes = attributes();
         return (attributes == null) ? null : attributes.lastModifiedTime();
     }
 
-    public @Nullable LocalDateTime takenAt() {
+    @Nullable
+    public LocalDateTime takenAt() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss");
         return (taken == null) ? null : LocalDateTime.parse(taken, formatter);
     }
 
-    private @Nullable BasicFileAttributes attributes() {
+    @Nullable
+    private BasicFileAttributes attributes() {
         try {
             return Files.readAttributes(path, BasicFileAttributes.class);
         } catch (IOException e) {

@@ -60,5 +60,6 @@ public abstract class PathMigrator implements Migrator {
         return targetRoot.resolve("Other");
     }
 
-    abstract @Nullable Path getTargetLocation(Photo photo);
+    @Nullable
+    abstract Path getTargetLocation(Photo photo);
 }

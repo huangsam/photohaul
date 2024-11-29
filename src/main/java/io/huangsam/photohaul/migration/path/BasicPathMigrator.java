@@ -14,7 +14,8 @@ public class BasicPathMigrator extends PathMigrator {
     }
 
     @Override
-    @Nullable Path getTargetLocation(Photo photo) {
+    @Nullable
+    Path getTargetLocation(Photo photo) {
         FileTime creationTime = photo.createdAt();
         if (creationTime != null) {
             return targetRoot.resolve(parseYear(creationTime));

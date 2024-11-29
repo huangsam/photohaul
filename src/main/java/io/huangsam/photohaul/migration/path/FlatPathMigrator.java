@@ -12,7 +12,8 @@ public class FlatPathMigrator extends PathMigrator {
     }
 
     @Override
-    @Nullable Path getTargetLocation(Photo photo) {
+    @Nullable
+    Path getTargetLocation(Photo photo) {
         return targetRoot;
     }
 }

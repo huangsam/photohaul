@@ -13,7 +13,8 @@ public class CameraPathMigrator extends PathMigrator {
     }
 
     @Override
-    @Nullable Path getTargetLocation(Photo photo) {
+    @Nullable
+    Path getTargetLocation(Photo photo) {
         LocalDateTime takenTime = photo.takenAt();
         if (takenTime != null) {
             return targetRoot.resolve(String.valueOf(takenTime.getYear()));

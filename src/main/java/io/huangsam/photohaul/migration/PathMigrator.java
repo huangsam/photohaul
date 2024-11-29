@@ -31,7 +31,6 @@ public abstract class PathMigrator implements Migrator {
         photos.forEach(photo -> {
             Path targetLocation = getTargetLocation(photo);
             if (targetLocation == null) {
-                LOG.warn("Resort to fallback for {}", photo);
                 targetLocation = fallback();
             }
             try {

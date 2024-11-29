@@ -1,8 +1,6 @@
-package io.huangsam.photohaul.migration.path;
+package io.huangsam.photohaul.migration;
 
-import io.huangsam.photohaul.migration.Migrator;
 import io.huangsam.photohaul.model.Photo;
-import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -13,17 +11,19 @@ import java.util.Collection;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-public abstract class PathMigrator implements Migrator {
+public class PathMigrator implements Migrator {
     private static final Logger LOG = getLogger(PathMigrator.class);
 
     protected final Path targetRoot;
     private final CopyOption copyOption;
+    private final PhotoResolver photoResolver;
     private long successCount = 0L;
     private long failureCount = 0L;
 
-    public PathMigrator(Path targetRoot, CopyOption copyOption) {
+    public PathMigrator(Path targetRoot, CopyOption copyOption, PhotoResolver photoResolver) {
         this.targetRoot = targetRoot;
         this.copyOption = copyOption;
+        this.photoResolver = photoResolver;
     }
 
     @Override
@@ -31,9 +31,6 @@ public abstract class PathMigrator implements Migrator {
         LOG.debug("Start migration to {}", targetRoot);
         photos.forEach(photo -> {
             Path targetLocation = getTargetLocation(photo);
-            if (targetLocation == null) {
-                targetLocation = fallback();
-            }
             try {
                 LOG.trace("Move {} to {}", photo.name(), targetLocation);
                 Files.createDirectories(targetLocation);
@@ -56,10 +53,15 @@ public abstract class PathMigrator implements Migrator {
         return failureCount;
     }
 
-    Path fallback() {
-        return targetRoot.resolve("Other");
+    private Path getTargetLocation(Photo photo) {
+        try {
+            Path result = targetRoot;
+            for (String out : photoResolver.resolveList(photo)) {
+                result = result.resolve(out);
+            }
+            return result;
+        } catch (NullPointerException e) {
+            return targetRoot.resolve("Other");
+        }
     }
-
-    @Nullable
-    abstract Path getTargetLocation(Photo photo);
 }

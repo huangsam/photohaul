@@ -31,15 +31,6 @@ public record Photo(
     }
 
     /**
-     * Get the creation time of the photo.
-     */
-    @Nullable
-    public FileTime createdAt() {
-        BasicFileAttributes attributes = attributes();
-        return (attributes == null) ? null : attributes.creationTime();
-    }
-
-    /**
      * Get the modified time of the photo.
      */
     @Nullable

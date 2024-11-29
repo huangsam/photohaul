@@ -10,7 +10,6 @@ import io.huangsam.photohaul.migration.Migrator;
 import io.huangsam.photohaul.traversal.PathRule;
 import io.huangsam.photohaul.traversal.PathRuleSet;
 import io.huangsam.photohaul.traversal.PathTraversal;
-import io.huangsam.photohaul.traversal.PhotoPathBuilder;
 import io.huangsam.photohaul.traversal.PhotoPathVisitor;
 import org.slf4j.Logger;
 
@@ -21,8 +20,7 @@ public class Main {
     private static final Settings SETTINGS = new Settings();
 
     public static void main(String[] args) {
-        PhotoPathBuilder pathBuilder = new PhotoPathBuilder();
-        PhotoPathVisitor pathVisitor = new PhotoPathVisitor(pathBuilder);
+        PhotoPathVisitor pathVisitor = new PhotoPathVisitor();
 
         PathRuleSet pathRuleSet = new PathRuleSet(List.of(
                 Files::isRegularFile,

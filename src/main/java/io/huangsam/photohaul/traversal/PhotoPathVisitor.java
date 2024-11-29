@@ -8,18 +8,14 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class PhotoPathVisitor {
     private final ConcurrentHashMap<Path, Photo> photoIndex = new ConcurrentHashMap<>();
-    private final PhotoPathBuilder pathBuilder;
-
-    public PhotoPathVisitor(PhotoPathBuilder pathBuilder) {
-        this.pathBuilder = pathBuilder;
-    }
 
     public Collection<Photo> getPhotos() {
         return photoIndex.values();
     }
 
     public void visitPhoto(Path path) {
-        pathBuilder.fillInfo(path);
-        photoIndex.put(path, pathBuilder.build());
+        PhotoPathBuilder pb = new PhotoPathBuilder();
+        pb.fillInfo(path);
+        photoIndex.put(path, pb.build());
     }
 }

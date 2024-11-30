@@ -14,21 +14,21 @@ public class TestPathRuleSet extends TestPathBase {
     @Test
     void testMatchesNoPredicatePass() {
         Path sampleText = getStaticResources().resolve("sample.txt");
-        PathRuleSet pathRules = new PathRuleSet(List.of());
-        assertTrue(pathRules.matches(sampleText));
+        PathRuleSet pathRuleSet = new PathRuleSet(List.of());
+        assertTrue(pathRuleSet.matches(sampleText));
     }
 
     @Test
     void testMatchesOnePredicatePass() {
         Path sampleText = getStaticResources().resolve("sample.txt");
-        PathRuleSet pathRules = new PathRuleSet(List.of(Files::isRegularFile));
-        assertTrue(pathRules.matches(sampleText));
+        PathRuleSet pathRuleSet = new PathRuleSet(List.of(Files::isRegularFile));
+        assertTrue(pathRuleSet.matches(sampleText));
     }
 
     @Test
     void testMatchesOnePredicateFail() {
         Path sampleText = getStaticResources().resolve("sample.txt");
-        PathRuleSet pathRules = new PathRuleSet(List.of(PathRule.validExtensions()));
-        assertFalse(pathRules.matches(sampleText));
+        PathRuleSet pathRuleSet = new PathRuleSet(List.of(PathRule.validExtensions()));
+        assertFalse(pathRuleSet.matches(sampleText));
     }
 }

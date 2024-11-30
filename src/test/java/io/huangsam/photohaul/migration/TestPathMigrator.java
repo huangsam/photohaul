@@ -14,25 +14,28 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class TestPathMigrator extends TestPathBase {
     @Test
     void testMigratePhotos() {
-        PhotoPathVisitor pathVisitor = visitor(getStaticResources());
+        List<String> names = List.of("bauerlite.jpg", "salad.jpg", "foobar.jpg");
+        PhotoPathVisitor pathVisitor = visitor(getStaticResources(), names);
         PathMigrator pathMigrator = migrator(getTempResources());
         pathMigrator.migratePhotos(pathVisitor.getPhotos());
 
         assertEquals(2, pathMigrator.getSuccessCount());
-        assertEquals(0, pathMigrator.getFailureCount());
+        assertEquals(1, pathMigrator.getFailureCount());
     }
 
     @AfterAll
     static void tearDown() {
-        PhotoPathVisitor pathVisitor = visitor(getTempResources());
+        List<String> names = List.of("bauerlite.jpg", "salad.jpg");
+        PhotoPathVisitor pathVisitor = visitor(getTempResources(), names);
         PathMigrator pathMigrator = migrator(getStaticResources());
         pathMigrator.migratePhotos(pathVisitor.getPhotos());
     }
 
-    private static PhotoPathVisitor visitor(Path path) {
+    private static PhotoPathVisitor visitor(Path path, List<String> names) {
         PhotoPathVisitor pathVisitor = new PhotoPathVisitor();
-        pathVisitor.visitPhoto(path.resolve("bauerlite.jpg"));
-        pathVisitor.visitPhoto(path.resolve("salad.jpg"));
+        for (String name : names) {
+            pathVisitor.visitPhoto(path.resolve(name));
+        }
         return pathVisitor;
     }
 

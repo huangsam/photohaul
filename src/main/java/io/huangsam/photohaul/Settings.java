@@ -9,9 +9,9 @@ import java.util.Properties;
 public class Settings {
     private final Properties properties;
 
-    public Settings() {
+    public Settings(String name) {
         properties = new Properties();
-        try (InputStream input = this.getClass().getClassLoader().getResourceAsStream("config.properties")) {
+        try (InputStream input = this.getClass().getClassLoader().getResourceAsStream(name)) {
             properties.load(input);
         } catch (IOException e) {
             throw new RuntimeException(e);

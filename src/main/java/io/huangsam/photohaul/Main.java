@@ -19,7 +19,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 public class Main {
     private static final Logger LOG = getLogger(Main.class);
-    private static final Settings SETTINGS = new Settings();
+    private static final Settings SETTINGS = new Settings("config.properties");
 
     public static void main(String[] args) {
         PhotoPathVisitor pathVisitor = new PhotoPathVisitor();

@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'checkstyle'
     id 'application'
+    id 'jacoco'
 }
 
 group = 'io.huangsam'
@@ -27,4 +28,11 @@ application {
 
 test {
     useJUnitPlatform()
+}
+
+jacocoTestReport {
+    reports {
+        html.required = true
+        xml.required = true
+    }
 }

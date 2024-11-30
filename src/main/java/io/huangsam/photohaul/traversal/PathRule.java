@@ -3,14 +3,16 @@ package io.huangsam.photohaul.traversal;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 public class PathRule {
-    public static Predicate<Path> allowedExtensions(String... extensions) {
+    private static final List<String> ALLOW_LIST = List.of("jpg", "jpeg", "png", "cr2", "nef", "arw");
+
+    public static Predicate<Path> validExtensions() {
         return path -> {
             String pathName = path.toString().toLowerCase();
-            return Stream.of(extensions).anyMatch(pathName::endsWith);
+            return ALLOW_LIST.stream().anyMatch(pathName::endsWith);
         };
     }
 

@@ -25,12 +25,11 @@ public class Main {
     public static void main(String[] args) {
         PhotoPathVisitor pathVisitor = new PhotoPathVisitor();
 
+        Path sourceRoot = SETTINGS.getSourceRoot();
         PathRuleSet pathRuleSet = new PathRuleSet(List.of(
                 Files::isRegularFile,
                 PathRule.allowedExtensions("jpg", "jpeg", "png").or(PathRule.isImageContent()),
                 PathRule.minimumBytes(100L)));
-
-        Path sourceRoot = SETTINGS.getSourceRoot();
 
         PathTraversal pathTraversal = new PathTraversal(sourceRoot, pathRuleSet);
         pathTraversal.traverse(pathVisitor);

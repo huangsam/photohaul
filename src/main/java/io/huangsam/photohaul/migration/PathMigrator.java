@@ -31,11 +31,11 @@ public class PathMigrator implements Migrator {
     public final void migratePhotos(Collection<Photo> photos) {
         LOG.debug("Start migration to {}", targetRoot);
         photos.forEach(photo -> {
-            Path targetLocation = getTargetLocation(photo);
+            Path targetPath = getTargetPath(photo);
             try {
-                LOG.trace("Move {} to {}", photo.name(), targetLocation);
-                Files.createDirectories(targetLocation);
-                Files.move(photo.path(), targetLocation.resolve(photo.name()), copyOption);
+                LOG.trace("Move {} to {}", photo.name(), targetPath);
+                Files.createDirectories(targetPath);
+                Files.move(photo.path(), targetPath.resolve(photo.name()), copyOption);
                 successCount++;
             } catch (IOException e) {
                 LOG.warn("Cannot move {}: {}", photo.name(), e.getMessage());
@@ -54,7 +54,7 @@ public class PathMigrator implements Migrator {
         return failureCount;
     }
 
-    private Path getTargetLocation(Photo photo) {
+    private Path getTargetPath(Photo photo) {
         try {
             Path result = targetRoot;
             for (String out : photoResolver.resolveList(photo)) {

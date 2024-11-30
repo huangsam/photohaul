@@ -5,6 +5,7 @@ import io.huangsam.photohaul.traversal.PhotoPathVisitor;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 
+import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 
@@ -13,12 +14,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class TestPathMigrator extends TestPathBase {
     @Test
     void testMigratePhotos() {
-        PhotoPathVisitor pathVisitor = new PhotoPathVisitor();
-        pathVisitor.visitPhoto(getStaticResources().resolve("bauerlite.jpg"));
-        pathVisitor.visitPhoto(getStaticResources().resolve("salad.jpg"));
-
-        PathMigrator pathMigrator = new PathMigrator(
-                getTempResources(), StandardCopyOption.REPLACE_EXISTING, new PhotoResolver(List.of()));
+        PhotoPathVisitor pathVisitor = visitor(getStaticResources());
+        PathMigrator pathMigrator = migrator(getTempResources());
         pathMigrator.migratePhotos(pathVisitor.getPhotos());
 
         assertEquals(2, pathMigrator.getSuccessCount());
@@ -27,12 +24,20 @@ public class TestPathMigrator extends TestPathBase {
 
     @AfterAll
     static void tearDown() {
-        PhotoPathVisitor pathVisitor = new PhotoPathVisitor();
-        pathVisitor.visitPhoto(getTempResources().resolve("bauerlite.jpg"));
-        pathVisitor.visitPhoto(getTempResources().resolve("salad.jpg"));
-
-        PathMigrator pathMigrator = new PathMigrator(
-                getStaticResources(), StandardCopyOption.REPLACE_EXISTING, new PhotoResolver(List.of()));
+        PhotoPathVisitor pathVisitor = visitor(getTempResources());
+        PathMigrator pathMigrator = migrator(getStaticResources());
         pathMigrator.migratePhotos(pathVisitor.getPhotos());
+    }
+
+    private static PhotoPathVisitor visitor(Path path) {
+        PhotoPathVisitor pathVisitor = new PhotoPathVisitor();
+        pathVisitor.visitPhoto(path.resolve("bauerlite.jpg"));
+        pathVisitor.visitPhoto(path.resolve("salad.jpg"));
+        return pathVisitor;
+    }
+
+    private static PathMigrator migrator(Path path) {
+        return new PathMigrator(
+                path, StandardCopyOption.REPLACE_EXISTING, new PhotoResolver(List.of()));
     }
 }

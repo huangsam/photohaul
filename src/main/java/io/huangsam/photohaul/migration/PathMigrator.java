@@ -17,6 +17,7 @@ public class PathMigrator implements Migrator {
     protected final Path targetRoot;
     private final CopyOption copyOption;
     private final PhotoResolver photoResolver;
+
     private long successCount = 0L;
     private long failureCount = 0L;
 

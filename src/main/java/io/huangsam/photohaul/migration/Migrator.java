@@ -12,8 +12,8 @@ public interface Migrator {
      *
      * <ul>
      *     <li>Use its fields to identify target location</li>
-     *     <li>Increment successful operations</li>
-     *     <li>Increment failed operations</li>
+     *     <li>Record successful operations</li>
+     *     <li>Record failed operations</li>
      * </ul>
      *
      * @param photos Collection of photo records

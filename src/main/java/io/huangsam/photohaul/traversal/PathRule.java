@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public class PathRule {
-    private static final List<String> ALLOW_LIST = List.of("jpg", "jpeg", "png", "cr2", "nef", "arw");
+    protected static final List<String> ALLOW_LIST = List.of(
+            "jpg", "jpeg", "png", "gif", "cr2", "nef", "arw");
 
     public static Predicate<Path> validExtensions() {
         return path -> {

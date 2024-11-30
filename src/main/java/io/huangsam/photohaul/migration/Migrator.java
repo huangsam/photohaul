@@ -6,7 +6,7 @@ import java.util.Collection;
 
 public interface Migrator {
     /**
-     * Migrate a collection photos to a specific target.
+     * Migrate a collection of photos to a specific target.
      *
      * <p> For each photo record, do the following:
      *

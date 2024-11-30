@@ -11,23 +11,24 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestPathRuleSet extends TestPathBase {
-    private static final Path CURRENT_TEXT = getCurrentResources().resolve("sample.txt");
-
     @Test
     void testMatchesNoPredicatePass() {
+        Path sampleText = getStaticResources().resolve("sample.txt");
         PathRuleSet pathRules = new PathRuleSet(List.of());
-        assertTrue(pathRules.matches(CURRENT_TEXT));
+        assertTrue(pathRules.matches(sampleText));
     }
 
     @Test
     void testMatchesOnePredicatePass() {
+        Path sampleText = getStaticResources().resolve("sample.txt");
         PathRuleSet pathRules = new PathRuleSet(List.of(Files::isRegularFile));
-        assertTrue(pathRules.matches(CURRENT_TEXT));
+        assertTrue(pathRules.matches(sampleText));
     }
 
     @Test
     void testMatchesOnePredicateFail() {
+        Path sampleText = getStaticResources().resolve("sample.txt");
         PathRuleSet pathRules = new PathRuleSet(List.of(PathRule.validExtensions()));
-        assertFalse(pathRules.matches(CURRENT_TEXT));
+        assertFalse(pathRules.matches(sampleText));
     }
 }

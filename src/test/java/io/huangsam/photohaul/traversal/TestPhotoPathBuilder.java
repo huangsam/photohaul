@@ -13,13 +13,13 @@ public class TestPhotoPathBuilder extends TestPathBase {
     @Test
     void testFillInfoAndBuild() {
         String expected = "bauerlite.jpg";
-        Path bauerPhoto = getStaticResources().resolve(expected);
+        Path bauerPath = getStaticResources().resolve(expected);
 
-        PhotoPathBuilder pathBuilder = new PhotoPathBuilder();
-        pathBuilder.fillInfo(bauerPhoto);
-        Photo photo = pathBuilder.build();
+        PhotoPathBuilder pb = new PhotoPathBuilder();
+        pb.fillInfo(bauerPath);
+        Photo photo = pb.build();
 
-        assertEquals(bauerPhoto, photo.path());
+        assertEquals(bauerPath, photo.path());
         assertEquals(expected, photo.name());
         assertNotNull(photo.make());
         assertNotNull(photo.focalLength());

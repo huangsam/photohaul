@@ -10,19 +10,19 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class TestPathRule extends TestPathBase {
     @Test
     void testIsValidExtension() {
-        Path saladPhoto = getStaticResources().resolve("salad.jpg");
-        assertTrue(PathRule.validExtensions().test(saladPhoto));
+        Path saladPath = getStaticResources().resolve("salad.jpg");
+        assertTrue(PathRule.validExtensions().test(saladPath));
     }
 
     @Test
     void testIsImageContent() {
-        Path schoolPhoto = getStaticResources().resolve("school.png");
-        assertTrue(PathRule.isImageContent().test(schoolPhoto));
+        Path schoolPath = getStaticResources().resolve("school.png");
+        assertTrue(PathRule.isImageContent().test(schoolPath));
     }
 
     @Test
     void testIsMinimumBytes() {
-        Path bauerPhoto = getStaticResources().resolve("bauerlite.jpg");
-        assertTrue(PathRule.minimumBytes(100L).test(bauerPhoto));
+        Path bauerPath = getStaticResources().resolve("bauerlite.jpg");
+        assertTrue(PathRule.minimumBytes(100L).test(bauerPath));
     }
 }

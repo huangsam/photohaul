@@ -15,9 +15,9 @@ public class TestPhotoFunction extends TestPathBase {
 
     @BeforeAll
     static void setUp() {
-        Path bauerPhoto = getStaticResources().resolve("bauerlite.jpg");
+        Path bauerPath = getStaticResources().resolve("bauerlite.jpg");
         PhotoPathBuilder pb = new PhotoPathBuilder();
-        pb.fillInfo(bauerPhoto);
+        pb.fillInfo(bauerPath);
         BAUER_PHOTO = pb.build();
     }
 

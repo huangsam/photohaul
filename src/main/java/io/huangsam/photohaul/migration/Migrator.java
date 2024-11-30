@@ -11,7 +11,7 @@ public interface Migrator {
      * <p> For each photo record, do the following:
      *
      * <ul>
-     *     <li>Use its fields to determine where to migrate the photo</li>
+     *     <li>Use its fields to identify target location</li>
      *     <li>Increment successful operations</li>
      *     <li>Increment failed operations</li>
      * </ul>

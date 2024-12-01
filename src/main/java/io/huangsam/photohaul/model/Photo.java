@@ -5,7 +5,6 @@ import org.jetbrains.annotations.Nullable;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -29,35 +28,35 @@ public record Photo(
 ) {
     /**
      * Get the filename of the photo.
+     *
+     * @return Photo filename
      */
     public String name() {
         return path.getFileName().toString();
     }
 
     /**
-     * Get the modified time of the photo.
+     * Get photo modified time.
+     *
+     * @return Modified time as {@link FileTime}
      */
     @Nullable
     public FileTime modifiedAt() {
-        BasicFileAttributes attributes = attributes();
-        return (attributes == null) ? null : attributes.lastModifiedTime();
+        try {
+            return Files.getLastModifiedTime(path);
+        } catch (IOException e) {
+            return null;
+        }
     }
 
     /**
-     * Get the taken time of the photo, parsed from image tags.
+     * Get photo taken time, parsed from image tags.
+     *
+     * @return Taken time as {@link LocalDateTime}
      */
     @Nullable
     public LocalDateTime takenAt() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss");
         return (taken == null) ? null : LocalDateTime.parse(taken, formatter);
-    }
-
-    @Nullable
-    private BasicFileAttributes attributes() {
-        try {
-            return Files.readAttributes(path, BasicFileAttributes.class);
-        } catch (IOException e) {
-            return null;
-        }
     }
 }

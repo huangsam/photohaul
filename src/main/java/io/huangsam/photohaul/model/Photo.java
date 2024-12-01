@@ -27,9 +27,9 @@ public record Photo(
         @Nullable String flash
 ) {
     /**
-     * Get the filename of the photo.
+     * Get photo file name.
      *
-     * @return Filename
+     * @return File name
      */
     public String name() {
         return path.getFileName().toString();

@@ -29,7 +29,7 @@ public record Photo(
     /**
      * Get the filename of the photo.
      *
-     * @return Photo filename
+     * @return Filename
      */
     public String name() {
         return path.getFileName().toString();

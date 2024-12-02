@@ -1,6 +1,6 @@
 [versions]
 jetbrains-annotations = "26.0.1"
-junit-bom = "5.10.2"
+junit-bom = "5.11.3"
 logback-classic = "1.5.12"
 metadata-extractor = "2.19.0"
 slf4j-api = "2.0.16"

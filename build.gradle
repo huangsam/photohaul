@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'io.huangsam'
-version = '0.1-SNAPSHOT'
+version = '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()

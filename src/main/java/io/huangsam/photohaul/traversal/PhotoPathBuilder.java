@@ -7,7 +7,6 @@ import com.drew.metadata.Metadata;
 import com.drew.metadata.Tag;
 import io.huangsam.photohaul.model.Photo;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,8 +15,10 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 public class PhotoPathBuilder {
-    private static final Logger LOG = LoggerFactory.getLogger(PhotoPathBuilder.class);
+    private static final Logger LOG = getLogger(PhotoPathBuilder.class);
 
     private Path path;
     private final Map<String, Object> info = new HashMap<>();

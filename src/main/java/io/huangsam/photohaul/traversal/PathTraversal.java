@@ -1,5 +1,6 @@
 package io.huangsam.photohaul.traversal;
 
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -20,7 +21,7 @@ public class PathTraversal {
         this.pathRuleSet = pathRuleSet;
     }
 
-    public void traverse(PhotoPathVisitor pathVisitor) {
+    public void traverse(@NotNull PhotoPathVisitor pathVisitor) {
         LOG.debug("Start traversal of {}", sourceRoot);
         try (Stream<Path> sourceStream = Files.walk(sourceRoot)) {
             sourceStream.parallel().filter(pathRuleSet::matches).forEach(pathVisitor::visitPhoto);

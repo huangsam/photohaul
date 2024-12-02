@@ -1,5 +1,6 @@
 package io.huangsam.photohaul.model;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
@@ -31,6 +32,7 @@ public record Photo(
      *
      * @return File name
      */
+    @NotNull
     public String name() {
         return path.getFileName().toString();
     }

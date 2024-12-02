@@ -1,6 +1,7 @@
 package io.huangsam.photohaul.migration;
 
 import io.huangsam.photohaul.model.Photo;
+import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.attribute.FileTime;
 import java.time.LocalDateTime;
@@ -8,6 +9,7 @@ import java.time.ZoneId;
 import java.util.function.Function;
 
 public class PhotoFunction {
+    @NotNull
     public static Function<Photo, String> yearTaken() {
         return photo -> {
             LocalDateTime takenTime = photo.takenAt();
@@ -15,6 +17,7 @@ public class PhotoFunction {
         };
     }
 
+    @NotNull
     public static Function<Photo, String> yearModified() {
         return photo -> {
             FileTime modifiedTime = photo.modifiedAt();

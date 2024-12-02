@@ -1,6 +1,7 @@
 package io.huangsam.photohaul.migration;
 
 import io.huangsam.photohaul.model.Photo;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -28,7 +29,7 @@ public class PathMigrator implements Migrator {
     }
 
     @Override
-    public final void migratePhotos(Collection<Photo> photos) {
+    public final void migratePhotos(@NotNull Collection<Photo> photos) {
         LOG.debug("Start migration to {}", targetRoot);
         photos.forEach(photo -> {
             Path targetPath = getTargetPath(photo);

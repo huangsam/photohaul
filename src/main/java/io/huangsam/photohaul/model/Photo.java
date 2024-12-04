@@ -40,7 +40,7 @@ public record Photo(
     /**
      * Get photo modified time.
      *
-     * @return Modified time as {@link FileTime}
+     * @return Modified time as {@code FileTime}
      */
     @Nullable
     public FileTime modifiedAt() {
@@ -54,7 +54,7 @@ public record Photo(
     /**
      * Get photo taken time, parsed from image tags.
      *
-     * @return Taken time as {@link LocalDateTime}
+     * @return Taken time as {@code LocalDateTime}
      */
     @Nullable
     public LocalDateTime takenAt() {

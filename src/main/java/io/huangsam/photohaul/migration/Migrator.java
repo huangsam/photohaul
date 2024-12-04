@@ -16,7 +16,7 @@ public interface Migrator {
      *     <li>Record failed operations</li>
      * </ul>
      *
-     * @param photos Collection of photo records
+     * @param photos {@code Collection} of photo records
      */
     void migratePhotos(Collection<Photo> photos);
 

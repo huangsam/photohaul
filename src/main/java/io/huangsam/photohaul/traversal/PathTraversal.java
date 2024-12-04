@@ -21,6 +21,12 @@ public class PathTraversal {
         this.pathRuleSet = pathRuleSet;
     }
 
+    /**
+     * Traverses the specified source directory recursively, filters files based on some
+     * rules and visits each matching file with the path visitor.
+     *
+     * @param pathVisitor Visitor to process matching files
+     */
     public void traverse(@NotNull PhotoPathVisitor pathVisitor) {
         LOG.debug("Start traversal of {}", sourceRoot);
         try (Stream<Path> sourceStream = Files.walk(sourceRoot)) {

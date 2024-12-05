@@ -1,6 +1,7 @@
 package io.huangsam.photohaul.migration;
 
 import io.huangsam.photohaul.model.Photo;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 
@@ -18,7 +19,7 @@ public interface Migrator {
      *
      * @param photos Collection of photo records
      */
-    void migratePhotos(Collection<Photo> photos);
+    void migratePhotos(@NotNull Collection<Photo> photos);
 
     /**
      * Get success count.

@@ -29,11 +29,11 @@ public class DropboxMigrator implements Migrator {
 
     @Override
     public long getSuccessCount() {
-        return 0L;
+        return successCount;
     }
 
     @Override
     public long getFailureCount() {
-        return 0L;
+        return failureCount;
     }
 }

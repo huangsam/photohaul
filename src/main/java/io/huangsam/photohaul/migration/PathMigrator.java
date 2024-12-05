@@ -39,7 +39,7 @@ public class PathMigrator implements Migrator {
                 Files.move(photo.path(), targetPath.resolve(photo.name()), copyOption);
                 successCount++;
             } catch (IOException e) {
-                LOG.warn("Cannot move {}: {}", photo.name(), e.getMessage());
+                LOG.error("Cannot move {}: {}", photo.name(), e.getMessage());
                 failureCount++;
             }
         });

@@ -43,7 +43,7 @@ public class DropboxMigrator implements Migrator {
                 }
                 successCount++;
             } catch (IOException | DbxException e) {
-                LOG.warn("Cannot move {}: {}", photo.name(), e.getMessage());
+                LOG.error("Cannot move {}: {}", photo.name(), e.getMessage());
                 failureCount++;
             }
         });

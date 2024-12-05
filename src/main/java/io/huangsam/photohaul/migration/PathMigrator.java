@@ -22,10 +22,10 @@ public class PathMigrator implements Migrator {
     private long successCount = 0L;
     private long failureCount = 0L;
 
-    public PathMigrator(Path targetRoot, CopyOption copyOption, PhotoResolver photoResolver) {
-        this.targetRoot = targetRoot;
-        this.copyOption = copyOption;
-        this.photoResolver = photoResolver;
+    public PathMigrator(Path target, CopyOption option, PhotoResolver resolver) {
+        targetRoot = target;
+        copyOption = option;
+        photoResolver = resolver;
     }
 
     @Override

@@ -33,16 +33,16 @@ public class DropboxMigrator implements Migrator {
     @Override
     public void migratePhotos(@NotNull Collection<Photo> photos) {
         LOG.debug("Start migration to {}", targetRoot);
-        DbxUserFilesRequests requester = dropboxClient.files();
+        DbxUserFilesRequests requests = dropboxClient.files();
         photos.forEach(photo -> {
             String targetPath = getTargetPath(photo);
             try {
                 LOG.trace("Move {} to {}", photo.name(), targetPath);
                 try (InputStream in = Files.newInputStream(photo.path())) {
-                    if (requester.getMetadata(targetPath) == null) {
-                        requester.createFolderV2(targetPath);
+                    if (requests.getMetadata(targetPath) == null) {
+                        requests.createFolderV2(targetPath);
                     }
-                    requester.uploadBuilder(targetPath + "/" + photo.name()).uploadAndFinish(in);
+                    requests.uploadBuilder(targetPath + "/" + photo.name()).uploadAndFinish(in);
                 }
                 successCount++;
             } catch (IOException | DbxException e) {

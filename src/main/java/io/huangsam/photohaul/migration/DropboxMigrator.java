@@ -37,6 +37,7 @@ public class DropboxMigrator implements Migrator {
             try {
                 LOG.trace("Move {} to {}", photo.name(), targetPath);
                 try (InputStream in = Files.newInputStream(photo.path())) {
+                    dropboxClient.files().createFolderV2(targetPath);
                     dropboxClient.files()
                             .uploadBuilder(targetPath + "/" + photo.name())
                             .uploadAndFinish(in);

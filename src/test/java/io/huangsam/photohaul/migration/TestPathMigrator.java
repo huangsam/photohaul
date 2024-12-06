@@ -5,8 +5,6 @@ import io.huangsam.photohaul.traversal.PhotoPathVisitor;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -16,31 +14,18 @@ public class TestPathMigrator extends TestPathBase {
     void testMigratePhotos() {
         List<String> names = List.of("bauerlite.jpg", "salad.jpg", "foobar.jpg");
         PhotoPathVisitor pathVisitor = visitor(getStaticResources(), names);
-        PathMigrator pathMigrator = migrator(getTempResources());
-        pathMigrator.migratePhotos(pathVisitor.getPhotos());
+        PathMigrator migrator = new PathMigrator(getTempResources(), new PhotoResolver(List.of()));
+        migrator.migratePhotos(pathVisitor.getPhotos());
 
-        assertEquals(2, pathMigrator.getSuccessCount());
-        assertEquals(1, pathMigrator.getFailureCount());
+        assertEquals(2, migrator.getSuccessCount());
+        assertEquals(1, migrator.getFailureCount());
     }
 
     @AfterAll
     static void tearDown() {
         List<String> names = List.of("bauerlite.jpg", "salad.jpg");
         PhotoPathVisitor pathVisitor = visitor(getTempResources(), names);
-        PathMigrator pathMigrator = migrator(getStaticResources());
+        PathMigrator pathMigrator = new PathMigrator(getStaticResources(), new PhotoResolver(List.of()));
         pathMigrator.migratePhotos(pathVisitor.getPhotos());
-    }
-
-    private static PhotoPathVisitor visitor(Path path, List<String> names) {
-        PhotoPathVisitor pathVisitor = new PhotoPathVisitor();
-        for (String name : names) {
-            pathVisitor.visitPhoto(path.resolve(name));
-        }
-        return pathVisitor;
-    }
-
-    private static PathMigrator migrator(Path path) {
-        return new PathMigrator(
-                path, StandardCopyOption.REPLACE_EXISTING, new PhotoResolver(List.of()));
     }
 }

@@ -1,12 +1,19 @@
 package io.huangsam.photohaul;
 
+import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 public class Settings {
+    private static final Logger LOG = getLogger(Settings.class);
+
     private final Properties properties;
 
     public Settings(String name) {
@@ -18,19 +25,20 @@ public class Settings {
         }
     }
 
-    public Path getSourceRoot() {
-        String sourceRoot = properties.getProperty("source.root");
-        if (sourceRoot == null) {
-            throw new IllegalArgumentException("Missing source root");
+    public String getValue(@NotNull String key) {
+        String value = properties.getProperty(key);
+        if (value == null) {
+            LOG.error("Cannot find setting {}", key);
+            throw new NullPointerException();
         }
-        return Paths.get(System.getProperty("user.home")).resolve(sourceRoot);
+        return value;
     }
 
-    public Path getTargetRoot() {
-        String targetRoot = properties.getProperty("target.root");
-        if (targetRoot == null) {
-            throw new IllegalArgumentException("Missing target root");
-        }
-        return Paths.get(System.getProperty("user.home")).resolve(targetRoot);
+    public Path getSourceRootPath() {
+        return Paths.get(System.getProperty("user.home")).resolve(getValue("source.root"));
+    }
+
+    public Path getTargetRootPath() {
+        return Paths.get(System.getProperty("user.home")).resolve(getValue("target.root"));
     }
 }

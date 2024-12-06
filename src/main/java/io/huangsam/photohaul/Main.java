@@ -1,14 +1,13 @@
 package io.huangsam.photohaul;
 
-import java.nio.file.CopyOption;
 import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
 
+import io.huangsam.photohaul.migration.MigratorFactory;
+import io.huangsam.photohaul.migration.MigratorMode;
 import io.huangsam.photohaul.migration.PhotoFunction;
 import io.huangsam.photohaul.migration.PhotoResolver;
 import io.huangsam.photohaul.migration.Migrator;
-import io.huangsam.photohaul.migration.PathMigrator;
 import io.huangsam.photohaul.traversal.PathRule;
 import io.huangsam.photohaul.traversal.PathRuleSet;
 import io.huangsam.photohaul.traversal.PathTraversal;
@@ -29,13 +28,14 @@ public class Main {
                 PathRule.validExtensions().or(PathRule.isImageContent()),
                 PathRule.minimumBytes(100L)));
 
-        PathTraversal pathTraversal = new PathTraversal(SETTINGS.getSourceRoot(), pathRuleSet);
+        PathTraversal pathTraversal = new PathTraversal(SETTINGS.getSourceRootPath(), pathRuleSet);
         pathTraversal.traverse(pathVisitor);
 
-        CopyOption copyOption = StandardCopyOption.REPLACE_EXISTING;
+        MigratorMode migratorMode = MigratorMode.PATH;
         PhotoResolver photoResolver = new PhotoResolver(List.of(PhotoFunction.yearTaken()));
 
-        Migrator migrator = new PathMigrator(SETTINGS.getTargetRoot(), copyOption, photoResolver);
+        MigratorFactory migratorFactory = new MigratorFactory();
+        Migrator migrator = migratorFactory.make(migratorMode, SETTINGS, photoResolver);
         migrator.migratePhotos(pathVisitor.getPhotos());
 
         LOG.info("Finish with success={} failure={}", migrator.getSuccessCount(), migrator.getFailureCount());

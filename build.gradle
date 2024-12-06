@@ -14,9 +14,11 @@ repositories {
 
 dependencies {
     compileOnly libs.jetbrains.annotations
+    implementation libs.dropbox.sdk
     implementation libs.logback.classic
     implementation libs.metadata.extractor
     implementation libs.slf4j.api
+    testImplementation libs.bundles.mockito.all
     testImplementation platform(libs.junit.bom)
     testImplementation libs.junit.jupiter
     testRuntimeOnly libs.junit.launcher

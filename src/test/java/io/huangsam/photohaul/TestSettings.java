@@ -8,12 +8,12 @@ public class TestSettings {
     private static final Settings SETTINGS = new Settings("path-example.properties");
 
     @Test
-    void testGetSourceRoot() {
-        assertTrue(SETTINGS.getSourceRoot().endsWith("Dummy/Source"));
+    void testGetSourceRootPath() {
+        assertTrue(SETTINGS.getSourceRootPath().endsWith("Dummy/Source"));
     }
 
     @Test
-    void testGetTargetRoot() {
-        assertTrue(SETTINGS.getTargetRoot().endsWith("Dummy/Target"));
+    void testGetTargetRootPath() {
+        assertTrue(SETTINGS.getTargetRootPath().endsWith("Dummy/Target"));
     }
 }

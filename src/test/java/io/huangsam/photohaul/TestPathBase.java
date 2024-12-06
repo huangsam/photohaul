@@ -2,7 +2,7 @@ package io.huangsam.photohaul;
 
 import java.nio.file.Path;
 
-public class TestPathBase {
+public abstract class TestPathBase {
     private static final Path TEST_RESOURCES = Path.of("src/test/resources");
 
     protected static Path getStaticResources() {

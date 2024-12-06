@@ -1,9 +1,12 @@
 package io.huangsam.photohaul;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Objects;
 import java.util.Properties;
 
 public class Settings {
@@ -18,19 +21,15 @@ public class Settings {
         }
     }
 
+    public String getValue(@NotNull String key) {
+        return Objects.requireNonNull(properties.getProperty(key));
+    }
+
     public Path getSourceRootPath() {
-        String sourceRoot = properties.getProperty("source.root");
-        if (sourceRoot == null) {
-            throw new IllegalArgumentException("Missing source root");
-        }
-        return Paths.get(System.getProperty("user.home")).resolve(sourceRoot);
+        return Paths.get(System.getProperty("user.home")).resolve(getValue("source.root"));
     }
 
     public Path getTargetRootPath() {
-        String targetRoot = properties.getProperty("target.root");
-        if (targetRoot == null) {
-            throw new IllegalArgumentException("Missing target root");
-        }
-        return Paths.get(System.getProperty("user.home")).resolve(targetRoot);
+        return Paths.get(System.getProperty("user.home")).resolve(getValue("target.root"));
     }
 }

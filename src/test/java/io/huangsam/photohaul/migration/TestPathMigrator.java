@@ -6,7 +6,6 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -40,7 +39,6 @@ public class TestPathMigrator extends TestPathBase {
     }
 
     private static PathMigrator migrator(Path path) {
-        return new PathMigrator(
-                path, StandardCopyOption.REPLACE_EXISTING, new PhotoResolver(List.of()));
+        return new PathMigrator(path, new PhotoResolver(List.of()));
     }
 }

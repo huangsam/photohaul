@@ -1,8 +1,6 @@
 package io.huangsam.photohaul;
 
-import java.nio.file.CopyOption;
 import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 import io.huangsam.photohaul.migration.PhotoFunction;
@@ -32,10 +30,9 @@ public class Main {
         PathTraversal pathTraversal = new PathTraversal(SETTINGS.getSourceRootPath(), pathRuleSet);
         pathTraversal.traverse(pathVisitor);
 
-        CopyOption copyOption = StandardCopyOption.REPLACE_EXISTING;
         PhotoResolver photoResolver = new PhotoResolver(List.of(PhotoFunction.yearTaken()));
 
-        Migrator migrator = new PathMigrator(SETTINGS.getTargetRootPath(), copyOption, photoResolver);
+        Migrator migrator = new PathMigrator(SETTINGS.getTargetRootPath(), photoResolver);
         migrator.migratePhotos(pathVisitor.getPhotos());
 
         LOG.info("Finish with success={} failure={}", migrator.getSuccessCount(), migrator.getFailureCount());

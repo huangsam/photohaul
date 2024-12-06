@@ -5,9 +5,9 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import java.io.IOException;
-import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.Collection;
 
 import static org.slf4j.LoggerFactory.getLogger;
@@ -16,15 +16,13 @@ public class PathMigrator implements Migrator {
     private static final Logger LOG = getLogger(PathMigrator.class);
 
     protected final Path targetRoot;
-    private final CopyOption copyOption;
     private final PhotoResolver photoResolver;
 
     private long successCount = 0L;
     private long failureCount = 0L;
 
-    public PathMigrator(Path target, CopyOption option, PhotoResolver resolver) {
+    public PathMigrator(Path target, PhotoResolver resolver) {
         targetRoot = target;
-        copyOption = option;
         photoResolver = resolver;
     }
 
@@ -36,7 +34,7 @@ public class PathMigrator implements Migrator {
             LOG.trace("Move {} to {}", photo.name(), targetPath);
             try {
                 Files.createDirectories(targetPath);
-                Files.move(photo.path(), targetPath.resolve(photo.name()), copyOption);
+                Files.move(photo.path(), targetPath.resolve(photo.name()), StandardCopyOption.REPLACE_EXISTING);
                 successCount++;
             } catch (IOException e) {
                 LOG.error("Cannot move {}: {}", photo.name(), e.getMessage());

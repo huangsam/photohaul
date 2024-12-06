@@ -2,6 +2,7 @@ package io.huangsam.photohaul.migration;
 
 import com.dropbox.core.DbxException;
 import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.files.DbxUserFilesRequests;
 import io.huangsam.photohaul.model.Photo;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -32,15 +33,16 @@ public class DropboxMigrator implements Migrator {
     @Override
     public void migratePhotos(@NotNull Collection<Photo> photos) {
         LOG.debug("Start migration to {}", targetRoot);
+        DbxUserFilesRequests requester = dropboxClient.files();
         photos.forEach(photo -> {
             String targetPath = getTargetPath(photo);
             try {
                 LOG.trace("Move {} to {}", photo.name(), targetPath);
                 try (InputStream in = Files.newInputStream(photo.path())) {
-                    dropboxClient.files().createFolderV2(targetPath);
-                    dropboxClient.files()
-                            .uploadBuilder(targetPath + "/" + photo.name())
-                            .uploadAndFinish(in);
+                    if (requester.getMetadata(targetPath) == null) {
+                        requester.createFolderV2(targetPath);
+                    }
+                    requester.uploadBuilder(targetPath + "/" + photo.name()).uploadAndFinish(in);
                 }
                 successCount++;
             } catch (IOException | DbxException e) {

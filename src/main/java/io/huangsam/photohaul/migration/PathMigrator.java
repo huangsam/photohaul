@@ -30,7 +30,7 @@ public class PathMigrator implements Migrator {
 
     @Override
     public final void migratePhotos(@NotNull Collection<Photo> photos) {
-        LOG.debug("Start migration to {}", targetRoot);
+        LOG.debug("Start path migration to {}", targetRoot);
         photos.forEach(photo -> {
             Path targetPath = getTargetPath(photo);
             LOG.trace("Move {} to {}", photo.name(), targetPath);

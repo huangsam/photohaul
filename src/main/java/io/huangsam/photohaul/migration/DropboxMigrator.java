@@ -2,6 +2,7 @@ package io.huangsam.photohaul.migration;
 
 import com.dropbox.core.DbxException;
 import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.files.CreateFolderErrorException;
 import com.dropbox.core.v2.files.DbxUserFilesRequests;
 import io.huangsam.photohaul.model.Photo;
 import org.jetbrains.annotations.NotNull;
@@ -32,7 +33,7 @@ public class DropboxMigrator implements Migrator {
 
     @Override
     public void migratePhotos(@NotNull Collection<Photo> photos) {
-        LOG.debug("Start migration to {}", targetRoot);
+        LOG.debug("Start DBX migration to {}", targetRoot);
         DbxUserFilesRequests requests = dropboxClient.files();
         photos.forEach(photo -> {
             String targetPath = getTargetPath(photo);
@@ -43,8 +44,14 @@ public class DropboxMigrator implements Migrator {
                 }
                 requests.uploadBuilder(targetPath + "/" + photo.name()).uploadAndFinish(in);
                 successCount++;
-            } catch (IOException | DbxException e) {
-                LOG.error("Cannot move {}: {}", photo.name(), e.getMessage());
+            } catch (IOException e) {
+                LOG.error("Cannot move {} with I/O error: {}", photo.name(), e.getMessage());
+                failureCount++;
+            } catch (CreateFolderErrorException e) {
+                LOG.error("Cannot move {} with DBX folder error: {}", photo.name(), e.getMessage());
+                failureCount++;
+            } catch (DbxException e) {
+                LOG.error("Cannot move {} with DBX general error: {}", photo.name(), e.getMessage());
                 failureCount++;
             }
         });

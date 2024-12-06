@@ -4,6 +4,7 @@ import java.nio.file.Files;
 import java.util.List;
 
 import io.huangsam.photohaul.migration.MigratorFactory;
+import io.huangsam.photohaul.migration.MigratorMode;
 import io.huangsam.photohaul.migration.PhotoFunction;
 import io.huangsam.photohaul.migration.PhotoResolver;
 import io.huangsam.photohaul.migration.Migrator;
@@ -30,10 +31,11 @@ public class Main {
         PathTraversal pathTraversal = new PathTraversal(SETTINGS.getSourceRootPath(), pathRuleSet);
         pathTraversal.traverse(pathVisitor);
 
+        MigratorMode migratorMode = MigratorMode.PATH;
         PhotoResolver photoResolver = new PhotoResolver(List.of(PhotoFunction.yearTaken()));
 
         MigratorFactory migratorFactory = new MigratorFactory();
-        Migrator migrator = migratorFactory.pathInstance(SETTINGS, photoResolver);
+        Migrator migrator = migratorFactory.make(migratorMode, SETTINGS, photoResolver);
         migrator.migratePhotos(pathVisitor.getPhotos());
 
         LOG.info("Finish with success={} failure={}", migrator.getSuccessCount(), migrator.getFailureCount());

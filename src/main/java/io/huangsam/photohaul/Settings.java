@@ -18,7 +18,7 @@ public class Settings {
         }
     }
 
-    public Path getSourceRoot() {
+    public Path getSourceRootPath() {
         String sourceRoot = properties.getProperty("source.root");
         if (sourceRoot == null) {
             throw new IllegalArgumentException("Missing source root");
@@ -26,7 +26,7 @@ public class Settings {
         return Paths.get(System.getProperty("user.home")).resolve(sourceRoot);
     }
 
-    public Path getTargetRoot() {
+    public Path getTargetRootPath() {
         String targetRoot = properties.getProperty("target.root");
         if (targetRoot == null) {
             throw new IllegalArgumentException("Missing target root");

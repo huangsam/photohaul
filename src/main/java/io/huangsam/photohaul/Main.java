@@ -29,13 +29,13 @@ public class Main {
                 PathRule.validExtensions().or(PathRule.isImageContent()),
                 PathRule.minimumBytes(100L)));
 
-        PathTraversal pathTraversal = new PathTraversal(SETTINGS.getSourceRoot(), pathRuleSet);
+        PathTraversal pathTraversal = new PathTraversal(SETTINGS.getSourceRootPath(), pathRuleSet);
         pathTraversal.traverse(pathVisitor);
 
         CopyOption copyOption = StandardCopyOption.REPLACE_EXISTING;
         PhotoResolver photoResolver = new PhotoResolver(List.of(PhotoFunction.yearTaken()));
 
-        Migrator migrator = new PathMigrator(SETTINGS.getTargetRoot(), copyOption, photoResolver);
+        Migrator migrator = new PathMigrator(SETTINGS.getTargetRootPath(), copyOption, photoResolver);
         migrator.migratePhotos(pathVisitor.getPhotos());
 
         LOG.info("Finish with success={} failure={}", migrator.getSuccessCount(), migrator.getFailureCount());

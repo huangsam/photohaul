@@ -2,17 +2,26 @@
 
 Effortless photo management.
 
-Can reorganize 10K+ photos (30 GB) in under 10 seconds! 🚀
+Can reorganize 10K+ photos (30 GB) in under 10 seconds!
 
-Using this project for your needs is as simple as:
+Say goodbye to photo clutter - 👋 + 🚀
 
-1. Run `gradle build` to download dependencies and build code
+Prerequisites:
+
+- Java 17+ installed on your system
+- Gradle 8+ installed on your system
+- Basic understanding of command line tools
+
+Steps:
+
+1. Run `gradle build` in your terminal to build the application
 2. Set appropriate settings in `config.properties`
-3. Tweak `PathRuleSet` in the `Main` class (optional)
-4. Tweak `MigratorMode` in the `Main` class (optional)
-5. Tweak `PhotoResolver` in the `Main` class (optional)
-6. Run `gradle run` to start the application
+3. Customize additional parameters (Optional)
+   - Set `PathRuleSet` to include files with extensions and file sizes
+   - Set `MigratorMode` to `PATH` (local) or `DROPBOX` (cloud)
+   - Set `PhotoResolver` to define how photos are organized
+4. Run `gradle run` in your terminal to start the magic!
 
-Then jump for joy and profit! 💵 🤑 💰
+Then sit back and rediscover your memories! 😎 + 🍹 + 🌴
 
 You're welcome 🙏

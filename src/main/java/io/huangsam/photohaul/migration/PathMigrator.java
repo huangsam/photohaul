@@ -33,8 +33,8 @@ public class PathMigrator implements Migrator {
         LOG.debug("Start migration to {}", targetRoot);
         photos.forEach(photo -> {
             Path targetPath = getTargetPath(photo);
+            LOG.trace("Move {} to {}", photo.name(), targetPath);
             try {
-                LOG.trace("Move {} to {}", photo.name(), targetPath);
                 Files.createDirectories(targetPath);
                 Files.move(photo.path(), targetPath.resolve(photo.name()), copyOption);
                 successCount++;

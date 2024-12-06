@@ -36,14 +36,12 @@ public class DropboxMigrator implements Migrator {
         DbxUserFilesRequests requests = dropboxClient.files();
         photos.forEach(photo -> {
             String targetPath = getTargetPath(photo);
-            try {
-                LOG.trace("Move {} to {}", photo.name(), targetPath);
-                try (InputStream in = Files.newInputStream(photo.path())) {
-                    if (requests.getMetadata(targetPath) == null) {
-                        requests.createFolderV2(targetPath);
-                    }
-                    requests.uploadBuilder(targetPath + "/" + photo.name()).uploadAndFinish(in);
+            LOG.trace("Move {} to {}", photo.name(), targetPath);
+            try (InputStream in = Files.newInputStream(photo.path())) {
+                if (requests.getMetadata(targetPath) == null) {
+                    requests.createFolderV2(targetPath);
                 }
+                requests.uploadBuilder(targetPath + "/" + photo.name()).uploadAndFinish(in);
                 successCount++;
             } catch (IOException | DbxException e) {
                 LOG.error("Cannot move {}: {}", photo.name(), e.getMessage());

@@ -3,6 +3,7 @@ package io.huangsam.photohaul.migration;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.DbxUserFilesRequests;
+import com.dropbox.core.v2.files.ListFolderResult;
 import io.huangsam.photohaul.model.Photo;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -38,7 +39,8 @@ public class DropboxMigrator implements Migrator {
             String targetPath = getTargetPath(photo);
             LOG.trace("Move {} to {}", photo.name(), targetPath);
             try (InputStream in = Files.newInputStream(photo.path())) {
-                if (requests.getMetadata(targetPath) == null) {
+                ListFolderResult result = requests.listFolder(targetPath);
+                if (result.getEntries().isEmpty()) {
                     requests.createFolderV2(targetPath);
                 }
                 requests.uploadBuilder(targetPath + "/" + photo.name()).uploadAndFinish(in);

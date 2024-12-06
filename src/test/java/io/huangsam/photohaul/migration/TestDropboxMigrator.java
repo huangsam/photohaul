@@ -12,7 +12,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.nio.file.Path;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -46,13 +45,5 @@ public class TestDropboxMigrator extends TestPathBase {
 
         assertEquals(2, dbxMigrator.getSuccessCount());
         assertEquals(1, dbxMigrator.getFailureCount());
-    }
-
-    private static PhotoPathVisitor visitor(Path path, List<String> names) {
-        PhotoPathVisitor pathVisitor = new PhotoPathVisitor();
-        for (String name : names) {
-            pathVisitor.visitPhoto(path.resolve(name));
-        }
-        return pathVisitor;
     }
 }

@@ -30,14 +30,6 @@ public class TestPathMigrator extends TestPathBase {
         pathMigrator.migratePhotos(pathVisitor.getPhotos());
     }
 
-    private static PhotoPathVisitor visitor(Path path, List<String> names) {
-        PhotoPathVisitor pathVisitor = new PhotoPathVisitor();
-        for (String name : names) {
-            pathVisitor.visitPhoto(path.resolve(name));
-        }
-        return pathVisitor;
-    }
-
     private static PathMigrator migrator(Path path) {
         return new PathMigrator(path, new PhotoResolver(List.of()));
     }

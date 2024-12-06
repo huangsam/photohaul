@@ -4,6 +4,7 @@ jetbrains-annotations = "26.0.1"
 junit-bom = "5.11.3"
 logback-classic = "1.5.12"
 metadata-extractor = "2.19.0"
+mockito = "5.14.1"
 slf4j-api = "2.0.16"
 
 [libraries]
@@ -14,4 +15,9 @@ junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
 junit-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback-classic" }
 metadata-extractor = { module = "com.drewnoakes:metadata-extractor", version.ref = "metadata-extractor"}
+mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
+mockito-junit = { module = "org.mockito:mockito-junit-jupiter", version.ref = "mockito" }
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j-api" }
+
+[bundles]
+mockito-all = ["mockito-core", "mockito-junit"]

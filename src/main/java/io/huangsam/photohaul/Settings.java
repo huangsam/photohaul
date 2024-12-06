@@ -1,15 +1,19 @@
 package io.huangsam.photohaul;
 
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Objects;
 import java.util.Properties;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 public class Settings {
+    private static final Logger LOG = getLogger(Settings.class);
+
     private final Properties properties;
 
     public Settings(String name) {
@@ -22,7 +26,12 @@ public class Settings {
     }
 
     public String getValue(@NotNull String key) {
-        return Objects.requireNonNull(properties.getProperty(key));
+        String value = properties.getProperty(key);
+        if (value == null) {
+            LOG.error("Cannot find setting {}", key);
+            throw new NullPointerException();
+        }
+        return value;
     }
 
     public Path getSourceRootPath() {

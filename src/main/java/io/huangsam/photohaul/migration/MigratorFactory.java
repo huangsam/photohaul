@@ -16,6 +16,15 @@ import java.io.IOException;
 import java.util.List;
 
 public class MigratorFactory {
+    /**
+     * Creates instance for migrating photos.
+     *
+     * @param mode Migrator mode
+     * @param settings Application settings
+     * @param resolver Photo resolver
+     * @return {@code Migrator} instance
+     * @throws IOException from issues with Drive
+     */
     public Migrator make(@NotNull MigratorMode mode, Settings settings, PhotoResolver resolver) throws IOException {
         return switch (mode) {
             case PATH -> pathInstance(settings, resolver);
@@ -24,25 +33,13 @@ public class MigratorFactory {
         };
     }
 
-    /**
-     * Creates path migrator.
-     *
-     * @param settings Application settings
-     * @param resolver Photo resolver
-     * @return {@code PathMigrator} instance
-     */
+    /** Creates path migrator.*/
     @NotNull
     private PathMigrator pathInstance(@NotNull Settings settings, PhotoResolver resolver) {
         return new PathMigrator(settings.getTargetRootPath(), resolver);
     }
 
-    /**
-     * Creates Dropbox migrator.
-     *
-     * @param settings Application settings
-     * @param resolver Photo resolver
-     * @return {@code DropboxMigrator} instance
-     */
+    /** Creates Dropbox migrator.*/
     @NotNull
     private DropboxMigrator dropboxInstance(@NotNull Settings settings, PhotoResolver resolver) {
         String target = settings.getValue("target.root");
@@ -56,11 +53,6 @@ public class MigratorFactory {
      *
      * <p> Assumes that the {@code GOOGLE_APPLICATION_CREDENTIALS} environment variable
      * is set to the proper location, with a {@code credentials.json} in place.
-     *
-     * @param settings Application settings
-     * @param resolver Photo resolver
-     * @return {@code GoogleDriveMigrator} instance
-     * @throws IOException When credentials are missing
      */
     @NotNull
     private GoogleDriveMigrator googleDriveInstance(@NotNull Settings settings, PhotoResolver resolver) throws IOException {

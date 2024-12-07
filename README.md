@@ -40,11 +40,10 @@ Steps:
 
 1. Run `gradle build` in your terminal to build the application
 2. Set appropriate settings in `config.properties`
-3. Customize additional parameters (Optional)
-   - Set `PathRuleSet` to filter by extension, file size, etc.
-   - Set `MigratorMode` to `PATH`, `DROPBOX` or `GOOGLE_DRIVE`
-   - Set `PhotoResolver` to define how photos are organized
-4. Run `gradle run` in your terminal to start the magic!
+3. Set `PathRuleSet` to filter by extension, file size, etc.
+4. Set `MigratorMode` to `PATH`, `DROPBOX` or `GOOGLE_DRIVE`
+5. Set `PhotoResolver` to define how photos are organized
+6. Run `gradle run` in your terminal to start the magic!
 
 Then sit back and rediscover your memories! 😎 + 🍹 + 🌴
 

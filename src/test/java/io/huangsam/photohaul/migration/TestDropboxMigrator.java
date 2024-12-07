@@ -40,7 +40,7 @@ public class TestDropboxMigrator extends TestPathBase {
 
         List<String> names = List.of("bauerlite.jpg", "salad.jpg", "foobar.jpg");
         PhotoPathVisitor pathVisitor = visitor(getStaticResources(), names);
-        DropboxMigrator migrator = new DropboxMigrator("/Foo", clientMock, new PhotoResolver(List.of()));
+        Migrator migrator = new DropboxMigrator("folderId123", clientMock, new PhotoResolver(List.of()));
         migrator.migratePhotos(pathVisitor.getPhotos());
 
         assertEquals(2, migrator.getSuccessCount());

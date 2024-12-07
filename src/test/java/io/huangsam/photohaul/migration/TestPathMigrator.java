@@ -14,7 +14,7 @@ public class TestPathMigrator extends TestPathBase {
     void testMigratePhotos() {
         List<String> names = List.of("bauerlite.jpg", "salad.jpg", "foobar.jpg");
         PhotoPathVisitor pathVisitor = visitor(getStaticResources(), names);
-        PathMigrator migrator = new PathMigrator(getTempResources(), new PhotoResolver(List.of()));
+        Migrator migrator = new PathMigrator(getTempResources(), new PhotoResolver(List.of()));
         migrator.migratePhotos(pathVisitor.getPhotos());
 
         assertEquals(2, migrator.getSuccessCount());

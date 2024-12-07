@@ -1,10 +1,9 @@
 package io.huangsam.photohaul;
 
-import java.io.IOException;
 import java.nio.file.Files;
-import java.security.GeneralSecurityException;
 import java.util.List;
 
+import io.huangsam.photohaul.migration.MigratorException;
 import io.huangsam.photohaul.migration.MigratorFactory;
 import io.huangsam.photohaul.migration.MigratorMode;
 import io.huangsam.photohaul.migration.PhotoFunction;
@@ -22,7 +21,7 @@ public class Main {
     private static final Logger LOG = getLogger(Main.class);
     private static final Settings SETTINGS = new Settings("config.properties");
 
-    public static void main(String[] args) throws GeneralSecurityException, IOException {
+    public static void main(String[] args) throws MigratorException {
         PhotoPathVisitor pathVisitor = new PhotoPathVisitor();
 
         PathRuleSet pathRuleSet = new PathRuleSet(List.of(

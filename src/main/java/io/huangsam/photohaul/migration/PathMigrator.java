@@ -55,11 +55,7 @@ public class PathMigrator implements Migrator {
 
     private Path getTargetPath(Photo photo) {
         try {
-            Path result = targetRoot;
-            for (String out : photoResolver.resolveList(photo)) {
-                result = result.resolve(out);
-            }
-            return result;
+            return targetRoot.resolve(String.join("/", photoResolver.resolveList(photo)));
         } catch (NullPointerException e) {
             return targetRoot.resolve("Other");
         }

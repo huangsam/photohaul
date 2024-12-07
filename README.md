@@ -6,6 +6,23 @@ Can reorganize 10K+ photos (30 GB) in under 10 seconds!
 
 Say goodbye to photo clutter - 👋 + 🚀
 
+## Motivation
+
+As an enthusiast photographer, I use Adobe Lightroom to organize my SLR photos
+with custom file names and folder structures.
+
+When I wanted to apply those same patterns to old photos, I ended up getting
+frustrated with the tooling that exists to manage them.
+
+If I wanted to migrate my old photos and new photos over to a NAS or a cloud
+storage provider like Dropbox or Google Drive, it would likely involve a bunch
+of manual drag + drop operations.
+
+Photohaul solves this problem by providing an automated solution to organize
+and migrate your photo collections.
+
+## Getting started
+
 Prerequisites:
 
 - Java 17+ installed on your system

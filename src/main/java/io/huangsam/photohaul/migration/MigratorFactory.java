@@ -57,7 +57,7 @@ public class MigratorFactory {
     @NotNull
     private GoogleDriveMigrator googleDriveInstance(@NotNull Settings settings, PhotoResolver resolver) throws IOException {
         GoogleCredentials credentials = GoogleCredentials.getApplicationDefault()
-                .createScoped(List.of(DriveScopes.DRIVE_FILE));
+                .createScoped(List.of(DriveScopes.DRIVE));
         HttpRequestInitializer requestInitializer = new HttpCredentialsAdapter(credentials);
         String target = settings.getValue("target.root");
         Drive service = new Drive.Builder(

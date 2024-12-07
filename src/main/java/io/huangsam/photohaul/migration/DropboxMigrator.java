@@ -36,7 +36,7 @@ public class DropboxMigrator implements Migrator {
 
     @Override
     public void migratePhotos(@NotNull Collection<Photo> photos) {
-        LOG.debug("Start DBX migration to {}", targetRoot);
+        LOG.debug("Start Dropbox migration to {}", targetRoot);
         DbxUserFilesRequests requests = dropboxClient.files();
         photos.forEach(photo -> {
             String targetPath = getTargetPath(photo);

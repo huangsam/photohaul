@@ -56,5 +56,6 @@ public class TestGoogleDriveMigrator extends TestPathBase {
         migrator.migratePhotos(pathVisitor.getPhotos());
 
         assertEquals(3, migrator.getSuccessCount());
+        assertEquals(0, migrator.getFailureCount());
     }
 }

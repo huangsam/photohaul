@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestPathMigrator extends TestPathBase {
     @Test
-    void testMigratePhotos() {
+    void testMigratePhotosAllSuccess() {
         List<String> names = List.of("bauerlite.jpg", "salad.jpg");
         PhotoPathVisitor pathVisitor = pathVisitor(getStaticResources(), names);
         Migrator migrator = pathMover(getTempResources());

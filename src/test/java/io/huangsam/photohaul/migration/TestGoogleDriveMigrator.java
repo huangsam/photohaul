@@ -38,7 +38,7 @@ public class TestGoogleDriveMigrator extends TestPathBase {
     File fileMock;
 
     @Test
-    void testMigratePhotos() throws IOException {
+    void testMigratePhotosAllSuccess() throws IOException {
         when(driveMock.files()).thenReturn(filesMock);
 
         when(filesMock.create(any(), any())).thenReturn(driveCreateMock);

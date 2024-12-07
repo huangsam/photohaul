@@ -33,7 +33,7 @@ public class TestDropboxMigrator extends TestPathBase {
     UploadBuilder uploadBuilderMock;
 
     @Test
-    void testMigratePhotos() throws DbxException {
+    void testMigratePhotosAllSuccess() throws DbxException {
         when(clientMock.files()).thenReturn(requestsMock);
         when(requestsMock.listFolder(any())).thenReturn(folderResultMock);
         when(requestsMock.uploadBuilder(any())).thenReturn(uploadBuilderMock);

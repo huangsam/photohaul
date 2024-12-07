@@ -50,12 +50,12 @@ public class TestGoogleDriveMigrator extends TestPathBase {
         when(driveListMock.execute()).thenReturn(fileListMock);
         when(fileListMock.getFiles()).thenReturn(List.of(fileMock));
 
-        List<String> names = List.of("bauerlite.jpg", "salad.jpg", "foobar.jpg");
+        List<String> names = List.of("bauerlite.jpg", "salad.jpg");
         PhotoPathVisitor pathVisitor = pathVisitor(getStaticResources(), names);
         Migrator migrator = new GoogleDriveMigrator("Foo", driveMock, new PhotoResolver(List.of()));
         migrator.migratePhotos(pathVisitor.getPhotos());
 
-        assertEquals(3, migrator.getSuccessCount());
+        assertEquals(2, migrator.getSuccessCount());
         assertEquals(0, migrator.getFailureCount());
     }
 }

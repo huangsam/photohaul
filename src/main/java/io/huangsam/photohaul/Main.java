@@ -41,7 +41,7 @@ public class Main {
             migrator.migratePhotos(pathVisitor.getPhotos());
             LOG.info("Finish with success={} failure={}", migrator.getSuccessCount(), migrator.getFailureCount());
         } catch (MigratorException e) {
-            LOG.error("Cannot migrate via {} mode: {}", e.getMode(), e.getMessage());
+            LOG.error("Cannot migrate with mode {}: {}", e.getMode(), e.getMessage());
         }
     }
 }

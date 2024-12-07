@@ -62,8 +62,7 @@ public class GoogleDriveMigrator implements Migrator {
 
     private String getTargetPath(Photo photo) {
         try {
-            List<String> resolveList = photoResolver.resolveList(photo);
-            return String.join("/", resolveList);
+            return String.join("/", photoResolver.resolveList(photo));
         } catch (NullPointerException e) {
             return "Other";
         }

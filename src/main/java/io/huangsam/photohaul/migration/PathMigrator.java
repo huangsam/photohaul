@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import java.io.IOException;
+import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -14,15 +15,18 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 public class PathMigrator implements Migrator {
     private static final Logger LOG = getLogger(PathMigrator.class);
+    private static final CopyOption COPY_OPTION = StandardCopyOption.REPLACE_EXISTING;
 
-    protected final Path targetRoot;
+    private final Path targetRoot;
+    private final Option migratorOption;
     private final PhotoResolver photoResolver;
 
     private long successCount = 0L;
     private long failureCount = 0L;
 
-    public PathMigrator(Path target, PhotoResolver resolver) {
+    public PathMigrator(Path target, Option option, PhotoResolver resolver) {
         targetRoot = target;
+        migratorOption = option;
         photoResolver = resolver;
     }
 
@@ -34,7 +38,11 @@ public class PathMigrator implements Migrator {
             LOG.trace("Move {} to {}", photo.name(), targetPath);
             try {
                 Files.createDirectories(targetPath);
-                Files.move(photo.path(), targetPath.resolve(photo.name()), StandardCopyOption.REPLACE_EXISTING);
+                switch (migratorOption) {
+                    case MOVE -> Files.move(photo.path(), targetPath.resolve(photo.name()), COPY_OPTION);
+                    case COPY -> Files.copy(photo.path(), targetPath.resolve(photo.name()), COPY_OPTION);
+                    case DRY_RUN -> LOG.info("Dry-run {} to {}", photo.path(), targetPath.resolve(photo.name()));
+                }
                 successCount++;
             } catch (IOException e) {
                 LOG.error("Cannot move {}: {}", photo.name(), e.getMessage());
@@ -59,5 +67,11 @@ public class PathMigrator implements Migrator {
         } catch (NullPointerException e) {
             return targetRoot.resolve("Other");
         }
+    }
+
+    public enum Option {
+        MOVE,
+        COPY,
+        DRY_RUN
     }
 }

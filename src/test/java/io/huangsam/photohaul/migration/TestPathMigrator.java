@@ -13,19 +13,19 @@ public class TestPathMigrator extends TestPathBase {
     @Test
     void testMigratePhotos() {
         List<String> names = List.of("bauerlite.jpg", "salad.jpg", "foobar.jpg");
-        PhotoPathVisitor pathVisitor = visitor(getStaticResources(), names);
-        Migrator migrator = new PathMigrator(getTempResources(), new PhotoResolver(List.of()));
+        PhotoPathVisitor pathVisitor = pathVisitor(getStaticResources(), names);
+        Migrator migrator = pathMover(getTempResources());
         migrator.migratePhotos(pathVisitor.getPhotos());
 
-        assertEquals(2, migrator.getSuccessCount());
-        assertEquals(1, migrator.getFailureCount());
+        assertEquals(3, migrator.getSuccessCount());
+        assertEquals(0, migrator.getFailureCount());
     }
 
     @AfterAll
     static void tearDown() {
         List<String> names = List.of("bauerlite.jpg", "salad.jpg");
-        PhotoPathVisitor pathVisitor = visitor(getTempResources(), names);
-        PathMigrator pathMigrator = new PathMigrator(getStaticResources(), new PhotoResolver(List.of()));
+        PhotoPathVisitor pathVisitor = pathVisitor(getTempResources(), names);
+        PathMigrator pathMigrator = pathMover(getStaticResources());
         pathMigrator.migratePhotos(pathVisitor.getPhotos());
     }
 }

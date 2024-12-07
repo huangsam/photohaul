@@ -34,6 +34,11 @@ public class Settings {
         return value;
     }
 
+    public String getValue(@NotNull String key, String other) {
+        String value = properties.getProperty(key);
+        return (value == null) ? other : value;
+    }
+
     public Path getSourceRootPath() {
         return Paths.get(System.getProperty("user.home")).resolve(getValue("source.root"));
     }

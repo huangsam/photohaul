@@ -1,5 +1,7 @@
 package io.huangsam.photohaul;
 
+import io.huangsam.photohaul.migration.PathMigrator;
+import io.huangsam.photohaul.migration.PhotoResolver;
 import io.huangsam.photohaul.traversal.PhotoPathVisitor;
 
 import java.nio.file.Path;
@@ -16,11 +18,15 @@ public abstract class TestPathBase {
         return TEST_RESOURCES.resolve("temp");
     }
 
-    protected static PhotoPathVisitor visitor(Path path, List<String> names) {
+    protected static PhotoPathVisitor pathVisitor(Path path, List<String> names) {
         PhotoPathVisitor pathVisitor = new PhotoPathVisitor();
         for (String name : names) {
             pathVisitor.visitPhoto(path.resolve(name));
         }
         return pathVisitor;
+    }
+
+    protected static PathMigrator pathMover(Path destination) {
+        return new PathMigrator(destination, PathMigrator.Option.DRY_RUN, new PhotoResolver(List.of()));
     }
 }

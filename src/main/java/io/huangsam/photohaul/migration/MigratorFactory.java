@@ -39,7 +39,9 @@ public class MigratorFactory {
 
     @NotNull
     private PathMigrator makePath(@NotNull Settings settings, PhotoResolver resolver) {
-        return new PathMigrator(settings.getTargetRootPath(), resolver);
+        String option = settings.getValue("path.option", "MOVE");
+        PathMigrator.Option migratorOption = PathMigrator.Option.valueOf(option.toUpperCase());
+        return new PathMigrator(settings.getTargetRootPath(), migratorOption, resolver);
     }
 
     @NotNull

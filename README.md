@@ -18,7 +18,7 @@ Steps:
 2. Set appropriate settings in `config.properties`
 3. Customize additional parameters (Optional)
    - Set `PathRuleSet` to filter by extension, file size, etc.
-   - Set `MigratorMode` to `PATH` (local) or `DROPBOX` (cloud)
+   - Set `MigratorMode` to `PATH`, `DROPBOX` or `GOOGLE_DRIVE`
    - Set `PhotoResolver` to define how photos are organized
 4. Run `gradle run` in your terminal to start the magic!
 

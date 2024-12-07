@@ -25,9 +25,9 @@ public class MigratorFactory {
     /**
      * Creates instance for migrating photos.
      *
-     * @param mode Migrator mode
-     * @param settings Application settings
-     * @param resolver Photo resolver
+     * @param mode migrator mode
+     * @param settings application settings
+     * @param resolver photo resolver
      * @return {@code Migrator} instance
      * @throws MigratorException due to bad setup
      */

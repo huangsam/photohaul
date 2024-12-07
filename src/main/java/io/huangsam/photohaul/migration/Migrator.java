@@ -23,21 +23,21 @@ public interface Migrator {
      *     <li>Record failed operations</li>
      * </ul>
      *
-     * @param photos Collection of photo records
+     * @param photos collection of photo records
      */
     void migratePhotos(@NotNull Collection<Photo> photos);
 
     /**
      * Get success count.
      *
-     * @return Number of successful migration ops
+     * @return number of successful migration ops
      */
     long getSuccessCount();
 
     /**
      * Get failure count.
      *
-     * @return Number of failed migration ops
+     * @return number of failed migration ops
      */
     long getFailureCount();
 }

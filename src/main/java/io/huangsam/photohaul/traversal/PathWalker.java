@@ -34,7 +34,7 @@ public class PathWalker {
      * Traverses source directory recursively, passing relevant files to
      * the path visitor for aggregation purposes.
      *
-     * @param pathVisitor Visitor to process matching files
+     * @param pathVisitor visitor to process matching files
      */
     public void traverse(@NotNull PhotoPathVisitor pathVisitor) {
         LOG.debug("Start traversal of {}", sourceRoot);

@@ -41,7 +41,7 @@ public class GoogleDriveMigrator implements Migrator {
             String targetPath = getTargetPath(photo);
             LOG.trace("Move {} to {}", photo.name(), targetPath);
             try {
-                String folderId = createDriveFolder(targetPath, targetRoot);
+                String folderId = createDriveFolder(targetRoot, targetPath);
                 createDrivePhoto(folderId, photo);
             } catch (IOException | NullPointerException e) {
                 LOG.error("Cannot move {}: {}", photo.name(), e.getMessage());
@@ -69,7 +69,7 @@ public class GoogleDriveMigrator implements Migrator {
         }
     }
 
-    private String createDriveFolder(String targetPath, String targetRoot) throws IOException {
+    private String createDriveFolder(String targetRoot, String targetPath) throws IOException {
         String existingId = getExistingId(targetRoot, targetPath);
         if (existingId != null) {
             return existingId;

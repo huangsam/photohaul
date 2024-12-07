@@ -2,6 +2,7 @@ package io.huangsam.photohaul.migration;
 
 import com.google.api.client.http.FileContent;
 import com.google.api.services.drive.Drive;
+import com.google.api.services.drive.model.FileList;
 import io.huangsam.photohaul.model.Photo;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -69,6 +70,12 @@ public class GoogleDriveMigrator implements Migrator {
     }
 
     private void createDriveFolder(String targetPath) throws IOException {
+        String query = '\'' + targetPath + '\'' + " in parents and mimeType='application/vnd.google-apps.folder'";
+        FileList result = driveService.files().list().setQ(query).execute();
+        if (result.getFiles().isEmpty()) {
+            return;
+        }
+
         File folderMetadata = new File();
         folderMetadata.setName(targetPath);
         folderMetadata.setMimeType("application/vnd.google-apps.folder");

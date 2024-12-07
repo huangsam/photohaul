@@ -29,6 +29,9 @@ public class TestGoogleDriveMigrator extends TestPathBase {
     Drive.Files.List driveListMock;
 
     @Mock
+    Drive.Files.Create driveCreateMock;
+
+    @Mock
     FileList fileListMock;
 
     @Mock
@@ -37,6 +40,11 @@ public class TestGoogleDriveMigrator extends TestPathBase {
     @Test
     void testMigratePhotos() throws IOException {
         when(driveMock.files()).thenReturn(filesMock);
+
+        when(filesMock.create(any(), any())).thenReturn(driveCreateMock);
+        when(driveCreateMock.setFields(any())).thenReturn(driveCreateMock);
+        when(driveCreateMock.execute()).thenReturn(fileMock);
+
         when(filesMock.list()).thenReturn(driveListMock);
         when(driveListMock.setQ(any())).thenReturn(driveListMock);
         when(driveListMock.execute()).thenReturn(fileListMock);
@@ -47,6 +55,6 @@ public class TestGoogleDriveMigrator extends TestPathBase {
         Migrator migrator = new GoogleDriveMigrator("Foo", driveMock, new PhotoResolver(List.of()));
         migrator.migratePhotos(pathVisitor.getPhotos());
 
-        assertEquals(3, migrator.getFailureCount());
+        assertEquals(3, migrator.getSuccessCount());
     }
 }

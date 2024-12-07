@@ -5,6 +5,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 
+/**
+ * Defines the contract for a photo migration service.
+ *
+ * <p> One of its benefits is that it allows consumers to migrate without
+ * knowing whether it happens locally or in the cloud.
+ */
 public interface Migrator {
     /**
      * Migrate a collection of photos to a specific target.

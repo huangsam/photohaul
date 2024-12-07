@@ -10,6 +10,15 @@ import java.util.stream.Stream;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
+/**
+ * This class is responsible for traversing a directory structure and filtering
+ * files based on a given rule set. It utilizes Java's parallel streams to
+ * efficiently process a large number of files.
+ *
+ * <p> Once a file matches the specified rules, it is passed to a provided
+ * {@code PhotoPathVisitor} for further processing. This visitor can then
+ * be used for actions like copying, moving, or analyzing the file.
+ */
 public class PathTraversal {
     private static final Logger LOG = getLogger(PathTraversal.class);
 
@@ -22,8 +31,8 @@ public class PathTraversal {
     }
 
     /**
-     * Traverses the specified source directory recursively, filters files based on some
-     * rules and visits each matching file with the path visitor.
+     * Traverses source directory recursively, passing relevant files to
+     * the path visitor for aggregation purposes.
      *
      * @param pathVisitor Visitor to process matching files
      */

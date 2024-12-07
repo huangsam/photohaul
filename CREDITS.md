@@ -25,5 +25,6 @@ Ensure that all photos used for unit testing are accounted for:
 `sunny-bunny-tidy-up.webp`
 
 - Domain: https://giphy.com
+- Link: https://giphy.com/gifs/SunnyBunniesOfficial-sunnybunnies-sunny-bunnies-sunnybunny-cO9GVZKRIov75COLNb
 - Author: Sunny Bunnies
 - Author ID: SunnyBunniesOfficial

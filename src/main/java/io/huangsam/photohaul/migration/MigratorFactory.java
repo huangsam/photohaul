@@ -27,8 +27,8 @@ public class MigratorFactory {
      * @param settings Application settings
      * @param resolver Photo resolver
      * @return {@code Migrator} instance
-     * @throws IOException From Drive
      * @throws GeneralSecurityException From Drive
+     * @throws IOException From Drive
      */
     public Migrator make(@NotNull MigratorMode mode, Settings settings, PhotoResolver resolver) throws GeneralSecurityException, IOException {
         return switch (mode) {

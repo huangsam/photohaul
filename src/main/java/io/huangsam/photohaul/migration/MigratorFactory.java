@@ -24,11 +24,25 @@ public class MigratorFactory {
         };
     }
 
+    /**
+     * Creates path migrator.
+     *
+     * @param settings Application settings
+     * @param resolver Photo resolver
+     * @return {@code PathMigrator} instance
+     */
     @NotNull
     private PathMigrator pathInstance(@NotNull Settings settings, PhotoResolver resolver) {
         return new PathMigrator(settings.getTargetRootPath(), resolver);
     }
 
+    /**
+     * Creates Dropbox migrator.
+     *
+     * @param settings Application settings
+     * @param resolver Photo resolver
+     * @return {@code DropboxMigrator} instance
+     */
     @NotNull
     private DropboxMigrator dropboxInstance(@NotNull Settings settings, PhotoResolver resolver) {
         String target = settings.getValue("target.root");
@@ -37,6 +51,17 @@ public class MigratorFactory {
         return new DropboxMigrator(target, client, resolver);
     }
 
+    /**
+     * Creates Google Drive migrator.
+     *
+     * <p> Assumes that the {@code GOOGLE_APPLICATION_CREDENTIALS} environment variable
+     * is set to the proper location, with a {@code credentials.json} in place.
+     *
+     * @param settings Application settings
+     * @param resolver Photo resolver
+     * @return {@code GoogleDriveMigrator} instance
+     * @throws IOException When credentials are missing
+     */
     @NotNull
     private GoogleDriveMigrator googleDriveInstance(@NotNull Settings settings, PhotoResolver resolver) throws IOException {
         GoogleCredentials credentials = GoogleCredentials.getApplicationDefault()

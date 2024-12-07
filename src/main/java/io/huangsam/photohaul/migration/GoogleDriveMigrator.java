@@ -74,6 +74,9 @@ public class GoogleDriveMigrator implements Migrator {
         if (existingId != null) {
             return existingId;
         }
+        if (targetPath.isEmpty()) {
+            return targetRoot;
+        }
 
         File folderMetadata = new File();
         folderMetadata.setName(targetPath);

@@ -5,12 +5,14 @@ import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.FileList;
 import io.huangsam.photohaul.model.Photo;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import com.google.api.services.drive.model.File;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Collection;
+import java.util.List;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -22,7 +24,8 @@ public class GoogleDriveMigrator implements Migrator {
     private final Drive driveService;
     private final PhotoResolver photoResolver;
 
-    private long successCount = 0L;
+    private long createdCount = 0L;
+    private long existedCount = 0L;
     private long failureCount = 0L;
 
     public GoogleDriveMigrator(String target, Drive service, PhotoResolver resolver) {
@@ -38,9 +41,8 @@ public class GoogleDriveMigrator implements Migrator {
             String targetPath = getTargetPath(photo);
             LOG.trace("Move {} to {}", photo.name(), targetPath);
             try {
-                createDriveFolder(targetPath);
-                createDrivePhoto(targetPath, photo);
-                successCount++;
+                String folderId = createDriveFolder(targetPath, targetRoot);
+                createDrivePhoto(folderId, photo);
             } catch (IOException | NullPointerException e) {
                 LOG.error("Cannot move {}: {}", photo.name(), e.getMessage());
                 failureCount++;
@@ -50,7 +52,7 @@ public class GoogleDriveMigrator implements Migrator {
 
     @Override
     public long getSuccessCount() {
-        return successCount;
+        return createdCount + existedCount;
     }
 
     @Override
@@ -60,37 +62,45 @@ public class GoogleDriveMigrator implements Migrator {
 
     private String getTargetPath(Photo photo) {
         try {
-            StringBuilder result = new StringBuilder(targetRoot);
-            for (String out : photoResolver.resolveList(photo)) {
-                result.append("/").append(out);
-            }
-            return result.toString();
+            List<String> resolveList = photoResolver.resolveList(photo);
+            return String.join("/", resolveList);
         } catch (NullPointerException e) {
-            return targetRoot + "/Other";
+            return "Other";
         }
     }
 
-    private void createDriveFolder(String targetPath) throws IOException {
-        String query = String.format("'%s' in parents and mimeType='%s'", targetPath, MIME_FOLDER);
-        FileList result = driveService.files().list().setQ(query).execute();
-        if (result.getFiles().isEmpty()) {
-            return;
+    private String createDriveFolder(String targetPath, String targetRoot) throws IOException {
+        String existingId = getExistingId(targetRoot, targetPath);
+        if (existingId != null) {
+            return existingId;
         }
 
         File folderMetadata = new File();
         folderMetadata.setName(targetPath);
         folderMetadata.setMimeType(MIME_FOLDER);
+        folderMetadata.setParents(List.of(targetRoot));
 
         File folderSuccess = driveService.files().create(folderMetadata)
                 .setFields("id")
                 .execute();
 
-        LOG.trace("Folder created: {}", folderSuccess.getId());
+        String folderId = folderSuccess.getId();
+
+        LOG.trace("Folder created: {}", folderId);
+
+        return folderId;
     }
 
-    private void createDrivePhoto(String targetPath, @NotNull Photo photo) throws IOException {
+    private void createDrivePhoto(String folderId, @NotNull Photo photo) throws IOException {
+        String existingId = getExistingId(folderId, photo.name());
+        if (existingId != null) {
+            existedCount++;
+            return;
+        }
+
         File photoMetadata = new File();
-        photoMetadata.setName(targetPath + "/" + photo.name());
+        photoMetadata.setName(photo.name());
+        photoMetadata.setParents(List.of(folderId));
 
         String contentType = Files.probeContentType(photo.path());
         java.io.File photoFile = new java.io.File(photo.path().toString());
@@ -101,5 +111,18 @@ public class GoogleDriveMigrator implements Migrator {
                 .execute();
 
         LOG.trace("Photo created: {}", photoSuccess.getId());
+
+        createdCount++;
+    }
+
+    @Nullable
+    private String getExistingId(String folderId, String fileName) throws IOException {
+        String query = String.format("'%s' in parents and name = '%s'", folderId, fileName);
+        FileList result = driveService.files().list().setQ(query).execute();
+        List<File> fileList = result.getFiles();
+        if (fileList.isEmpty()) {
+            return null;
+        }
+        return fileList.get(0).getId();
     }
 }

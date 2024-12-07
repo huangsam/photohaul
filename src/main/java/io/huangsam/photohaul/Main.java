@@ -1,5 +1,6 @@
 package io.huangsam.photohaul;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class Main {
     private static final Logger LOG = getLogger(Main.class);
     private static final Settings SETTINGS = new Settings("config.properties");
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         PhotoPathVisitor pathVisitor = new PhotoPathVisitor();
 
         PathRuleSet pathRuleSet = new PathRuleSet(List.of(

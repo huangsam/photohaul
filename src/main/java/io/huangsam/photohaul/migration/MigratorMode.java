@@ -2,5 +2,6 @@ package io.huangsam.photohaul.migration;
 
 public enum MigratorMode {
     PATH,
-    DROPBOX
+    DROPBOX,
+    GOOGLE_DRIVE
 }

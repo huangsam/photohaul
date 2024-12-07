@@ -21,7 +21,9 @@ file and folder settings cannot apply to photos after they have been
 exported. And writing bespoke scripts for these tasks is no fun!
 
 If I also want to migrate my photos over to a NAS or a cloud provider
-like Dropbox or Google Drive, it involves a bunch of manual drag + drop.
+like Dropbox or Google Drive, it typically involves a bunch of manual
+drag + drop operations. After a few dozen times, I get tired of doing
+the same thing on my browser over and over again.
 
 Photohaul solves these problems by providing an automated solution to
 organize and migrate your photo collections.

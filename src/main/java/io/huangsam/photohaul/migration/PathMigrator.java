@@ -37,12 +37,7 @@ public class PathMigrator implements Migrator {
             Path targetPath = getTargetPath(photo);
             LOG.trace("Move {} to {}", photo.name(), targetPath);
             try {
-                Files.createDirectories(targetPath);
-                switch (migratorOption) {
-                    case MOVE -> Files.move(photo.path(), targetPath.resolve(photo.name()), COPY_OPTION);
-                    case COPY -> Files.copy(photo.path(), targetPath.resolve(photo.name()), COPY_OPTION);
-                    case DRY_RUN -> LOG.info("Dry-run {} to {}", photo.path(), targetPath.resolve(photo.name()));
-                }
+                migratePhoto(targetPath, photo);
                 successCount++;
             } catch (IOException e) {
                 LOG.error("Cannot move {}: {}", photo.name(), e.getMessage());
@@ -66,6 +61,19 @@ public class PathMigrator implements Migrator {
             return targetRoot.resolve(String.join("/", photoResolver.resolveList(photo)));
         } catch (NullPointerException e) {
             return targetRoot.resolve("Other");
+        }
+    }
+
+    private void migratePhoto(Path target, Photo photo) throws IOException {
+        Path photoLocation = target.resolve(photo.name());
+        if (migratorOption == Option.DRY_RUN) {
+            LOG.info("Dry-run {} to {}", photo.path(), photoLocation);
+            return;
+        }
+        Files.createDirectories(target);
+        switch (migratorOption) {
+            case MOVE -> Files.move(photo.path(), photoLocation, COPY_OPTION);
+            case COPY -> Files.copy(photo.path(), photoLocation, COPY_OPTION);
         }
     }
 

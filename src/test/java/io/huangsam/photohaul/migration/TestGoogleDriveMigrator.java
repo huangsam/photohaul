@@ -3,7 +3,6 @@ package io.huangsam.photohaul.migration;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
-import io.huangsam.photohaul.TestPathBase;
 import io.huangsam.photohaul.traversal.PhotoPathVisitor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,12 +12,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.io.IOException;
 import java.util.List;
 
+import static io.huangsam.photohaul.TestHelper.getStaticResources;
+import static io.huangsam.photohaul.TestHelper.pathVisitor;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class TestGoogleDriveMigrator extends TestPathBase {
+public class TestGoogleDriveMigrator {
     @Mock
     Drive driveMock;
 

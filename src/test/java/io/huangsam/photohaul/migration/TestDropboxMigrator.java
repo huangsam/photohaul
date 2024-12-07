@@ -5,7 +5,6 @@ import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.DbxUserFilesRequests;
 import com.dropbox.core.v2.files.ListFolderResult;
 import com.dropbox.core.v2.files.UploadBuilder;
-import io.huangsam.photohaul.TestPathBase;
 import io.huangsam.photohaul.traversal.PhotoPathVisitor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,13 +13,15 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
+import static io.huangsam.photohaul.TestHelper.getStaticResources;
+import static io.huangsam.photohaul.TestHelper.pathVisitor;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class TestDropboxMigrator extends TestPathBase {
+public class TestDropboxMigrator {
     @Mock
     DbxClientV2 clientMock;
 

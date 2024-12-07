@@ -1,6 +1,5 @@
 package io.huangsam.photohaul.migration;
 
-import io.huangsam.photohaul.TestPathBase;
 import io.huangsam.photohaul.model.Photo;
 import io.huangsam.photohaul.traversal.PhotoPathBuilder;
 import org.junit.jupiter.api.BeforeAll;
@@ -8,10 +7,11 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
 
+import static io.huangsam.photohaul.TestHelper.getStaticResources;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class TestPhotoFunction extends TestPathBase {
+public class TestPhotoFunction {
     private static Photo BAUER_PHOTO;
 
     @BeforeAll

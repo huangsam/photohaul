@@ -1,13 +1,13 @@
 package io.huangsam.photohaul.traversal;
 
-import io.huangsam.photohaul.TestPathBase;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
 
+import static io.huangsam.photohaul.TestHelper.getStaticResources;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class TestPathRule extends TestPathBase {
+public class TestPathRule {
     @Test
     void testIsValidExtension() {
         Path saladPath = getStaticResources().resolve("salad.jpg");

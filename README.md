@@ -2,7 +2,8 @@
 
 Effortless photo management.
 
-Can reorganize 10K+ photos (30 GB) in under 10 seconds!
+- Reorganize 10K+ photos (30 GB) in under 10 seconds!
+- Migrate photos locally and to the cloud
 
 Say goodbye to photo clutter - 👋 + 🚀
 

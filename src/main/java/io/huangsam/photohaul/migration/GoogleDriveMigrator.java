@@ -16,6 +16,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 public class GoogleDriveMigrator implements Migrator {
     private static final Logger LOG = getLogger(GoogleDriveMigrator.class);
+    private static final String MIME_FOLDER = "application/vnd.google-apps.folder";
 
     private final String targetRoot;
     private final Drive driveService;
@@ -70,7 +71,7 @@ public class GoogleDriveMigrator implements Migrator {
     }
 
     private void createDriveFolder(String targetPath) throws IOException {
-        String query = '\'' + targetPath + '\'' + " in parents and mimeType='application/vnd.google-apps.folder'";
+        String query = String.format("'%s' in parents and mimeType='%s'", targetPath, MIME_FOLDER);
         FileList result = driveService.files().list().setQ(query).execute();
         if (result.getFiles().isEmpty()) {
             return;
@@ -78,7 +79,7 @@ public class GoogleDriveMigrator implements Migrator {
 
         File folderMetadata = new File();
         folderMetadata.setName(targetPath);
-        folderMetadata.setMimeType("application/vnd.google-apps.folder");
+        folderMetadata.setMimeType(MIME_FOLDER);
 
         File folderSuccess = driveService.files().create(folderMetadata)
                 .setFields("id")

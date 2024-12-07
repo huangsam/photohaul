@@ -7,6 +7,8 @@ Effortless photo management.
 
 Say goodbye to photo clutter - 👋 + 🚀
 
+![Sunny Bunny Tidy Up](sunny-bunny-tidy-up.webp)
+
 ## Motivation
 
 As an enthusiast photographer, I use Adobe Lightroom to organize my SLR photos

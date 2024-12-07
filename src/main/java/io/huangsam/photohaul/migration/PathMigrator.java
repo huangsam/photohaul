@@ -78,8 +78,23 @@ public class PathMigrator implements Migrator {
     }
 
     public enum Option {
+        /**
+         * Moves the photo from its original location to the target path.
+         * This option permanently removes the photo from its original location.
+         */
         MOVE,
+
+        /**
+         * Copies the photo from its original location to the target path.
+         * The original photo remains untouched.
+         */
         COPY,
+
+        /**
+         * Performs a dry run of the migration process.
+         * No files are actually moved or copied.
+         * Logs information about where each photo would be placed.
+         */
         DRY_RUN
     }
 }

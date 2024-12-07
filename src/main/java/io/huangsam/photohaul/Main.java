@@ -21,7 +21,7 @@ public class Main {
     private static final Logger LOG = getLogger(Main.class);
     private static final Settings SETTINGS = new Settings("config.properties");
 
-    public static void main(String[] args) throws MigratorException {
+    public static void main(String[] args) {
         PhotoPathVisitor pathVisitor = new PhotoPathVisitor();
 
         PathRuleSet pathRuleSet = new PathRuleSet(List.of(
@@ -36,9 +36,12 @@ public class Main {
         PhotoResolver photoResolver = new PhotoResolver(List.of(PhotoFunction.yearTaken()));
 
         MigratorFactory migratorFactory = new MigratorFactory();
-        Migrator migrator = migratorFactory.make(migratorMode, SETTINGS, photoResolver);
-        migrator.migratePhotos(pathVisitor.getPhotos());
-
-        LOG.info("Finish with success={} failure={}", migrator.getSuccessCount(), migrator.getFailureCount());
+        try {
+            Migrator migrator = migratorFactory.make(migratorMode, SETTINGS, photoResolver);
+            migrator.migratePhotos(pathVisitor.getPhotos());
+            LOG.info("Finish with success={} failure={}", migrator.getSuccessCount(), migrator.getFailureCount());
+        } catch (MigratorException e) {
+            LOG.error("Cannot migrate via {} mode: {}", e.getMode(), e.getMessage());
+        }
     }
 }

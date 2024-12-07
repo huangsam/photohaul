@@ -27,7 +27,7 @@ public class MigratorFactory {
      * @param settings Application settings
      * @param resolver Photo resolver
      * @return {@code Migrator} instance
-     * @throws MigratorException Due to bad Drive setup
+     * @throws MigratorException due to bad setup
      */
     public Migrator make(@NotNull MigratorMode mode, Settings settings, PhotoResolver resolver) throws MigratorException {
         return switch (mode) {

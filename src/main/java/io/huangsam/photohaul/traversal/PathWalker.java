@@ -19,13 +19,13 @@ import static org.slf4j.LoggerFactory.getLogger;
  * {@code PhotoPathVisitor} for further processing. This visitor can then
  * be used for actions like copying, moving, or analyzing the file.
  */
-public class PathTraversal {
-    private static final Logger LOG = getLogger(PathTraversal.class);
+public class PathWalker {
+    private static final Logger LOG = getLogger(PathWalker.class);
 
     private final Path sourceRoot;
     private final PathRuleSet pathRuleSet;
 
-    public PathTraversal(Path sourceRoot, PathRuleSet pathRuleSet) {
+    public PathWalker(Path sourceRoot, PathRuleSet pathRuleSet) {
         this.sourceRoot = sourceRoot;
         this.pathRuleSet = pathRuleSet;
     }

@@ -11,7 +11,7 @@ import io.huangsam.photohaul.migration.PhotoResolver;
 import io.huangsam.photohaul.migration.Migrator;
 import io.huangsam.photohaul.traversal.PathRule;
 import io.huangsam.photohaul.traversal.PathRuleSet;
-import io.huangsam.photohaul.traversal.PathTraversal;
+import io.huangsam.photohaul.traversal.PathWalker;
 import io.huangsam.photohaul.traversal.PhotoPathVisitor;
 import org.slf4j.Logger;
 
@@ -29,8 +29,8 @@ public class Main {
                 PathRule.validExtensions().or(PathRule.isImageContent()),
                 PathRule.minimumBytes(100L)));
 
-        PathTraversal pathTraversal = new PathTraversal(SETTINGS.getSourceRootPath(), pathRuleSet);
-        pathTraversal.traverse(pathVisitor);
+        PathWalker pathWalker = new PathWalker(SETTINGS.getSourceRootPath(), pathRuleSet);
+        pathWalker.traverse(pathVisitor);
 
         MigratorMode migratorMode = MigratorMode.PATH;
         PhotoResolver photoResolver = new PhotoResolver(List.of(PhotoFunction.yearTaken()));

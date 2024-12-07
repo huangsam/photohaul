@@ -8,13 +8,13 @@ import static io.huangsam.photohaul.TestHelper.getStaticResources;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class TestPathTraversal {
+public class TestPathWalker {
     @Test
     void testTraverseWithPhotos() {
         PhotoPathVisitor pathVisitor = new PhotoPathVisitor();
         PathRuleSet pathRuleSet = new PathRuleSet(List.of(PathRule.validExtensions()));
-        PathTraversal pathTraversal = new PathTraversal(getStaticResources(), pathRuleSet);
-        pathTraversal.traverse(pathVisitor);
+        PathWalker pathWalker = new PathWalker(getStaticResources(), pathRuleSet);
+        pathWalker.traverse(pathVisitor);
         assertFalse(pathVisitor.getPhotos().isEmpty());
     }
 
@@ -22,8 +22,8 @@ public class TestPathTraversal {
     void testTraverseWithNoPhotos() {
         PhotoPathVisitor pathVisitor = new PhotoPathVisitor();
         PathRuleSet pathRuleSet = new PathRuleSet(List.of(PathRule.minimumBytes(100_000_000L)));
-        PathTraversal pathTraversal = new PathTraversal(getStaticResources(), pathRuleSet);
-        pathTraversal.traverse(pathVisitor);
+        PathWalker pathWalker = new PathWalker(getStaticResources(), pathRuleSet);
+        pathWalker.traverse(pathVisitor);
         assertTrue(pathVisitor.getPhotos().isEmpty());
     }
 }

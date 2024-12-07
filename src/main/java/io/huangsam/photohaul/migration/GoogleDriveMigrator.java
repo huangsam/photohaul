@@ -36,18 +36,8 @@ public class GoogleDriveMigrator implements Migrator {
             String targetPath = getTargetPath(photo);
             LOG.trace("Move {} to {}", photo.name(), targetPath);
             try {
-                File fileMetadata = new File();
-                fileMetadata.setName(photo.name());
-
-                String contentType = Files.probeContentType(photo.path());
-                java.io.File photoFile = new java.io.File(photo.path().toString());
-                FileContent mediaContent = new FileContent(contentType, photoFile);
-
-                File fileSuccess = driveService.files().create(fileMetadata, mediaContent)
-                        .setFields("id")
-                        .execute();
-
-                LOG.trace("File uploaded: {}", fileSuccess.getId());
+                createDriveFolder(targetPath);
+                createDrivePhoto(targetPath, photo);
                 successCount++;
             } catch (IOException | NullPointerException e) {
                 LOG.error("Cannot move {}: {}", photo.name(), e.getMessage());
@@ -76,5 +66,32 @@ public class GoogleDriveMigrator implements Migrator {
         } catch (NullPointerException e) {
             return targetRoot + "/Other";
         }
+    }
+
+    private void createDriveFolder(String targetPath) throws IOException {
+        File folderMetadata = new File();
+        folderMetadata.setName(targetPath);
+        folderMetadata.setMimeType("application/vnd.google-apps.folder");
+
+        File folderSuccess = driveService.files().create(folderMetadata)
+                .setFields("id")
+                .execute();
+
+        LOG.trace("Folder created: {}", folderSuccess.getId());
+    }
+
+    private void createDrivePhoto(String targetPath, @NotNull Photo photo) throws IOException {
+        File photoMetadata = new File();
+        photoMetadata.setName(targetPath + "/" + photo.name());
+
+        String contentType = Files.probeContentType(photo.path());
+        java.io.File photoFile = new java.io.File(photo.path().toString());
+        FileContent photoContent = new FileContent(contentType, photoFile);
+
+        File photoSuccess = driveService.files().create(photoMetadata, photoContent)
+                .setFields("id")
+                .execute();
+
+        LOG.trace("Photo created: {}", photoSuccess.getId());
     }
 }

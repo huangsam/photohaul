@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -45,5 +46,11 @@ public class TestDropboxMigrator extends TestPathBase {
 
         assertEquals(2, migrator.getSuccessCount());
         assertEquals(0, migrator.getFailureCount());
+    }
+
+    @Test
+    void testDropboxSetupNotWorking() {
+        assertThrows(IllegalArgumentException.class, () ->
+                new DropboxMigrator("NoSlashAtStart", clientMock, new PhotoResolver(List.of())));
     }
 }

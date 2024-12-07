@@ -14,7 +14,7 @@ with custom file names and folder structures.
 When I wanted to apply those same patterns to old photos, I ended up getting
 frustrated with the tooling that exists to manage them.
 
-If I wanted to migrate my old photos and new photos over to a NAS or a cloud
+If I also wanted to migrate my old photos and new photos over to a NAS or a cloud
 storage provider like Dropbox or Google Drive, it would likely involve a bunch
 of manual drag + drop operations.
 

@@ -13,9 +13,13 @@ import java.time.format.DateTimeFormatter;
 /**
  * Represents a photo with its metadata.
  *
- * <p> Note that this metadata is not guaranteed for all photos. This metadata exists on
- * RAW formats from providers such as Nikon, Canon and Sony. It also exists on JPG/JPEG
- * files which were recently processed from Adobe Lightroom.
+ * <p> Note that this metadata is not guaranteed for all photos. This metadata
+ * exists on the following assets:
+ *
+ * <ul>
+ *     <li>RAW formats from providers such as Nikon, Canon and Sony</li>
+ *     <li>JPG/JPEG files which were generated from Adobe Lightroom</li>
+ * </ul>
  */
 public record Photo(
         Path path,

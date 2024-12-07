@@ -10,7 +10,6 @@ import io.huangsam.photohaul.migration.MigratorMode;
 import io.huangsam.photohaul.migration.PhotoFunction;
 import io.huangsam.photohaul.migration.PhotoResolver;
 import io.huangsam.photohaul.migration.Migrator;
-import io.huangsam.photohaul.model.Photo;
 import io.huangsam.photohaul.traversal.PathRule;
 import io.huangsam.photohaul.traversal.PathRuleSet;
 import io.huangsam.photohaul.traversal.PathTraversal;
@@ -34,8 +33,8 @@ public class Main {
         PathTraversal pathTraversal = new PathTraversal(SETTINGS.getSourceRootPath(), pathRuleSet);
         pathTraversal.traverse(pathVisitor);
 
-        MigratorMode migratorMode = MigratorMode.GOOGLE_DRIVE;
-        PhotoResolver photoResolver = new PhotoResolver(List.of(PhotoFunction.yearTaken(), Photo::model));
+        MigratorMode migratorMode = MigratorMode.PATH;
+        PhotoResolver photoResolver = new PhotoResolver(List.of(PhotoFunction.yearTaken()));
 
         MigratorFactory migratorFactory = new MigratorFactory();
         Migrator migrator = migratorFactory.make(migratorMode, SETTINGS, photoResolver);

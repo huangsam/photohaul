@@ -1,6 +1,6 @@
 # Credits
 
-Ensure that all photos used for unit testing are accounted for:
+Ensure that all photos are accounted for:
 
 `src/test/resources/static/school.png`
 

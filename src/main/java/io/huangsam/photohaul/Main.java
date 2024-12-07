@@ -29,6 +29,7 @@ public class Main {
                 PathRule.validExtensions().or(PathRule.isImageContent()),
                 PathRule.minimumBytes(100L)));
 
+
         PathTraversal pathTraversal = new PathTraversal(SETTINGS.getSourceRootPath(), pathRuleSet);
         pathTraversal.traverse(pathVisitor);
 

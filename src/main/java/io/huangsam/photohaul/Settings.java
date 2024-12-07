@@ -42,8 +42,4 @@ public class Settings {
     public Path getSourceRootPath() {
         return Paths.get(System.getProperty("user.home")).resolve(getValue("source.root"));
     }
-
-    public Path getTargetRootPath() {
-        return Paths.get(System.getProperty("user.home")).resolve(getValue("target.root"));
-    }
 }

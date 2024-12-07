@@ -16,6 +16,8 @@ import org.jetbrains.annotations.NotNull;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
 import java.util.List;
 
@@ -39,9 +41,10 @@ public class MigratorFactory {
 
     @NotNull
     private PathMigrator makePath(@NotNull Settings settings, PhotoResolver resolver) {
-        String option = settings.getValue("path.option", "MOVE");
-        PathMigrator.Option migratorOption = PathMigrator.Option.valueOf(option.toUpperCase());
-        return new PathMigrator(settings.getTargetRootPath(), migratorOption, resolver);
+        Path target = Paths.get(System.getProperty("user.home"));
+        target = target.resolve(settings.getValue("target.root"));
+        String optionValue = settings.getValue("path.option", "MOVE").toUpperCase();
+        return new PathMigrator(target, PathMigrator.Option.valueOf(optionValue), resolver);
     }
 
     @NotNull

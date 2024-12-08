@@ -39,7 +39,7 @@ public class Settings {
         return (value == null) ? other : value;
     }
 
-    public Path getSourceRootPath() {
+    public Path getSourcePath() {
         return Paths.get(System.getProperty("user.home")).resolve(getValue("path.source"));
     }
 }

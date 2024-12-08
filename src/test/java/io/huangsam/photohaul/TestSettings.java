@@ -8,9 +8,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestSettings {
     @Test
-    void testGetSourceRootPath() {
+    void testGetSourcePath() {
         Settings settings = new Settings("path-example.properties");
-        assertTrue(settings.getSourceRootPath().endsWith("Dummy/Source"));
+        assertTrue(settings.getSourcePath().endsWith("Dummy/Source"));
     }
 
     @Test

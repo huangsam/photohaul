@@ -29,7 +29,7 @@ public class Main {
                 PathRule.validExtensions().or(PathRule.isImageContent()),
                 PathRule.minimumBytes(100L)));
 
-        PathWalker pathWalker = new PathWalker(SETTINGS.getSourceRootPath(), pathRuleSet);
+        PathWalker pathWalker = new PathWalker(SETTINGS.getSourcePath(), pathRuleSet);
         pathWalker.traverse(pathVisitor);
 
         MigratorMode migratorMode = MigratorMode.PATH;

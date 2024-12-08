@@ -42,10 +42,10 @@ Prerequisites:
 Steps:
 
 1. Run `gradle build` in your terminal to build the application
-2. Set `PathRuleSet` to filter by extension, file size, etc.
+2. Set `PathRuleSet` to filter photos by extension, file size, etc.
 3. Set `MigratorMode` to `PATH`, `DROPBOX` or `GOOGLE_DRIVE`
-4. Set `PhotoResolver` to define how photos are organized
-5. Set appropriate parameters in `config.properties`
+4. Set `PhotoResolver` to adjust folder structure for photos
+5. Fill relevant parameters in `config.properties`
 6. Run `gradle run` in your terminal to start the magic!
 
 Then sit back and rediscover your memories! 😎 + 🍹 + 🌴

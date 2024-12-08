@@ -1,27 +1,13 @@
 package io.huangsam.photohaul.migration;
 
 import io.huangsam.photohaul.model.Photo;
-import io.huangsam.photohaul.traversal.PhotoPathBuilder;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.nio.file.Path;
 import java.util.List;
 
-import static io.huangsam.photohaul.TestHelper.getStaticResources;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TestPhotoResolver {
-    private static Photo BAUER_PHOTO;
-
-    @BeforeAll
-    static void setUp() {
-        Path bauerPath = getStaticResources().resolve("bauerlite.jpg");
-        PhotoPathBuilder pb = new PhotoPathBuilder();
-        pb.fillInfo(bauerPath);
-        BAUER_PHOTO = pb.build();
-    }
-
+public class TestPhotoResolver extends TestPhotoBase {
     @Test
     void testResolveListOnMakeThenYear() {
         PhotoResolver photoResolver = new PhotoResolver(List.of(Photo::make, PhotoFunction.yearTaken()));

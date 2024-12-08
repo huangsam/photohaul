@@ -27,6 +27,6 @@ public class TestHelper {
     }
 
     public static PathMigrator pathMover(Path destination) {
-        return new PathMigrator(destination, PathMigrator.Option.DRY_RUN, new PhotoResolver(List.of()));
+        return new PathMigrator(destination, PathMigrator.Action.DRY_RUN, new PhotoResolver(List.of()));
     }
 }

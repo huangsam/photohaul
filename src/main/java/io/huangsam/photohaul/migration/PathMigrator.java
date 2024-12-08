@@ -18,15 +18,15 @@ public class PathMigrator implements Migrator {
     private static final CopyOption COPY_OPTION = StandardCopyOption.REPLACE_EXISTING;
 
     private final Path targetRoot;
-    private final Option migratorOption;
+    private final Action migratorAction;
     private final PhotoResolver photoResolver;
 
     private long successCount = 0L;
     private long failureCount = 0L;
 
-    public PathMigrator(Path target, Option option, PhotoResolver resolver) {
+    public PathMigrator(Path target, Action action, PhotoResolver resolver) {
         targetRoot = target;
-        migratorOption = option;
+        migratorAction = action;
         photoResolver = resolver;
     }
 
@@ -66,21 +66,21 @@ public class PathMigrator implements Migrator {
 
     private void migratePhoto(Path target, Photo photo) throws IOException {
         Path photoLocation = target.resolve(photo.name());
-        if (migratorOption == Option.DRY_RUN) {
+        if (migratorAction == Action.DRY_RUN) {
             LOG.info("Dry-run {} to {}", photo.path(), photoLocation);
             return;
         }
         Files.createDirectories(target);
-        switch (migratorOption) {
+        switch (migratorAction) {
             case MOVE -> Files.move(photo.path(), photoLocation, COPY_OPTION);
             case COPY -> Files.copy(photo.path(), photoLocation, COPY_OPTION);
         }
     }
 
-    public enum Option {
+    public enum Action {
         /**
          * Move the photo from its original location to the target path.
-         * This option permanently removes the photo from its original location.
+         * Permanently removes the photo from its original location.
          */
         MOVE,
 

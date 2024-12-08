@@ -43,8 +43,8 @@ public class MigratorFactory {
     private PathMigrator makePath(@NotNull Settings settings, PhotoResolver resolver) {
         Path target = Paths.get(System.getProperty("user.home"));
         target = target.resolve(settings.getValue("target.root"));
-        String optionValue = settings.getValue("path.option", "MOVE").toUpperCase();
-        return new PathMigrator(target, PathMigrator.Option.valueOf(optionValue), resolver);
+        String actionValue = settings.getValue("path.action", "MOVE").toUpperCase();
+        return new PathMigrator(target, PathMigrator.Action.valueOf(actionValue), resolver);
     }
 
     @NotNull

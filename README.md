@@ -15,10 +15,10 @@ As an enthusiast photographer, I use Adobe Lightroom to organize my edited
 SLR photos with custom file names and folder structures. This has worked
 well for me since 2015, when I started getting serious about photography.
 
-I want to apply those same patterns to old photos, so that it becomes
-easier for me to access my precious memories. Unfortunately, Lightroom
-file and folder settings cannot apply to photos after they have been
-exported. And writing bespoke scripts for these photos is no fun!
+I want to apply those same patterns to old photos, so that it is easier
+for me to access my precious memories. Unfortunately, Lightroom settings
+cannot apply to photos after they have been exported. And writing bespoke
+scripts to manage these photos is no fun!
 
 If I also want to migrate my photos over to a NAS or a cloud provider
 like Dropbox or Google Drive, it typically involves a bunch of manual

@@ -21,9 +21,8 @@ cannot apply to photos after they are exported. And writing bespoke
 scripts to manage these photos is no fun!
 
 If I also want to migrate my photos over to a NAS or a cloud provider
-like Google Drive, it typically involves a bunch of manual drag + drop
-operations. After a few dozen times, I get tired of doing the same thing
-over and over again.
+like Google Drive, it typically involves many drag + drop operations.
+After a few dozen times, I get tired of doing it again and again.
 
 ## Value
 

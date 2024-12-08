@@ -1,6 +1,6 @@
 # Credits
 
-Ensure that all photos are accounted for:
+Ensure that all photos used in this project are credited properly.
 
 ## README photos
 

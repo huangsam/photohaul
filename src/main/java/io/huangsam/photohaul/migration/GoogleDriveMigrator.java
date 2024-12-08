@@ -43,7 +43,7 @@ public class GoogleDriveMigrator implements Migrator {
             try {
                 String folderId = createDriveFolder(targetRoot, targetPath);
                 createDrivePhoto(folderId, photo);
-            } catch (IOException | NullPointerException e) {
+            } catch (IOException e) {
                 LOG.error("Cannot move {}: {}", photo.name(), e.getMessage());
                 failureCount++;
             }
@@ -105,6 +105,11 @@ public class GoogleDriveMigrator implements Migrator {
         photoMetadata.setParents(List.of(folderId));
 
         String contentType = Files.probeContentType(photo.path());
+        if (contentType == null) {
+            failureCount++;
+            return;
+        }
+
         java.io.File photoFile = new java.io.File(photo.path().toString());
         FileContent photoContent = new FileContent(contentType, photoFile);
 

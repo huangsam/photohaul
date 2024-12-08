@@ -24,8 +24,9 @@ public class PathRule {
     public static Predicate<Path> isImageContent() {
         return path -> {
             try {
-                return Files.probeContentType(path).startsWith("image/");
-            } catch (IOException | NullPointerException e) {
+                String contentType = Files.probeContentType(path);
+                return contentType != null && contentType.startsWith("image/");
+            } catch (IOException e) {
                 return false;
             }
         };

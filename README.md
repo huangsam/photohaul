@@ -25,12 +25,14 @@ like Dropbox or Google Drive, it typically involves a bunch of manual
 drag + drop operations. After a few dozen times, I get tired of doing
 the same thing over and over again.
 
-Photohaul addresses these pain points by providing a solution to organize
-and migrate photo collections. It lets photographers filter the photos
-that they will organize. It gives them the freedom to customize the folder
-structure of their photos by dimensions such as year taken and camera make.
-Last but not least, it allows them to choose the medium they want to store
-those photos on, whether it is a local resource or a cloud resource.
+## Value
+
+Photohaul addresses the pain points above by providing a central hub to
+organize and migrate photo collections. It lets photographers choose the
+photos that they will organize. It gives them the freedom to customize
+the folder structure of their photos by dimensions such as year taken
+and camera make. Last but not least, it allows them to choose the medium
+they want to store photos on: local, Dropbox, Google Drive.
 
 ## Getting started
 

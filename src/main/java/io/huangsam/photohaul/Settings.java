@@ -21,14 +21,14 @@ public class Settings {
         try (InputStream input = getClass().getClassLoader().getResourceAsStream(name)) {
             properties.load(input);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            LOG.error("Cannot find settings file {}", name);
         }
     }
 
     public String getValue(@NotNull String key) {
         String value = properties.getProperty(key);
         if (value == null) {
-            LOG.error("Cannot find setting {}", key);
+            LOG.error("Cannot find settings key {}", key);
             throw new NullPointerException();
         }
         return value;

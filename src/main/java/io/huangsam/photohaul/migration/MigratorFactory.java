@@ -23,7 +23,7 @@ import java.util.List;
 
 public class MigratorFactory {
     /**
-     * Creates instance for migrating photos.
+     * Create instance for migrating photos.
      *
      * @param mode migrator mode
      * @param settings application settings

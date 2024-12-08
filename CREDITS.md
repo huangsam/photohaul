@@ -2,6 +2,17 @@
 
 Ensure that all photos are accounted for:
 
+## README photos
+
+`sunny-bunny-tidy-up.webp`
+
+- Domain: https://giphy.com
+- Link: https://giphy.com/gifs/SunnyBunniesOfficial-sunnybunnies-sunny-bunnies-sunnybunny-cO9GVZKRIov75COLNb
+- Author: Sunny Bunnies
+- Author ID: SunnyBunniesOfficial
+
+## Test photos
+
 `src/test/resources/static/school.png`
 
 - Domain: https://www.flaticon.com
@@ -21,10 +32,3 @@ Ensure that all photos are accounted for:
 - Domain: https://github.com
 - Author: Sam Huang
 - Author ID: huangsam
-
-`sunny-bunny-tidy-up.webp`
-
-- Domain: https://giphy.com
-- Link: https://giphy.com/gifs/SunnyBunniesOfficial-sunnybunnies-sunny-bunnies-sunnybunny-cO9GVZKRIov75COLNb
-- Author: Sunny Bunnies
-- Author ID: SunnyBunniesOfficial

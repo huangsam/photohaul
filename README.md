@@ -15,7 +15,7 @@ As an enthusiast photographer, I use Adobe Lightroom to organize my edited
 SLR photos with custom file names and folder structures. This has worked
 well for me since 2015, when I started getting serious about photography.
 
-I want to apply those same patterns to old photos, so that it would be
+I want to apply those same patterns to old photos, so that it becomes
 easier for me to access my precious memories. Unfortunately, Lightroom
 file and folder settings cannot apply to photos after they have been
 exported. And writing bespoke scripts for these photos is no fun!
@@ -25,7 +25,7 @@ like Dropbox or Google Drive, it typically involves a bunch of manual
 drag + drop operations. After a few dozen times, I get tired of doing
 the same thing on my browser over and over again.
 
-Photohaul solves these problems by providing an automated solution to
+Photohaul addresses these problems by providing an automated solution to
 organize and migrate your photo collections.
 
 ## Getting started

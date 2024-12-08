@@ -18,7 +18,7 @@ well for me since 2015, when I started getting serious about photography.
 I want to apply those same patterns to old photos, so that it would be
 easier for me to access my precious memories. Unfortunately, Lightroom
 file and folder settings cannot apply to photos after they have been
-exported. And writing bespoke scripts for these tasks is no fun!
+exported. And writing bespoke scripts for these photos is no fun!
 
 If I also want to migrate my photos over to a NAS or a cloud provider
 like Dropbox or Google Drive, it typically involves a bunch of manual

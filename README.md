@@ -25,8 +25,8 @@ like Dropbox or Google Drive, it typically involves a bunch of manual
 drag + drop operations. After a few dozen times, I get tired of doing
 the same thing on my browser over and over again.
 
-Photohaul addresses these problems by providing an automated solution to
-organize and migrate your photo collections.
+Photohaul addresses these pain points by providing an automated solution
+to organize and migrate your photo collections.
 
 ## Getting started
 

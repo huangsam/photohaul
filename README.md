@@ -17,13 +17,13 @@ for me since 2015, when I started getting serious about photography.
 
 I want to apply those same patterns to old photos, so that it is easier
 for me to access my precious memories. Unfortunately, Lightroom settings
-cannot apply to photos after they have been exported. And writing bespoke
+cannot apply to photos after they are exported. And writing bespoke
 scripts to manage these photos is no fun!
 
 If I also want to migrate my photos over to a NAS or a cloud provider
 like Dropbox or Google Drive, it typically involves a bunch of manual
 drag + drop operations. After a few dozen times, I get tired of doing
-the same thing on my browser over and over again.
+the same thing over and over again.
 
 Photohaul addresses these pain points by providing a solution to organize
 and migrate photo collections. It lets photographers filter the photos

@@ -11,9 +11,9 @@ Say goodbye to photo clutter - 👋 + 🚀
 
 ## Motivation
 
-As an enthusiast photographer, I use Adobe Lightroom to organize my edited
-SLR photos with custom file names and folder structures. This has worked
-well for me since 2015, when I started getting serious about photography.
+As an avid photographer, I use Adobe Lightroom to organize my edited SLR
+photos with custom file names and folder structures. This has worked well
+for me since 2015, when I started getting serious about photography.
 
 I want to apply those same patterns to old photos, so that it is easier
 for me to access my precious memories. Unfortunately, Lightroom settings

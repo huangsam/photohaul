@@ -16,7 +16,7 @@ public class TestSettings {
     @Test
     void testGetValueIsValid() {
         Settings settings = new Settings("dbx-example.properties");
-        assertTrue(settings.getValue("target.root").startsWith("/"));
+        assertTrue(settings.getValue("dbx.target").startsWith("/"));
     }
 
     @Test

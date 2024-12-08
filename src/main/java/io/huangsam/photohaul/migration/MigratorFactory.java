@@ -42,14 +42,14 @@ public class MigratorFactory {
     @NotNull
     private PathMigrator makePath(@NotNull Settings settings, PhotoResolver resolver) {
         Path target = Paths.get(System.getProperty("user.home"));
-        target = target.resolve(settings.getValue("target.root"));
+        target = target.resolve(settings.getValue("path.target"));
         String actionValue = settings.getValue("path.action", "MOVE").toUpperCase();
         return new PathMigrator(target, PathMigrator.Action.valueOf(actionValue), resolver);
     }
 
     @NotNull
     private DropboxMigrator makeDropbox(@NotNull Settings settings, PhotoResolver resolver) {
-        String target = settings.getValue("target.root");
+        String target = settings.getValue("dbx.target");
         DbxRequestConfig config = DbxRequestConfig.newBuilder(settings.getValue("dbx.clientId")).build();
         DbxClientV2 client = new DbxClientV2(config, settings.getValue("dbx.accessToken"));
         return new DropboxMigrator(target, client, resolver);
@@ -74,7 +74,7 @@ public class MigratorFactory {
                     .setApplicationName(app)
                     .build();
 
-            return new GoogleDriveMigrator(settings.getValue("target.root"), service, resolver);
+            return new GoogleDriveMigrator(settings.getValue("drive.target"), service, resolver);
         } catch (GeneralSecurityException | IOException e) {
             throw new MigratorException(e.getMessage(), MigratorMode.GOOGLE_DRIVE);
         }

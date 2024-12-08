@@ -31,7 +31,7 @@ public class PathWalker {
     }
 
     /**
-     * Traverses source directory recursively, passing relevant files to
+     * Traverse source directory recursively, passing relevant files to
      * the path visitor for aggregation purposes.
      *
      * @param pathVisitor visitor to process matching files

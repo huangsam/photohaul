@@ -7,6 +7,7 @@ import java.util.List;
 
 import static io.huangsam.photohaul.migration.TestPhotoBase.BAUER_PHOTO;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestPhotoResolver {
     public static final PhotoResolver RESOLVER = new PhotoResolver(
@@ -30,5 +31,10 @@ public class TestPhotoResolver {
     void testResolveStringOnMakeYearCustom() {
         String resolvedString = RESOLVER.resolveString(BAUER_PHOTO, " - ");
         assertEquals("Canon - 2023", resolvedString);
+    }
+
+    @Test
+    void testDefaultResolverIsNotEmpty() {
+        assertTrue(PhotoResolver.getDefault().size() > 0);
     }
 }

@@ -1,15 +1,10 @@
 package io.huangsam.photohaul;
 
-import java.nio.file.Files;
-import java.util.List;
-
 import io.huangsam.photohaul.migration.MigratorException;
 import io.huangsam.photohaul.migration.MigratorFactory;
 import io.huangsam.photohaul.migration.MigratorMode;
-import io.huangsam.photohaul.migration.PhotoFunction;
 import io.huangsam.photohaul.migration.PhotoResolver;
 import io.huangsam.photohaul.migration.Migrator;
-import io.huangsam.photohaul.traversal.PathRule;
 import io.huangsam.photohaul.traversal.PathRuleSet;
 import io.huangsam.photohaul.traversal.PathWalker;
 import io.huangsam.photohaul.traversal.PhotoPathCollector;
@@ -24,16 +19,13 @@ public class Main {
     public static void main(String[] args) {
         PhotoPathCollector pathCollector = new PhotoPathCollector();
 
-        PathRuleSet pathRuleSet = new PathRuleSet(List.of(
-                Files::isRegularFile,
-                PathRule.validExtensions().or(PathRule.isImageContent()),
-                PathRule.minimumBytes(100L)));
+        PathRuleSet pathRuleSet = PathRuleSet.getDefault();
 
         PathWalker pathWalker = new PathWalker(SETTINGS.getSourcePath(), pathRuleSet);
         pathWalker.traverse(pathCollector);
 
         MigratorMode migratorMode = MigratorMode.PATH;
-        PhotoResolver photoResolver = new PhotoResolver(List.of(PhotoFunction.yearTaken()));
+        PhotoResolver photoResolver = PhotoResolver.getDefault();
 
         MigratorFactory migratorFactory = new MigratorFactory();
         try {

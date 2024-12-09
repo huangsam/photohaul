@@ -31,4 +31,9 @@ public class TestPathRuleSet {
         PathRuleSet pathRuleSet = new PathRuleSet(List.of(PathRule.validExtensions()));
         assertFalse(pathRuleSet.matches(samplePath));
     }
+
+    @Test
+    void testDefaultRuleSetIsNotEmpty() {
+        assertTrue(PathRuleSet.getDefault().size() > 0);
+    }
 }

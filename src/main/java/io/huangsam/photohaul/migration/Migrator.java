@@ -20,8 +20,7 @@ public interface Migrator {
      * <ul>
      *     <li>Identify target location for photo</li>
      *     <li>Migrate photo to desired location</li>
-     *     <li>Record successful photo operations</li>
-     *     <li>Record failed photo operations</li>
+     *     <li>Track migration as success or failure</li>
      * </ul>
      *
      * @param photos collection of photo records

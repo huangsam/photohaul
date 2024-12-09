@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class TestSettings {
     @Test
     void testGetSourcePath() {
-        Settings settings = new Settings("path-example.properties");
+        Settings settings = Settings.getDefault();
         assertTrue(settings.getSourcePath().endsWith("Dummy/Source"));
     }
 

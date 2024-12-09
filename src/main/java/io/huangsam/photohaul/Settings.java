@@ -16,6 +16,10 @@ public class Settings {
 
     private final Properties properties;
 
+    public static Settings getDefault() {
+        return new Settings("config.properties");
+    }
+
     public Settings(String name) {
         properties = new Properties();
         try (InputStream input = getClass().getClassLoader().getResourceAsStream(name)) {

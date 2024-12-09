@@ -45,8 +45,9 @@ Steps:
 2. Set `PathRuleSet` to filter photos by extension, file size, etc.
 3. Set `MigratorMode` to `PATH`, `DROPBOX` or `GOOGLE_DRIVE`
 4. Set `PhotoResolver` to adjust folder structure for photos
-5. Fill relevant parameters in `config.properties`
-6. Run `gradle run` in your terminal to start the magic!
+5. Set `Settings` to your properties file in `src/main/resources`
+6. Fill relevant parameters in your properties file
+7. Run `gradle run` in your terminal to start the magic!
 
 Then sit back and rediscover your memories! 😎 + 🍹 + 🌴
 

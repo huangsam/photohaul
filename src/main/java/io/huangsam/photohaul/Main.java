@@ -14,7 +14,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 public class Main {
     private static final Logger LOG = getLogger(Main.class);
-    private static final Settings SETTINGS = new Settings("config.properties");
+    private static final Settings SETTINGS = Settings.getDefault();
 
     public static void main(String[] args) {
         PhotoPathCollector pathCollector = new PhotoPathCollector();

@@ -21,15 +21,19 @@ import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
 import java.util.List;
 
+/**
+ * A factory class for creating {@link Migrator} instances based on the desired
+ * migration strategy.
+ */
 public class MigratorFactory {
     /**
      * Create instance for migrating photos.
      *
      * @param mode migrator mode
-     * @param settings application settings
-     * @param resolver photo resolver
-     * @return {@code Migrator} instance
-     * @throws MigratorException due to bad setup
+     * @param settings settings for migration process
+     * @param resolver photo resolver for target path
+     * @return migrator instance
+     * @throws MigratorException due to setup issues
      */
     public Migrator make(@NotNull MigratorMode mode, Settings settings, PhotoResolver resolver) throws MigratorException {
         return switch (mode) {

@@ -26,6 +26,8 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.STRICT_STUBS)
 public class TestGoogleDriveMigrator {
+    private static final String TARGET_ROOT = "driveId123";
+
     @Mock
     Drive driveMock;
 
@@ -65,7 +67,7 @@ public class TestGoogleDriveMigrator {
         when(filesMock.create(any())).thenReturn(driveCreateFolderMock);
         when(driveCreateFolderMock.setFields(anyString())).thenReturn(driveCreateFolderMock);
         when(driveCreateFolderMock.execute()).thenReturn(createdFolderMock);
-        when(createdFolderMock.getId()).thenReturn("someFolder123");
+        when(createdFolderMock.getId()).thenReturn("nestedDriveId123");
 
         when(filesMock.create(any(), any())).thenReturn(driveCreatePhotoMock);
         when(driveCreatePhotoMock.setFields(anyString())).thenReturn(driveCreatePhotoMock);
@@ -73,7 +75,7 @@ public class TestGoogleDriveMigrator {
 
         List<String> names = List.of("bauerlite.jpg", "salad.jpg");
         PhotoPathCollector pathCollector = getPathCollector(getStaticResources(), names);
-        Migrator migrator = new GoogleDriveMigrator("driveId123", driveMock, PhotoResolver.getDefault());
+        Migrator migrator = new GoogleDriveMigrator(TARGET_ROOT, driveMock, PhotoResolver.getDefault());
         migrator.migratePhotos(pathCollector.getPhotos());
 
         verify(filesMock, times(4)).list();
@@ -100,7 +102,7 @@ public class TestGoogleDriveMigrator {
 
         List<String> names = List.of("bauerlite.jpg", "salad.jpg");
         PhotoPathCollector pathCollector = getPathCollector(getStaticResources(), names);
-        Migrator migrator = new GoogleDriveMigrator("driveId123", driveMock, PhotoResolver.getDefault());
+        Migrator migrator = new GoogleDriveMigrator(TARGET_ROOT, driveMock, PhotoResolver.getDefault());
         migrator.migratePhotos(pathCollector.getPhotos());
 
         verify(filesMock, times(2)).list();

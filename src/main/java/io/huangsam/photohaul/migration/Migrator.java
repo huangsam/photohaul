@@ -31,14 +31,14 @@ public interface Migrator {
     /**
      * Get success count.
      *
-     * @return number of successful migration ops
+     * @return number of successful migrations
      */
     long getSuccessCount();
 
     /**
      * Get failure count.
      *
-     * @return number of failed migration ops
+     * @return number of failed migrations
      */
     long getFailureCount();
 }

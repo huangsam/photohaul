@@ -18,9 +18,10 @@ public interface Migrator {
      * <p> For each photo record, do the following:
      *
      * <ul>
-     *     <li>Use its fields to identify target location</li>
-     *     <li>Record successful operations</li>
-     *     <li>Record failed operations</li>
+     *     <li>Identify target location for photo</li>
+     *     <li>Migrate photo to desired location</li>
+     *     <li>Record successful photo operations</li>
+     *     <li>Record failed photo operations</li>
      * </ul>
      *
      * @param photos collection of photo records

@@ -21,7 +21,7 @@ public class PhotoPathBuilder {
     private static final Logger LOG = getLogger(PhotoPathBuilder.class);
 
     private Path path;
-    private final Map<String, Object> info = new HashMap<>();
+    private final Map<String, String> info = new HashMap<>();
 
     public void fillInfo(Path photoPath) {
         path = photoPath;
@@ -43,13 +43,13 @@ public class PhotoPathBuilder {
     public Photo build() {
         return new Photo(
                 path,
-                (String) info.get("Date/Time Original"),
-                (String) info.get("Make"),
-                (String) info.get("Model"),
-                (String) info.get("Focal Length"),
-                (String) info.get("Shutter Speed Value"),
-                (String) info.get("Aperture Value"),
-                (String) info.get("Flash")
+                info.get("Date/Time Original"),
+                info.get("Make"),
+                info.get("Model"),
+                info.get("Focal Length"),
+                info.get("Shutter Speed Value"),
+                info.get("Aperture Value"),
+                info.get("Flash")
         );
     }
 }

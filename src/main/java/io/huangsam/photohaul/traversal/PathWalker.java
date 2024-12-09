@@ -11,13 +11,8 @@ import java.util.stream.Stream;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
- * This class is responsible for traversing a directory structure and filtering
- * files based on a given rule set. It utilizes Java's parallel streams to
- * efficiently process a large number of files.
- *
- * <p> Once a file matches the specified rules, it is passed to a provided
- * {@code PhotoPathVisitor} for further processing. This visitor can then
- * be used for actions like copying, moving, or analyzing the file.
+ * This class is responsible for traversing a source directory and filtering
+ * files based on a given rule set.
  */
 public class PathWalker {
     private static final Logger LOG = getLogger(PathWalker.class);
@@ -32,14 +27,14 @@ public class PathWalker {
 
     /**
      * Traverse source directory recursively, passing relevant files to
-     * the path visitor for aggregation purposes.
+     * the photo collector for aggregation purposes.
      *
-     * @param pathVisitor visitor to process matching files
+     * @param pathCollector collector to process matching files
      */
-    public void traverse(@NotNull PhotoPathVisitor pathVisitor) {
+    public void traverse(@NotNull PhotoPathCollector pathCollector) {
         LOG.debug("Start traversal of {}", sourceRoot);
         try (Stream<Path> sourceStream = Files.walk(sourceRoot)) {
-            sourceStream.parallel().filter(pathRuleSet::matches).forEach(pathVisitor::visitPhoto);
+            sourceStream.parallel().filter(pathRuleSet::matches).forEach(pathCollector::addPhoto);
         } catch (IOException e) {
             LOG.error("Abort traversal of {}: {}", sourceRoot, e.getMessage());
         }

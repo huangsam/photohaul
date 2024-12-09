@@ -3,7 +3,7 @@ package io.huangsam.photohaul.migration;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
-import io.huangsam.photohaul.traversal.PhotoPathVisitor;
+import io.huangsam.photohaul.traversal.PhotoPathCollector;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 import static io.huangsam.photohaul.TestHelper.getStaticResources;
-import static io.huangsam.photohaul.TestHelper.pathVisitor;
+import static io.huangsam.photohaul.TestHelper.pathCollector;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -52,9 +52,9 @@ public class TestGoogleDriveMigrator {
         when(fileListMock.getFiles()).thenReturn(List.of(fileMock));
 
         List<String> names = List.of("bauerlite.jpg", "salad.jpg");
-        PhotoPathVisitor pathVisitor = pathVisitor(getStaticResources(), names);
+        PhotoPathCollector pathCollector = pathCollector(getStaticResources(), names);
         Migrator migrator = new GoogleDriveMigrator("driveId123", driveMock, new PhotoResolver(List.of()));
-        migrator.migratePhotos(pathVisitor.getPhotos());
+        migrator.migratePhotos(pathCollector.getPhotos());
 
         assertEquals(2, migrator.getSuccessCount());
         assertEquals(0, migrator.getFailureCount());

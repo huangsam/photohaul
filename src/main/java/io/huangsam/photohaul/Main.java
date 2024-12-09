@@ -12,7 +12,7 @@ import io.huangsam.photohaul.migration.Migrator;
 import io.huangsam.photohaul.traversal.PathRule;
 import io.huangsam.photohaul.traversal.PathRuleSet;
 import io.huangsam.photohaul.traversal.PathWalker;
-import io.huangsam.photohaul.traversal.PhotoPathVisitor;
+import io.huangsam.photohaul.traversal.PhotoPathCollector;
 import org.slf4j.Logger;
 
 import static org.slf4j.LoggerFactory.getLogger;
@@ -22,7 +22,7 @@ public class Main {
     private static final Settings SETTINGS = new Settings("config.properties");
 
     public static void main(String[] args) {
-        PhotoPathVisitor pathVisitor = new PhotoPathVisitor();
+        PhotoPathCollector pathCollector = new PhotoPathCollector();
 
         PathRuleSet pathRuleSet = new PathRuleSet(List.of(
                 Files::isRegularFile,
@@ -30,7 +30,7 @@ public class Main {
                 PathRule.minimumBytes(100L)));
 
         PathWalker pathWalker = new PathWalker(SETTINGS.getSourcePath(), pathRuleSet);
-        pathWalker.traverse(pathVisitor);
+        pathWalker.traverse(pathCollector);
 
         MigratorMode migratorMode = MigratorMode.PATH;
         PhotoResolver photoResolver = new PhotoResolver(List.of(PhotoFunction.yearTaken()));
@@ -38,7 +38,7 @@ public class Main {
         MigratorFactory migratorFactory = new MigratorFactory();
         try {
             Migrator migrator = migratorFactory.make(migratorMode, SETTINGS, photoResolver);
-            migrator.migratePhotos(pathVisitor.getPhotos());
+            migrator.migratePhotos(pathCollector.getPhotos());
             LOG.info("Finish with success={} failure={}", migrator.getSuccessCount(), migrator.getFailureCount());
         } catch (MigratorException e) {
             LOG.error("Cannot migrate with mode {}: {}", e.getMode(), e.getMessage());

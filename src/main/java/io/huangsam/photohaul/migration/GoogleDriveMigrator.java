@@ -46,6 +46,9 @@ public class GoogleDriveMigrator implements Migrator {
             } catch (IOException e) {
                 LOG.error("Cannot move {}: {}", photo.name(), e.getMessage());
                 failureCount++;
+            } catch (NullPointerException e) {
+                LOG.error("Unexpected null for {}", photo.name());
+                failureCount++;
             }
         });
     }

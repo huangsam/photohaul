@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -127,6 +128,7 @@ public class GoogleDriveMigrator implements Migrator {
 
     @Nullable
     private String getExistingId(String folderId, String fileName) throws IOException {
+        Objects.requireNonNull(folderId);
         String query = String.format("'%s' in parents and name = '%s'", folderId, fileName);
         FileList result = driveService.files().list().setQ(query).execute();
         List<File> fileList = result.getFiles();

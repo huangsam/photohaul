@@ -83,4 +83,27 @@ public class TestGoogleDriveMigrator {
         assertEquals(2, migrator.getSuccessCount());
         assertEquals(0, migrator.getFailureCount());
     }
+
+    @Test
+    void testMigratePhotosWithNullFolder() throws IOException {
+        when(driveMock.files()).thenReturn(filesMock);
+
+        when(filesMock.list()).thenReturn(driveListMock);
+        when(driveListMock.setQ(anyString())).thenReturn(driveListMock);
+        when(driveListMock.execute()).thenReturn(fileListMock);
+        when(fileListMock.getFiles()).thenReturn(List.of(listedFileMock));
+
+        when(filesMock.create(any())).thenReturn(driveCreateFolderMock);
+        when(driveCreateFolderMock.setFields(anyString())).thenReturn(driveCreateFolderMock);
+        when(driveCreateFolderMock.execute()).thenReturn(createdFolderMock);
+        when(createdFolderMock.getId()).thenReturn(null);
+
+        List<String> names = List.of("bauerlite.jpg", "salad.jpg");
+        PhotoPathCollector pathCollector = getPathCollector(getStaticResources(), names);
+        Migrator migrator = new GoogleDriveMigrator("driveId123", driveMock, PhotoResolver.getDefault());
+        migrator.migratePhotos(pathCollector.getPhotos());
+
+        assertEquals(0, migrator.getSuccessCount());
+        assertEquals(2, migrator.getFailureCount());
+    }
 }

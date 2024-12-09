@@ -77,7 +77,7 @@ public class PathMigrator implements Migrator {
 
     /**
      * This action can be a {@code mv}, {@code cp} or {@code echo} in Linux speak.
-     * The {@code echo} op is good to try before settling on the other options.
+     * The {@code echo} op is good to try before settling on other actions.
      */
     public enum Action {
         /**

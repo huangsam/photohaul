@@ -56,6 +56,11 @@ public class TestGoogleDriveMigrator {
     void testMigratePhotosAllSuccess() throws IOException {
         when(driveMock.files()).thenReturn(filesMock);
 
+        when(filesMock.list()).thenReturn(driveListMock);
+        when(driveListMock.setQ(any())).thenReturn(driveListMock);
+        when(driveListMock.execute()).thenReturn(fileListMock);
+        when(fileListMock.getFiles()).thenReturn(List.of(listedFileMock));
+
         when(filesMock.create(any())).thenReturn(driveCreateFolderMock);
         when(driveCreateFolderMock.setFields(any())).thenReturn(driveCreateFolderMock);
         when(driveCreateFolderMock.execute()).thenReturn(createdFolderMock);
@@ -64,11 +69,6 @@ public class TestGoogleDriveMigrator {
         when(filesMock.create(any(), any())).thenReturn(driveCreatePhotoMock);
         when(driveCreatePhotoMock.setFields(any())).thenReturn(driveCreatePhotoMock);
         when(driveCreatePhotoMock.execute()).thenReturn(createdPhotoMock);
-
-        when(filesMock.list()).thenReturn(driveListMock);
-        when(driveListMock.setQ(any())).thenReturn(driveListMock);
-        when(driveListMock.execute()).thenReturn(fileListMock);
-        when(fileListMock.getFiles()).thenReturn(List.of(listedFileMock));
 
         List<String> names = List.of("bauerlite.jpg", "salad.jpg");
         PhotoPathCollector pathCollector = getPathCollector(getStaticResources(), names);

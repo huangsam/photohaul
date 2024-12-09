@@ -103,6 +103,9 @@ public class TestGoogleDriveMigrator {
         Migrator migrator = new GoogleDriveMigrator("driveId123", driveMock, PhotoResolver.getDefault());
         migrator.migratePhotos(pathCollector.getPhotos());
 
+        verify(filesMock, times(2)).list();
+        verify(driveCreateFolderMock, times(2)).execute();
+
         assertEquals(0, migrator.getSuccessCount());
         assertEquals(2, migrator.getFailureCount());
     }

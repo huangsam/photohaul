@@ -18,6 +18,8 @@ import static io.huangsam.photohaul.TestHelper.getStaticResources;
 import static io.huangsam.photohaul.TestHelper.getPathCollector;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -72,6 +74,10 @@ public class TestGoogleDriveMigrator {
         PhotoPathCollector pathCollector = getPathCollector(getStaticResources(), names);
         Migrator migrator = new GoogleDriveMigrator("driveId123", driveMock, PhotoResolver.getDefault());
         migrator.migratePhotos(pathCollector.getPhotos());
+
+        verify(filesMock, times(4)).list();
+        verify(driveCreateFolderMock, times(2)).execute();
+        verify(driveCreatePhotoMock, times(2)).execute();
 
         assertEquals(2, migrator.getSuccessCount());
         assertEquals(0, migrator.getFailureCount());

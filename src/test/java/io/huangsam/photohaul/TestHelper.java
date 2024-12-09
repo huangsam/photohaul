@@ -31,7 +31,7 @@ public class TestHelper {
     }
 
     @NotNull
-    public static PathMigrator getPathMover(Path destination) {
-        return new PathMigrator(destination, PathMigrator.Action.DRY_RUN, new PhotoResolver(List.of()));
+    public static PathMigrator getPathMover(Path destination, PathMigrator.Action action) {
+        return new PathMigrator(destination, action, new PhotoResolver(List.of()));
     }
 }

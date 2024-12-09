@@ -18,6 +18,7 @@ import static io.huangsam.photohaul.TestHelper.getStaticResources;
 import static io.huangsam.photohaul.TestHelper.getPathCollector;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -57,17 +58,17 @@ public class TestGoogleDriveMigrator {
         when(driveMock.files()).thenReturn(filesMock);
 
         when(filesMock.list()).thenReturn(driveListMock);
-        when(driveListMock.setQ(any())).thenReturn(driveListMock);
+        when(driveListMock.setQ(anyString())).thenReturn(driveListMock);
         when(driveListMock.execute()).thenReturn(fileListMock);
         when(fileListMock.getFiles()).thenReturn(List.of(listedFileMock));
 
         when(filesMock.create(any())).thenReturn(driveCreateFolderMock);
-        when(driveCreateFolderMock.setFields(any())).thenReturn(driveCreateFolderMock);
+        when(driveCreateFolderMock.setFields(anyString())).thenReturn(driveCreateFolderMock);
         when(driveCreateFolderMock.execute()).thenReturn(createdFolderMock);
         when(createdFolderMock.getId()).thenReturn("someFolder123");
 
         when(filesMock.create(any(), any())).thenReturn(driveCreatePhotoMock);
-        when(driveCreatePhotoMock.setFields(any())).thenReturn(driveCreatePhotoMock);
+        when(driveCreatePhotoMock.setFields(anyString())).thenReturn(driveCreatePhotoMock);
         when(driveCreatePhotoMock.execute()).thenReturn(createdPhotoMock);
 
         List<String> names = List.of("bauerlite.jpg", "salad.jpg");

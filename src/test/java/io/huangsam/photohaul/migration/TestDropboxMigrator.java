@@ -17,7 +17,7 @@ import static io.huangsam.photohaul.TestHelper.getStaticResources;
 import static io.huangsam.photohaul.TestHelper.getPathCollector;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -37,8 +37,8 @@ public class TestDropboxMigrator {
     @Test
     void testMigratePhotosAllSuccess() throws DbxException {
         when(clientMock.files()).thenReturn(requestsMock);
-        when(requestsMock.listFolder(any())).thenReturn(folderResultMock);
-        when(requestsMock.uploadBuilder(any())).thenReturn(uploadBuilderMock);
+        when(requestsMock.listFolder(anyString())).thenReturn(folderResultMock);
+        when(requestsMock.uploadBuilder(anyString())).thenReturn(uploadBuilderMock);
 
         List<String> names = List.of("bauerlite.jpg", "salad.jpg");
         PhotoPathCollector pathCollector = getPathCollector(getStaticResources(), names);

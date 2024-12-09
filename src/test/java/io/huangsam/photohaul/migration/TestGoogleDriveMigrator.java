@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 import static io.huangsam.photohaul.TestHelper.getStaticResources;
-import static io.huangsam.photohaul.TestHelper.pathCollector;
+import static io.huangsam.photohaul.TestHelper.getPathCollector;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -52,7 +52,7 @@ public class TestGoogleDriveMigrator {
         when(fileListMock.getFiles()).thenReturn(List.of(fileMock));
 
         List<String> names = List.of("bauerlite.jpg", "salad.jpg");
-        PhotoPathCollector pathCollector = pathCollector(getStaticResources(), names);
+        PhotoPathCollector pathCollector = getPathCollector(getStaticResources(), names);
         Migrator migrator = new GoogleDriveMigrator("driveId123", driveMock, new PhotoResolver(List.of()));
         migrator.migratePhotos(pathCollector.getPhotos());
 

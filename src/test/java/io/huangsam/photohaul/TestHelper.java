@@ -18,7 +18,7 @@ public class TestHelper {
         return TEST_RESOURCES.resolve("temp");
     }
 
-    public static PhotoPathCollector pathCollector(Path path, List<String> names) {
+    public static PhotoPathCollector getPathCollector(Path path, List<String> names) {
         PhotoPathCollector pathCollector = new PhotoPathCollector();
         for (String name : names) {
             pathCollector.addPhoto(path.resolve(name));
@@ -26,7 +26,7 @@ public class TestHelper {
         return pathCollector;
     }
 
-    public static PathMigrator pathMover(Path destination) {
+    public static PathMigrator getPathMover(Path destination) {
         return new PathMigrator(destination, PathMigrator.Action.DRY_RUN, new PhotoResolver(List.of()));
     }
 }

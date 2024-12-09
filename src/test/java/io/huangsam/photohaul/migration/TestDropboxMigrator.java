@@ -14,7 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 
 import static io.huangsam.photohaul.TestHelper.getStaticResources;
-import static io.huangsam.photohaul.TestHelper.pathCollector;
+import static io.huangsam.photohaul.TestHelper.getPathCollector;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -41,7 +41,7 @@ public class TestDropboxMigrator {
         when(requestsMock.uploadBuilder(any())).thenReturn(uploadBuilderMock);
 
         List<String> names = List.of("bauerlite.jpg", "salad.jpg");
-        PhotoPathCollector pathCollector = pathCollector(getStaticResources(), names);
+        PhotoPathCollector pathCollector = getPathCollector(getStaticResources(), names);
         Migrator migrator = new DropboxMigrator("/Foobar", clientMock, new PhotoResolver(List.of()));
         migrator.migratePhotos(pathCollector.getPhotos());
 

@@ -15,7 +15,6 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 public class PathMigrator implements Migrator {
     private static final Logger LOG = getLogger(PathMigrator.class);
-    private static final CopyOption COPY_OPTION = StandardCopyOption.REPLACE_EXISTING;
 
     private final Path targetRoot;
     private final Action migratorAction;
@@ -72,11 +71,15 @@ public class PathMigrator implements Migrator {
         }
         Files.createDirectories(target);
         switch (migratorAction) {
-            case MOVE -> Files.move(photo.path(), photoLocation, COPY_OPTION);
-            case COPY -> Files.copy(photo.path(), photoLocation, COPY_OPTION);
+            case MOVE -> Files.move(photo.path(), photoLocation, StandardCopyOption.REPLACE_EXISTING);
+            case COPY -> Files.copy(photo.path(), photoLocation, StandardCopyOption.REPLACE_EXISTING);
         }
     }
 
+    /**
+     * This action can be a {@code mv}, {@code cp} or {@code echo} in Linux speak.
+     * The {@code echo} op is good to try before settling on the other options.
+     */
     public enum Action {
         /**
          * Move the photo from its original location to the target path.

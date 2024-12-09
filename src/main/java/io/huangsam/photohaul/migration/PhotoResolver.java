@@ -24,4 +24,12 @@ public class PhotoResolver {
         }
         return list;
     }
+
+    public String resolveString(Photo photo, String delimiter) {
+        return String.join(delimiter, resolveList(photo));
+    }
+
+    public String resolveString(Photo photo) {
+        return resolveString(photo, "/");
+    }
 }

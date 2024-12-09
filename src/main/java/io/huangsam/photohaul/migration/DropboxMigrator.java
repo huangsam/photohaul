@@ -67,7 +67,7 @@ public class DropboxMigrator implements Migrator {
 
     private String getTargetPath(Photo photo) {
         try {
-            return targetRoot + String.join("/", photoResolver.resolveList(photo));
+            return targetRoot + "/" + photoResolver.resolveString(photo);
         } catch (NullPointerException e) {
             return targetRoot + "/Other";
         }

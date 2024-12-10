@@ -45,6 +45,11 @@ jacocoTestReport {
         html.required = true
         xml.required = true
     }
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: 'io/huangsam/**/Main.class')
+        }))
+    }
 }
 
 jacocoTestCoverageVerification {

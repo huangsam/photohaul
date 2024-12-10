@@ -25,7 +25,7 @@ public class DropboxMigrator implements Migrator {
     private long successCount = 0L;
     private long failureCount = 0L;
 
-    public DropboxMigrator(String target, DbxClientV2 client, PhotoResolver resolver) {
+    public DropboxMigrator(String target, PhotoResolver resolver, DbxClientV2 client) {
         if (!target.startsWith("/")) {
             throw new IllegalArgumentException("Target must begin with a '/' character");
         }

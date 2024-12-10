@@ -42,7 +42,7 @@ public class TestDropboxMigrator {
 
         List<String> names = List.of("bauerlite.jpg", "salad.jpg");
         PhotoPathCollector pathCollector = getPathCollector(getStaticResources(), names);
-        Migrator migrator = new DropboxMigrator("/Foobar", clientMock, new PhotoResolver(List.of()));
+        Migrator migrator = new DropboxMigrator("/Foobar", new PhotoResolver(List.of()), clientMock);
         migrator.migratePhotos(pathCollector.getPhotos());
 
         assertEquals(2, migrator.getSuccessCount());
@@ -52,6 +52,6 @@ public class TestDropboxMigrator {
     @Test
     void testDropboxSetupNotWorking() {
         assertThrows(IllegalArgumentException.class, () ->
-                new DropboxMigrator("NoSlashAtStart", clientMock, new PhotoResolver(List.of())));
+                new DropboxMigrator("NoSlashAtStart", new PhotoResolver(List.of()), clientMock));
     }
 }

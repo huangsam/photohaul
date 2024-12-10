@@ -29,7 +29,7 @@ public class GoogleDriveMigrator implements Migrator {
     private long existedCount = 0L;
     private long failureCount = 0L;
 
-    public GoogleDriveMigrator(String target, Drive service, PhotoResolver resolver) {
+    public GoogleDriveMigrator(String target, PhotoResolver resolver, Drive service) {
         targetRoot = target;
         driveService = service;
         photoResolver = resolver;

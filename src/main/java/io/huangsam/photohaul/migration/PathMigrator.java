@@ -22,7 +22,7 @@ public class PathMigrator implements Migrator {
     private long successCount = 0L;
     private long failureCount = 0L;
 
-    public PathMigrator(Path target, Action action, PhotoResolver resolver) {
+    public PathMigrator(Path target, PhotoResolver resolver, Action action) {
         targetRoot = target;
         migratorAction = action;
         photoResolver = resolver;

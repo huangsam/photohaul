@@ -76,7 +76,7 @@ public class TestGoogleDriveMigrator {
 
         List<String> names = List.of("bauerlite.jpg", "salad.jpg");
         PhotoPathCollector pathCollector = getPathCollector(getStaticResources(), names);
-        Migrator migrator = new GoogleDriveMigrator(TARGET_ROOT, driveMock, PhotoResolver.getDefault());
+        Migrator migrator = new GoogleDriveMigrator(TARGET_ROOT, PhotoResolver.getDefault(), driveMock);
         migrator.migratePhotos(pathCollector.getPhotos());
 
         verify(filesMock, times(4)).list();
@@ -99,7 +99,7 @@ public class TestGoogleDriveMigrator {
 
         List<String> names = List.of("bauerlite.jpg", "salad.jpg");
         PhotoPathCollector pathCollector = getPathCollector(getStaticResources(), names);
-        Migrator migrator = new GoogleDriveMigrator(TARGET_ROOT, driveMock, PhotoResolver.getDefault());
+        Migrator migrator = new GoogleDriveMigrator(TARGET_ROOT, PhotoResolver.getDefault(), driveMock);
         migrator.migratePhotos(pathCollector.getPhotos());
 
         verify(listedFileMock, times(4)).getId();
@@ -124,7 +124,7 @@ public class TestGoogleDriveMigrator {
 
         List<String> names = List.of("bauerlite.jpg", "salad.jpg");
         PhotoPathCollector pathCollector = getPathCollector(getStaticResources(), names);
-        Migrator migrator = new GoogleDriveMigrator(TARGET_ROOT, driveMock, PhotoResolver.getDefault());
+        Migrator migrator = new GoogleDriveMigrator(TARGET_ROOT, PhotoResolver.getDefault(), driveMock);
         migrator.migratePhotos(pathCollector.getPhotos());
 
         verify(filesMock, times(2)).list();

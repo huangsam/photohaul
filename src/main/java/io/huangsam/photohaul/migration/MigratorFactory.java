@@ -48,7 +48,7 @@ public class MigratorFactory {
         Path target = Paths.get(System.getProperty("user.home"));
         target = target.resolve(settings.getValue("path.target"));
         String actionValue = settings.getValue("path.action", "MOVE").toUpperCase();
-        return new PathMigrator(target, PathMigrator.Action.valueOf(actionValue), resolver);
+        return new PathMigrator(target, resolver, PathMigrator.Action.valueOf(actionValue));
     }
 
     @NotNull
@@ -56,7 +56,7 @@ public class MigratorFactory {
         String target = settings.getValue("dbx.target");
         DbxRequestConfig config = DbxRequestConfig.newBuilder(settings.getValue("dbx.clientId")).build();
         DbxClientV2 client = new DbxClientV2(config, settings.getValue("dbx.accessToken"));
-        return new DropboxMigrator(target, client, resolver);
+        return new DropboxMigrator(target, resolver, client);
     }
 
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
@@ -78,7 +78,7 @@ public class MigratorFactory {
                     .setApplicationName(app)
                     .build();
 
-            return new GoogleDriveMigrator(settings.getValue("drive.target"), service, resolver);
+            return new GoogleDriveMigrator(settings.getValue("drive.target"), resolver, service);
         } catch (GeneralSecurityException | IOException e) {
             throw new MigratorException(e.getMessage(), MigratorMode.GOOGLE_DRIVE);
         }

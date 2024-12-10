@@ -17,7 +17,7 @@ import java.time.format.DateTimeFormatter;
  * exists on the following assets:
  *
  * <ul>
- *     <li>RAW formats from providers such as Nikon, Canon and Sony</li>
+ *     <li>RAW formats from providers such as Canon, Nikon and Sony</li>
  *     <li>JPG/JPEG files which were generated from Adobe Lightroom</li>
  * </ul>
  */

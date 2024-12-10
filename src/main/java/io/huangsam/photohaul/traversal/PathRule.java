@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public class PathRule {
-    protected static final List<String> ALLOW_LIST = List.of(
+    private static final List<String> ALLOW_LIST = List.of(
             "jpg", "jpeg", "png", "gif", "cr2", "nef", "arw");
 
     @NotNull

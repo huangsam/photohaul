@@ -22,8 +22,8 @@ public class GoogleDriveMigrator implements Migrator {
     private static final String MIME_FOLDER = "application/vnd.google-apps.folder";
 
     private final String targetRoot;
-    private final Drive driveService;
     private final PhotoResolver photoResolver;
+    private final Drive driveService;
 
     private long createdCount = 0L;
     private long existedCount = 0L;
@@ -31,8 +31,8 @@ public class GoogleDriveMigrator implements Migrator {
 
     public GoogleDriveMigrator(String target, PhotoResolver resolver, Drive service) {
         targetRoot = target;
-        driveService = service;
         photoResolver = resolver;
+        driveService = service;
     }
 
     @Override

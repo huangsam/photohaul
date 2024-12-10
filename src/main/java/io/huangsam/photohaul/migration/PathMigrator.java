@@ -16,16 +16,16 @@ public class PathMigrator implements Migrator {
     private static final Logger LOG = getLogger(PathMigrator.class);
 
     private final Path targetRoot;
-    private final Action migratorAction;
     private final PhotoResolver photoResolver;
+    private final Action migratorAction;
 
     private long successCount = 0L;
     private long failureCount = 0L;
 
     public PathMigrator(Path target, PhotoResolver resolver, Action action) {
         targetRoot = target;
-        migratorAction = action;
         photoResolver = resolver;
+        migratorAction = action;
     }
 
     @Override

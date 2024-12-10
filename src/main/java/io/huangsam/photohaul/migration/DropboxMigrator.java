@@ -19,8 +19,8 @@ public class DropboxMigrator implements Migrator {
     private static final Logger LOG = getLogger(DropboxMigrator.class);
 
     private final String targetRoot;
-    private final DbxClientV2 dropboxClient;
     private final PhotoResolver photoResolver;
+    private final DbxClientV2 dropboxClient;
 
     private long successCount = 0L;
     private long failureCount = 0L;
@@ -30,8 +30,8 @@ public class DropboxMigrator implements Migrator {
             throw new IllegalArgumentException("Target must begin with a '/' character");
         }
         targetRoot = target;
-        dropboxClient = client;
         photoResolver = resolver;
+        dropboxClient = client;
     }
 
     @Override

@@ -2,22 +2,14 @@ package io.huangsam.photohaul.model;
 
 import org.junit.jupiter.api.Test;
 
-import java.nio.file.Path;
-
+import static io.huangsam.photohaul.TestHelper.getPhoto;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class TestPhoto {
-    private static final Photo FAKE_PHOTO = new Photo(
-            Path.of("someFolder/foobar.jpg"),
-            null, null, null, null,
-            null, null, null);
-
-    private static final Photo REAL_PHOTO = new Photo(
-            Path.of("src/test/resources/static/bauerlite.jpg"),
-            null, null, null, null,
-            null, null, null);
+    private static final Photo FAKE_PHOTO = getPhoto("someFolder/foobar.jpg");
+    private static final Photo REAL_PHOTO = getPhoto("src/test/resources/static/bauerlite.jpg");
 
     @Test
     void testRealPhotoNameIsBauer() {

@@ -33,7 +33,7 @@ public class MigratorFactory {
      * @param settings settings for migration process
      * @param resolver photo resolver for target path
      * @return migrator instance
-     * @throws MigratorException due to setup issues
+     * @throws MigratorException due to creation issues
      */
     public Migrator make(@NotNull MigratorMode mode, Settings settings, PhotoResolver resolver) throws MigratorException {
         return switch (mode) {

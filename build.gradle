@@ -3,6 +3,7 @@ plugins {
     id 'checkstyle'
     id 'application'
     id 'jacoco'
+    alias libs.plugins.task.tree
 }
 
 group = 'io.huangsam'
@@ -32,7 +33,11 @@ application {
 
 test {
     useJUnitPlatform()
-    finalizedBy jacocoTestReport, jacocoTestCoverageVerification
+    finalizedBy jacocoTestReport
+}
+
+check {
+    dependsOn jacocoTestCoverageVerification
 }
 
 jacocoTestReport {
@@ -47,7 +52,7 @@ jacocoTestCoverageVerification {
     violationRules {
         rule {
             limit {
-                minimum = 0.7
+                minimum = 0.9
             }
         }
     }

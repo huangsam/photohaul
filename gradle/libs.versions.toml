@@ -10,6 +10,7 @@ logback-classic = "1.5.12"
 metadata-extractor = "2.19.0"
 mockito = "5.14.2"
 slf4j-api = "2.0.16"
+task-tree = "4.0.0"
 
 [libraries]
 dropbox-sdk = { module = "com.dropbox.core:dropbox-core-sdk", version.ref = "dropbox-sdk" }
@@ -26,6 +27,9 @@ metadata-extractor = { module = "com.drewnoakes:metadata-extractor", version.ref
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
 mockito-junit = { module = "org.mockito:mockito-junit-jupiter", version.ref = "mockito" }
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j-api" }
+
+[plugins]
+task-tree = { id = "com.dorongold.task-tree", version.ref = "task-tree" }
 
 [bundles]
 mockito-all = ["mockito-core", "mockito-junit"]

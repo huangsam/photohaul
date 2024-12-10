@@ -3,6 +3,7 @@ package io.huangsam.photohaul.migration;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.DbxUserFilesRequests;
+import com.dropbox.core.v2.files.ListFolderErrorException;
 import com.dropbox.core.v2.files.ListFolderResult;
 import com.dropbox.core.v2.files.UploadBuilder;
 import io.huangsam.photohaul.traversal.PhotoPathCollector;
@@ -18,6 +19,8 @@ import static io.huangsam.photohaul.TestHelper.getPathCollector;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -35,7 +38,7 @@ public class TestDropboxMigrator {
     UploadBuilder uploadBuilderMock;
 
     @Test
-    void testMigratePhotosAllSuccess() throws DbxException {
+    void testMigratePhotosNewFoldersSuccess() throws DbxException {
         when(clientMock.files()).thenReturn(requestsMock);
         when(requestsMock.listFolder(anyString())).thenReturn(folderResultMock);
         when(requestsMock.uploadBuilder(anyString())).thenReturn(uploadBuilderMock);
@@ -44,6 +47,28 @@ public class TestDropboxMigrator {
         PhotoPathCollector pathCollector = getPathCollector(getStaticResources(), names);
         Migrator migrator = new DropboxMigrator("/Foobar", new PhotoResolver(List.of()), clientMock);
         migrator.migratePhotos(pathCollector.getPhotos());
+
+        verify(requestsMock, times(0)).createFolderV2(anyString());
+        verify(requestsMock, times(2)).uploadBuilder(anyString());
+
+        assertEquals(2, migrator.getSuccessCount());
+        assertEquals(0, migrator.getFailureCount());
+    }
+
+    @Test
+    void testMigratePhotosOldFoldersSuccess() throws DbxException {
+        when(clientMock.files()).thenReturn(requestsMock);
+        when(requestsMock.listFolder(anyString())).thenThrow(ListFolderErrorException.class);
+        when(requestsMock.createFolderV2(anyString())).thenReturn(null);
+        when(requestsMock.uploadBuilder(anyString())).thenReturn(uploadBuilderMock);
+
+        List<String> names = List.of("bauerlite.jpg", "salad.jpg");
+        PhotoPathCollector pathCollector = getPathCollector(getStaticResources(), names);
+        Migrator migrator = new DropboxMigrator("/Foobar", new PhotoResolver(List.of()), clientMock);
+        migrator.migratePhotos(pathCollector.getPhotos());
+
+        verify(requestsMock, times(2)).createFolderV2(anyString());
+        verify(requestsMock, times(2)).uploadBuilder(anyString());
 
         assertEquals(2, migrator.getSuccessCount());
         assertEquals(0, migrator.getFailureCount());

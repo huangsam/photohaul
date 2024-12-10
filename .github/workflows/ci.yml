@@ -27,5 +27,8 @@ jobs:
           java-version: ${{ matrix.java-version }}
           distribution: 'zulu'
       - name: Build source with Gradle
-        run: |
-          gradle build
+        run: gradle build
+      - name: Upload coverage data to Codecov
+        uses: codecov/codecov-action@v5
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

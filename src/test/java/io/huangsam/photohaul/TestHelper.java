@@ -1,7 +1,5 @@
 package io.huangsam.photohaul;
 
-import io.huangsam.photohaul.migration.PathMigrator;
-import io.huangsam.photohaul.migration.PhotoResolver;
 import io.huangsam.photohaul.traversal.PhotoPathCollector;
 import org.jetbrains.annotations.NotNull;
 
@@ -28,10 +26,5 @@ public class TestHelper {
             pathCollector.addPhoto(path.resolve(name));
         }
         return pathCollector;
-    }
-
-    @NotNull
-    public static PathMigrator getPathMover(Path destination, PathMigrator.Action action) {
-        return new PathMigrator(destination, new PhotoResolver(List.of()), action);
     }
 }

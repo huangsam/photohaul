@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -29,6 +30,7 @@ public class TestMigratorFactory {
     @Test
     void testMakeGoogleDriveMigratorFailure() {
         Settings settings = new Settings("drive-example.properties");
-        assertThrows(MigratorException.class, () -> FACTORY.make(MigratorMode.GOOGLE_DRIVE, settings, RESOLVER));
+        MigratorException exception = assertThrows(MigratorException.class, () -> FACTORY.make(MigratorMode.GOOGLE_DRIVE, settings, RESOLVER));
+        assertEquals(MigratorMode.GOOGLE_DRIVE, exception.getMode());
     }
 }

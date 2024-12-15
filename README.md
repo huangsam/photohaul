@@ -50,7 +50,7 @@ Steps:
 3. Set `MigratorMode` to `PATH`, `DROPBOX` or `GOOGLE_DRIVE`
 4. Set `PhotoResolver` to adjust folder structure for photos
 5. Set `Settings` to your properties file in `src/main/resources`
-6. Fill relevant parameters in your properties file
+6. Fill relevant parameters in [your properties file](src/main/resources/README.md)
 7. Run `gradle run` in your terminal to start the magic!
 
 Then sit back and rediscover your memories! 😎 + 🍹 + 🌴

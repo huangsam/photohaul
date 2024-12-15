@@ -3,13 +3,14 @@ package io.huangsam.photohaul;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestSettings {
     @Test
     void testGetSourcePath() {
-        Settings settings = Settings.getDefault();
+        Settings settings = new Settings("path-example.properties");
         assertTrue(settings.getSourcePath().endsWith("Dummy/Source"));
     }
 
@@ -30,5 +31,10 @@ public class TestSettings {
         Settings settings = new Settings("path-example.properties");
         String expected = "foo";
         assertEquals(expected, settings.getValue("foo.bar", expected));
+    }
+
+    @Test
+    void testGetDefaultConfig() {
+        assertNotNull(Settings.getDefault());
     }
 }

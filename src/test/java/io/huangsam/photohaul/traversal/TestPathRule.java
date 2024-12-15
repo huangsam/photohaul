@@ -9,39 +9,46 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestPathRule {
+    private static final Path REAL_PATH = getStaticResources().resolve("bauerlite.jpg");
+    private static final Path FAKE_PATH = getStaticResources().resolve("bauerlite.foo");
+
     @Test
-    void testIsValidExtensionTrue() {
-        Path saladPath = getStaticResources().resolve("salad.jpg");
-        assertTrue(PathRule.validExtensions().test(saladPath));
+    void testIsValidExtensionWithRealIsTrue() {
+        assertTrue(PathRule.validExtensions().test(REAL_PATH));
     }
 
     @Test
-    void testIsValidExtensionFalse() {
-        Path saladPath = getStaticResources().resolve("salad.foo");
-        assertFalse(PathRule.validExtensions().test(saladPath));
+    void testIsValidExtensionWithFakeIsFalse() {
+        assertFalse(PathRule.validExtensions().test(FAKE_PATH));
     }
 
     @Test
-    void testIsImageContentTrue() {
-        Path schoolPath = getStaticResources().resolve("school.png");
-        assertTrue(PathRule.isImageContent().test(schoolPath));
+    void testIsImageContentWithRealIsTrue() {
+        assertTrue(PathRule.isImageContent().test(REAL_PATH));
     }
 
     @Test
-    void testIsImageContentFalse() {
-        Path schoolPath = getStaticResources().resolve("school.foo");
-        assertFalse(PathRule.isImageContent().test(schoolPath));
+    void testIsImageContentWithFakeIsFalse() {
+        assertFalse(PathRule.isImageContent().test(FAKE_PATH));
     }
 
     @Test
-    void testIsMinimumBytesTrue() {
-        Path bauerPath = getStaticResources().resolve("bauerlite.jpg");
-        assertTrue(PathRule.minimumBytes(100L).test(bauerPath));
+    void testIsMinimumBytesWithRealIsTrue() {
+        assertTrue(PathRule.minimumBytes(100L).test(REAL_PATH));
     }
 
     @Test
-    void testIsMinimumBytesFalse() {
-        Path bauerPath = getStaticResources().resolve("bauerlite.foo");
-        assertFalse(PathRule.minimumBytes(100L).test(bauerPath));
+    void testIsMinimumBytesWithFakeIsFalse() {
+        assertFalse(PathRule.minimumBytes(100L).test(FAKE_PATH));
+    }
+
+    @Test
+    void testIsPublicWithRealIsTrue() {
+        assertTrue(PathRule.isPublic().test(REAL_PATH));
+    }
+
+    @Test
+    void testIsPublicWithFakeIsTrue() {
+        assertTrue(PathRule.isPublic().test(FAKE_PATH));
     }
 }

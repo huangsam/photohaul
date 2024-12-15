@@ -14,6 +14,7 @@ public class PathRuleSet {
     public static PathRuleSet getDefault() {
         return new PathRuleSet(List.of(
                 Files::isRegularFile,
+                PathRule.isPublic(),
                 PathRule.validExtensions().or(PathRule.isImageContent()),
                 PathRule.minimumBytes(100L)));
     }

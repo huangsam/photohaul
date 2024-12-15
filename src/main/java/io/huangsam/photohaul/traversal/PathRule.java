@@ -42,4 +42,9 @@ public class PathRule {
             }
         };
     }
+
+    @NotNull
+    public static Predicate<Path> isPublic() {
+        return path -> !path.startsWith(".");
+    }
 }

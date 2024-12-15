@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class TestPathRule {
     private static final Path REAL_PATH = getStaticResources().resolve("bauerlite.jpg");
     private static final Path FAKE_PATH = getStaticResources().resolve("bauerlite.foo");
+    private static final Path HIDDEN_PATH = getStaticResources().resolve(".bauerlite.hidden");
 
     @Test
     void testIsValidExtensionWithRealIsTrue() {
@@ -50,5 +51,10 @@ public class TestPathRule {
     @Test
     void testIsPublicWithFakeIsTrue() {
         assertTrue(PathRule.isPublic().test(FAKE_PATH));
+    }
+
+    @Test
+    void testIsPublicWithHiddenIsFalse() {
+        assertFalse(PathRule.isPublic().test(HIDDEN_PATH));
     }
 }

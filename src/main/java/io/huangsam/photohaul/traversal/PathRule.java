@@ -45,6 +45,6 @@ public class PathRule {
 
     @NotNull
     public static Predicate<Path> isPublic() {
-        return path -> !path.startsWith(".");
+        return path -> !path.getFileName().toString().startsWith(".");
     }
 }

@@ -1,4 +1,4 @@
-# Credits
+# Photo credits
 
 Ensure that all photos used in this project are credited properly.
 

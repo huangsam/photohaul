@@ -56,6 +56,7 @@ public class PathMigrator implements Migrator {
         return failureCount;
     }
 
+    @NotNull
     private Path getTargetPath(Photo photo) {
         try {
             return targetRoot.resolve(photoResolver.resolveString(photo));

@@ -30,5 +30,5 @@ Ensure that all photos used in this project are credited properly.
 `src/test/resources/static/bauerlite.jpg`
 
 - Domain: <https://github.com>
-- Author: Sam Huang
+- Author: Samuel Huang
 - Author ID: huangsam

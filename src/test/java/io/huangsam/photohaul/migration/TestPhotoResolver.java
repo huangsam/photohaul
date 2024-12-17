@@ -30,6 +30,14 @@ public class TestPhotoResolver extends TestPhotoBase {
 
     @Test
     void testDefaultResolverIsNotEmpty() {
-        assertTrue(PhotoResolver.getDefault().size() > 0);
+        PhotoResolver defaultResolver = PhotoResolver.getDefault();
+        assertTrue(defaultResolver.size() > 0);
+    }
+
+    @Test
+    void testEmptyResolverIsEmpty() {
+        PhotoResolver emptyResolver = new PhotoResolver(List.of());
+        List<String> resolvedList = emptyResolver.resolveList(getBauerPhoto());
+        assertTrue(resolvedList.isEmpty());
     }
 }

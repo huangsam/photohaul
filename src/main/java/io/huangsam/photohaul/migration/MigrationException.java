@@ -7,7 +7,7 @@ package io.huangsam.photohaul.migration;
  * <p> To provide more context on the issue origin, we provide {@code mode} as
  * another constructor field.
  */
-public class MigrationException extends Exception {
+public class MigrationException extends RuntimeException {
     private final MigratorMode mode;
 
     public MigrationException(String message, MigratorMode mode) {

@@ -16,6 +16,7 @@ public class Settings {
 
     private final Properties properties;
 
+    @NotNull
     public static Settings getDefault() {
         return new Settings("config.properties");
     }
@@ -33,7 +34,7 @@ public class Settings {
         properties = input;
     }
 
-    public String getValue(@NotNull String key) {
+    public String getValue(String key) {
         String value = properties.getProperty(key);
         if (value == null) {
             LOG.error("Cannot find settings key {}", key);
@@ -42,7 +43,7 @@ public class Settings {
         return value;
     }
 
-    public String getValue(@NotNull String key, String other) {
+    public String getValue(String key, String other) {
         String value = properties.getProperty(key);
         return (value == null) ? other : value;
     }

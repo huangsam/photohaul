@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class TestPhotoResolver extends TestPhotoBase {
     @Test
     void testResolveListOnMakeYear() {
-        List<String> resolvedList = getPhotoResolver().resolveList(BAUER_PHOTO);
+        List<String> resolvedList = getPhotoResolver().resolveList(getBauerPhoto());
         assertEquals(2, resolvedList.size());
         assertEquals("Canon", resolvedList.get(0));
         assertEquals("2023", resolvedList.get(1));
@@ -18,13 +18,13 @@ public class TestPhotoResolver extends TestPhotoBase {
 
     @Test
     void testResolveStringOnMakeYearDefault() {
-        String resolvedString = getPhotoResolver().resolveString(BAUER_PHOTO);
+        String resolvedString = getPhotoResolver().resolveString(getBauerPhoto());
         assertEquals("Canon/2023", resolvedString);
     }
 
     @Test
     void testResolveStringOnMakeYearCustom() {
-        String resolvedString = getPhotoResolver().resolveString(BAUER_PHOTO, " - ");
+        String resolvedString = getPhotoResolver().resolveString(getBauerPhoto(), " - ");
         assertEquals("Canon - 2023", resolvedString);
     }
 

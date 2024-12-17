@@ -3,7 +3,6 @@ package io.huangsam.photohaul.migration;
 import io.huangsam.photohaul.model.Photo;
 import io.huangsam.photohaul.traversal.PhotoPathBuilder;
 import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.BeforeAll;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -11,14 +10,17 @@ import java.util.List;
 import static io.huangsam.photohaul.TestHelper.getStaticResources;
 
 public abstract class TestPhotoBase {
-    static Photo BAUER_PHOTO;
+    private static final Photo BAUER_PHOTO = buildBauerPhoto();
 
-    @BeforeAll
-    static void setUp() {
-        Path bauerPath = getStaticResources().resolve("bauerlite.jpg");
+    private static Photo buildBauerPhoto() {
+        Path photoPath = getStaticResources().resolve("bauerlite.jpg");
         PhotoPathBuilder pb = new PhotoPathBuilder();
-        pb.fillInfo(bauerPath);
-        BAUER_PHOTO = pb.build();
+        pb.fillInfo(photoPath);
+        return pb.build();
+    }
+
+    static Photo getBauerPhoto() {
+        return BAUER_PHOTO;
     }
 
     @NotNull

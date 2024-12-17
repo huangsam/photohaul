@@ -8,11 +8,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class TestPhotoFunction extends TestPhotoBase {
     @Test
     void testYearTaken() {
-        assertEquals("2023", PhotoFunction.yearTaken().apply(BAUER_PHOTO));
+        assertEquals("2023", PhotoFunction.yearTaken().apply(getBauerPhoto()));
     }
 
     @Test
     void testYearModified() {
-        assertNotNull(PhotoFunction.yearModified().apply(BAUER_PHOTO));
+        assertNotNull(PhotoFunction.yearModified().apply(getBauerPhoto()));
     }
 }

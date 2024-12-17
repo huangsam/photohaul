@@ -1,6 +1,6 @@
 package io.huangsam.photohaul;
 
-import io.huangsam.photohaul.migration.MigratorException;
+import io.huangsam.photohaul.migration.MigrationException;
 import io.huangsam.photohaul.migration.MigratorFactory;
 import io.huangsam.photohaul.migration.MigratorMode;
 import io.huangsam.photohaul.resolution.PhotoResolver;
@@ -32,7 +32,7 @@ public class Main {
             Migrator migrator = migratorFactory.make(migratorMode, SETTINGS, photoResolver);
             migrator.migratePhotos(photoCollector.getPhotos());
             LOG.info("Finish with success={} failure={}", migrator.getSuccessCount(), migrator.getFailureCount());
-        } catch (MigratorException e) {
+        } catch (MigrationException e) {
             LOG.error("Cannot migrate with mode {}: {}", e.getMode(), e.getMessage());
         }
     }

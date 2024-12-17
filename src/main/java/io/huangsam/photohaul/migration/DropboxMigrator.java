@@ -6,6 +6,7 @@ import com.dropbox.core.v2.files.DbxUserFilesRequests;
 import com.dropbox.core.v2.files.ListFolderErrorException;
 import io.huangsam.photohaul.model.Photo;
 import io.huangsam.photohaul.resolution.PhotoResolver;
+import io.huangsam.photohaul.resolution.ResolutionException;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
@@ -70,7 +71,7 @@ public class DropboxMigrator implements Migrator {
     private String getTargetPath(Photo photo) {
         try {
             return targetRoot + "/" + photoResolver.resolveString(photo);
-        } catch (NullPointerException e) {
+        } catch (ResolutionException e) {
             return targetRoot + "/Other";
         }
     }

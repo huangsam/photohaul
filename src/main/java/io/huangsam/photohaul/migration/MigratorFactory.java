@@ -34,9 +34,9 @@ public class MigratorFactory {
      * @param settings settings for migration process
      * @param resolver photo resolver for target path
      * @return migrator instance
-     * @throws MigratorException due to creation issues
+     * @throws MigrationException due to creation issues
      */
-    public Migrator make(@NotNull MigratorMode mode, Settings settings, PhotoResolver resolver) throws MigratorException {
+    public Migrator make(@NotNull MigratorMode mode, Settings settings, PhotoResolver resolver) throws MigrationException {
         return switch (mode) {
             case PATH -> makePath(settings, resolver);
             case DROPBOX -> makeDropbox(settings, resolver);
@@ -64,7 +64,7 @@ public class MigratorFactory {
     private static final List<String> SCOPES = List.of(DriveScopes.DRIVE);
 
     @NotNull
-    private GoogleDriveMigrator makeGoogleDrive(@NotNull Settings settings, PhotoResolver resolver) throws MigratorException {
+    private GoogleDriveMigrator makeGoogleDrive(@NotNull Settings settings, PhotoResolver resolver) throws MigrationException {
         String fileName = settings.getValue("drive.credentialFile");
         String app = settings.getValue("drive.appName");
         try (InputStream in = getClass().getClassLoader().getResourceAsStream(fileName)) {
@@ -81,7 +81,7 @@ public class MigratorFactory {
 
             return new GoogleDriveMigrator(settings.getValue("drive.target"), resolver, service);
         } catch (GeneralSecurityException | IOException e) {
-            throw new MigratorException(e.getMessage(), MigratorMode.GOOGLE_DRIVE);
+            throw new MigrationException(e.getMessage(), MigratorMode.GOOGLE_DRIVE);
         }
     }
 }

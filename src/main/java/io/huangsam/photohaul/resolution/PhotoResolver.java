@@ -24,7 +24,7 @@ public class PhotoResolver {
         for (Function<Photo, String> fn : photoFunctions) {
             String out = fn.apply(photo);
             if (out == null) {
-                throw new NullPointerException("Got null while resolving " + photo.name());
+                throw new ResolutionException("Got null while resolving " + photo.name());
             }
             list.add(out);
         }

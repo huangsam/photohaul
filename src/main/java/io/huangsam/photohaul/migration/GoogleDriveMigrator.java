@@ -5,6 +5,7 @@ import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.FileList;
 import io.huangsam.photohaul.model.Photo;
 import io.huangsam.photohaul.resolution.PhotoResolver;
+import io.huangsam.photohaul.resolution.ResolutionException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -68,7 +69,7 @@ public class GoogleDriveMigrator implements Migrator {
     private String getTargetPath(Photo photo) {
         try {
             return photoResolver.resolveString(photo);
-        } catch (NullPointerException e) {
+        } catch (ResolutionException e) {
             return "Other";
         }
     }

@@ -15,14 +15,14 @@ public class TestMigratorFactory {
     private static final PhotoResolver RESOLVER = new PhotoResolver(List.of());
 
     @Test
-    void testMakePathMigratorSuccess() throws MigratorException {
+    void testMakePathMigratorSuccess() throws MigrationException {
         Settings settings = new Settings("path-example.properties");
         Migrator migrator = FACTORY.make(MigratorMode.PATH, settings, RESOLVER);
         assertSame(PathMigrator.class, migrator.getClass());
     }
 
     @Test
-    void testMakeDropboxMigratorSuccess() throws MigratorException {
+    void testMakeDropboxMigratorSuccess() throws MigrationException {
         Settings settings = new Settings("dbx-example.properties");
         Migrator migrator = FACTORY.make(MigratorMode.DROPBOX, settings, RESOLVER);
         assertSame(DropboxMigrator.class, migrator.getClass());
@@ -31,7 +31,7 @@ public class TestMigratorFactory {
     @Test
     void testMakeGoogleDriveMigratorFailure() {
         Settings settings = new Settings("drive-example.properties");
-        MigratorException exception = assertThrows(MigratorException.class, () -> FACTORY.make(MigratorMode.GOOGLE_DRIVE, settings, RESOLVER));
+        MigrationException exception = assertThrows(MigrationException.class, () -> FACTORY.make(MigratorMode.GOOGLE_DRIVE, settings, RESOLVER));
         assertEquals(MigratorMode.GOOGLE_DRIVE, exception.getMode());
     }
 }

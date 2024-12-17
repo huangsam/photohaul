@@ -2,6 +2,7 @@ package io.huangsam.photohaul.migration;
 
 import io.huangsam.photohaul.model.Photo;
 import io.huangsam.photohaul.resolution.PhotoResolver;
+import io.huangsam.photohaul.resolution.ResolutionException;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
@@ -58,7 +59,7 @@ public class PathMigrator implements Migrator {
     private Path getTargetPath(Photo photo) {
         try {
             return targetRoot.resolve(photoResolver.resolveString(photo));
-        } catch (NullPointerException e) {
+        } catch (ResolutionException e) {
             return targetRoot.resolve("Other");
         }
     }

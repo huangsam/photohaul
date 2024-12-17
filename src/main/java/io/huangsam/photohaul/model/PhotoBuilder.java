@@ -1,11 +1,11 @@
-package io.huangsam.photohaul.traversal;
+package io.huangsam.photohaul.model;
 
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;
 import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.Tag;
-import io.huangsam.photohaul.model.Photo;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -17,8 +17,8 @@ import java.util.Map;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-public class PhotoPathBuilder {
-    private static final Logger LOG = getLogger(PhotoPathBuilder.class);
+public class PhotoBuilder {
+    private static final Logger LOG = getLogger(PhotoBuilder.class);
 
     private Path path;
     private final Map<String, String> info = new HashMap<>();
@@ -40,6 +40,7 @@ public class PhotoPathBuilder {
         }
     }
 
+    @NotNull
     public Photo build() {
         return new Photo(
                 path,

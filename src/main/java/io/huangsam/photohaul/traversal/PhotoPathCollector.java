@@ -1,6 +1,7 @@
 package io.huangsam.photohaul.traversal;
 
 import io.huangsam.photohaul.model.Photo;
+import io.huangsam.photohaul.model.PhotoBuilder;
 
 import java.nio.file.Path;
 import java.util.Collection;
@@ -14,7 +15,7 @@ public class PhotoPathCollector {
     }
 
     public void addPhoto(Path path) {
-        PhotoPathBuilder pb = new PhotoPathBuilder();
+        PhotoBuilder pb = new PhotoBuilder();
         pb.fillInfo(path);
         photoIndex.put(path, pb.build());
     }

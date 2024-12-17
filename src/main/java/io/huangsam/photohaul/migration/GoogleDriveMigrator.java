@@ -106,15 +106,15 @@ public class GoogleDriveMigrator implements Migrator {
             return;
         }
 
-        File photoMetadata = new File();
-        photoMetadata.setName(photo.name());
-        photoMetadata.setParents(List.of(folderId));
-
         String contentType = Files.probeContentType(photo.path());
         if (contentType == null) {
             failureCount++;
             return;
         }
+
+        File photoMetadata = new File();
+        photoMetadata.setName(photo.name());
+        photoMetadata.setParents(List.of(folderId));
 
         java.io.File photoFile = new java.io.File(photo.path().toString());
         FileContent photoContent = new FileContent(contentType, photoFile);

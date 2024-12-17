@@ -19,12 +19,12 @@ public abstract class TestResolutionAbstract {
         return pb.fill(photoPath).build();
     }
 
-    static Photo getBauerPhoto() {
+    Photo getBauerPhoto() {
         return BAUER_PHOTO;
     }
 
     @NotNull
-    static PhotoResolver getPhotoResolver() {
+    PhotoResolver getPhotoResolver() {
         return new PhotoResolver(List.of(Photo::make, PhotoFunction.yearTaken()));
     }
 }

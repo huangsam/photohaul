@@ -9,7 +9,7 @@ import java.util.List;
 import static io.huangsam.photohaul.TestHelper.getStaticResources;
 
 public abstract class TestMigrationAbstract {
-    void run(@NotNull Migrator migrator) {
+    void run(Migrator migrator) {
         run(migrator, List.of("bauerlite.jpg", "salad.jpg"));
     }
 

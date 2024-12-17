@@ -6,6 +6,7 @@ import com.dropbox.core.v2.files.DbxUserFilesRequests;
 import com.dropbox.core.v2.files.ListFolderErrorException;
 import com.dropbox.core.v2.files.ListFolderResult;
 import com.dropbox.core.v2.files.UploadBuilder;
+import io.huangsam.photohaul.resolution.PhotoResolver;
 import io.huangsam.photohaul.traversal.PhotoPathCollector;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

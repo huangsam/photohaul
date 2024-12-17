@@ -1,4 +1,4 @@
-package io.huangsam.photohaul.migration;
+package io.huangsam.photohaul.resolution;
 
 import org.junit.jupiter.api.Test;
 

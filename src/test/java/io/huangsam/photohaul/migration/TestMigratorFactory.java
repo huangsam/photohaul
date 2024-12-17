@@ -1,6 +1,7 @@
 package io.huangsam.photohaul.migration;
 
 import io.huangsam.photohaul.Settings;
+import io.huangsam.photohaul.resolution.PhotoResolver;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

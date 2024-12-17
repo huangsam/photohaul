@@ -1,5 +1,6 @@
 package io.huangsam.photohaul.migration;
 
+import io.huangsam.photohaul.resolution.PhotoResolver;
 import io.huangsam.photohaul.traversal.PhotoPathCollector;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;

@@ -3,6 +3,7 @@ package io.huangsam.photohaul.migration;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
+import io.huangsam.photohaul.resolution.PhotoResolver;
 import io.huangsam.photohaul.traversal.PhotoPathCollector;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

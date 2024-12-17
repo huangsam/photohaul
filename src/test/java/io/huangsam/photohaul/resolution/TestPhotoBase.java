@@ -1,4 +1,4 @@
-package io.huangsam.photohaul.migration;
+package io.huangsam.photohaul.resolution;
 
 import io.huangsam.photohaul.model.Photo;
 import io.huangsam.photohaul.traversal.PhotoPathBuilder;

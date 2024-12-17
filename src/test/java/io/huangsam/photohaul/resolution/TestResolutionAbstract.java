@@ -23,7 +23,6 @@ public abstract class TestResolutionAbstract {
         return BAUER_PHOTO;
     }
 
-    @NotNull
     PhotoResolver getPhotoResolver() {
         return new PhotoResolver(List.of(Photo::make, PhotoFunction.yearTaken()));
     }

@@ -29,12 +29,12 @@ public class PathWalker {
      * Traverse source directory recursively, passing relevant files to
      * the photo collector for aggregation purposes.
      *
-     * @param pathCollector collector to process matching files
+     * @param photoCollector collector to process matching files
      */
-    public void traverse(@NotNull PhotoPathCollector pathCollector) {
+    public void traverse(@NotNull PhotoCollector photoCollector) {
         LOG.debug("Start traversal of {}", sourceRoot);
         try (Stream<Path> sourceStream = Files.walk(sourceRoot)) {
-            sourceStream.parallel().filter(pathRuleSet::matches).forEach(pathCollector::addPhoto);
+            sourceStream.parallel().filter(pathRuleSet::matches).forEach(photoCollector::addPhoto);
         } catch (IOException e) {
             LOG.error("Abort traversal of {}: {}", sourceRoot, e.getMessage());
         }

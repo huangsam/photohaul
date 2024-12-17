@@ -1,6 +1,6 @@
 package io.huangsam.photohaul.migration;
 
-import io.huangsam.photohaul.traversal.PhotoPathCollector;
+import io.huangsam.photohaul.traversal.PhotoCollector;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Path;
@@ -14,16 +14,16 @@ public abstract class TestMigrationAbstract {
     }
 
     void run(@NotNull Migrator migrator, List<String> names) {
-        PhotoPathCollector pathCollector = getPathCollector(getStaticResources(), names);
-        migrator.migratePhotos(pathCollector.getPhotos());
+        PhotoCollector photoCollector = getPathCollector(getStaticResources(), names);
+        migrator.migratePhotos(photoCollector.getPhotos());
     }
 
     @NotNull
-    private PhotoPathCollector getPathCollector(Path path, @NotNull List<String> names) {
-        PhotoPathCollector pathCollector = new PhotoPathCollector();
+    private PhotoCollector getPathCollector(Path path, @NotNull List<String> names) {
+        PhotoCollector photoCollector = new PhotoCollector();
         for (String name : names) {
-            pathCollector.addPhoto(path.resolve(name));
+            photoCollector.addPhoto(path.resolve(name));
         }
-        return pathCollector;
+        return photoCollector;
     }
 }

@@ -7,7 +7,7 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class PhotoPathCollector {
+public class PhotoCollector {
     private final ConcurrentHashMap<Path, Photo> photoIndex = new ConcurrentHashMap<>();
 
     public Collection<Photo> getPhotos() {

@@ -11,19 +11,19 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class TestPathWalker {
     @Test
     void testTraverseWithPhotos() {
-        PhotoPathCollector pathCollector = new PhotoPathCollector();
+        PhotoCollector photoCollector = new PhotoCollector();
         PathRuleSet pathRuleSet = new PathRuleSet(List.of(PathRule.validExtensions()));
         PathWalker pathWalker = new PathWalker(getStaticResources(), pathRuleSet);
-        pathWalker.traverse(pathCollector);
-        assertFalse(pathCollector.getPhotos().isEmpty());
+        pathWalker.traverse(photoCollector);
+        assertFalse(photoCollector.getPhotos().isEmpty());
     }
 
     @Test
     void testTraverseWithNoPhotos() {
-        PhotoPathCollector pathCollector = new PhotoPathCollector();
+        PhotoCollector photoCollector = new PhotoCollector();
         PathRuleSet pathRuleSet = new PathRuleSet(List.of(PathRule.minimumBytes(100_000_000L)));
         PathWalker pathWalker = new PathWalker(getStaticResources(), pathRuleSet);
-        pathWalker.traverse(pathCollector);
-        assertTrue(pathCollector.getPhotos().isEmpty());
+        pathWalker.traverse(photoCollector);
+        assertTrue(photoCollector.getPhotos().isEmpty());
     }
 }

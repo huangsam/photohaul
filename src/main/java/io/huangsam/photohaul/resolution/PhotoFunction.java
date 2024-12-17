@@ -13,7 +13,9 @@ public class PhotoFunction {
     public static Function<Photo, String> yearTaken() {
         return photo -> {
             LocalDateTime takenTime = photo.takenAt();
-            return (takenTime == null) ? null : String.valueOf(takenTime.getYear());
+            return (takenTime == null)
+                    ? null
+                    : String.valueOf(takenTime.getYear());
         };
     }
 
@@ -22,7 +24,8 @@ public class PhotoFunction {
         return photo -> {
             FileTime modifiedTime = photo.modifiedAt();
             return (modifiedTime == null)
-                    ? null : String.valueOf(modifiedTime.toInstant().atZone(ZoneId.systemDefault()).getYear());
+                    ? null
+                    : String.valueOf(modifiedTime.toInstant().atZone(ZoneId.systemDefault()).getYear());
         };
     }
 }

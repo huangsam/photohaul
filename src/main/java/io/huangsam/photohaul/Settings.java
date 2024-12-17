@@ -29,6 +29,10 @@ public class Settings {
         }
     }
 
+    public Settings(Properties input) {
+        properties = input;
+    }
+
     public String getValue(@NotNull String key) {
         String value = properties.getProperty(key);
         if (value == null) {

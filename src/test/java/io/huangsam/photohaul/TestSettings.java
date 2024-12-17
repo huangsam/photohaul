@@ -2,6 +2,8 @@ package io.huangsam.photohaul;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Properties;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -31,6 +33,14 @@ public class TestSettings {
         Settings settings = new Settings("path-example.properties");
         String expected = "foo";
         assertEquals(expected, settings.getValue("foo.bar", expected));
+    }
+
+    @Test
+    void testSettingsFromProperties() {
+        Properties properties = new Properties();
+        properties.setProperty("hello.message", "world");
+        Settings settings = new Settings(properties);
+        assertEquals("world", settings.getValue("hello.message"));
     }
 
     @Test

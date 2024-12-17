@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Path;
 
-public class TestHelper {
+public final class TestHelper {
     private static final Path TEST_RESOURCES = Path.of("src/test/resources");
 
     @NotNull

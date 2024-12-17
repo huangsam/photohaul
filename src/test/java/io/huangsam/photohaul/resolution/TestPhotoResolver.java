@@ -17,13 +17,13 @@ public class TestPhotoResolver extends TestResolutionAbstract {
     }
 
     @Test
-    void testResolveStringOnMakeYearDefault() {
+    void testResolveStringOnMakeYearWithDefaultDelimiter() {
         String resolvedString = getPhotoResolver().resolveString(getBauerPhoto());
         assertEquals("Canon/2023", resolvedString);
     }
 
     @Test
-    void testResolveStringOnMakeYearCustom() {
+    void testResolveStringOnMakeYearWithCustomDelimiter() {
         String resolvedString = getPhotoResolver().resolveString(getBauerPhoto(), " - ");
         assertEquals("Canon - 2023", resolvedString);
     }

@@ -16,8 +16,7 @@ public abstract class TestResolutionAbstract {
     private static Photo buildBauerPhoto() {
         Path photoPath = getStaticResources().resolve("bauerlite.jpg");
         PhotoBuilder pb = new PhotoBuilder();
-        pb.fillInfo(photoPath);
-        return pb.build();
+        return pb.fill(photoPath).build();
     }
 
     static Photo getBauerPhoto() {

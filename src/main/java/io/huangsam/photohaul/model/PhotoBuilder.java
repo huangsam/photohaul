@@ -23,7 +23,7 @@ public class PhotoBuilder {
     private Path path;
     private final Map<String, String> info = new HashMap<>();
 
-    public void fillInfo(Path photoPath) {
+    public PhotoBuilder fill(Path photoPath) {
         path = photoPath;
         try (InputStream input = Files.newInputStream(photoPath)) {
             Metadata metadata = ImageMetadataReader.readMetadata(input);
@@ -38,6 +38,7 @@ public class PhotoBuilder {
         } catch (IOException | ImageProcessingException e) {
             LOG.warn("Cannot process {}: {}", photoPath, e.getMessage());
         }
+        return this;
     }
 
     @NotNull

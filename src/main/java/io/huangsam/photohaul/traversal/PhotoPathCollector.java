@@ -16,7 +16,6 @@ public class PhotoPathCollector {
 
     public void addPhoto(Path path) {
         PhotoBuilder pb = new PhotoBuilder();
-        pb.fillInfo(path);
-        photoIndex.put(path, pb.build());
+        photoIndex.put(path, pb.fill(path).build());
     }
 }

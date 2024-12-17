@@ -10,13 +10,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class TestPhotoBuilder {
     @Test
-    void testFillInfoAndBuild() {
+    void testFillAndBuild() {
         String expected = "bauerlite.jpg";
         Path bauerPath = getStaticResources().resolve(expected);
 
         PhotoBuilder pb = new PhotoBuilder();
-        pb.fillInfo(bauerPath);
-        Photo photo = pb.build();
+        Photo photo = pb.fill(bauerPath).build();
 
         assertEquals(bauerPath, photo.path());
         assertEquals(expected, photo.name());

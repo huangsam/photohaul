@@ -4,7 +4,6 @@ import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
 import io.huangsam.photohaul.resolution.PhotoResolver;
-import io.huangsam.photohaul.traversal.PhotoPathCollector;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -15,8 +14,6 @@ import org.mockito.quality.Strictness;
 import java.io.IOException;
 import java.util.List;
 
-import static io.huangsam.photohaul.TestHelper.getStaticResources;
-import static io.huangsam.photohaul.TestHelper.getPathCollector;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -26,7 +23,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.STRICT_STUBS)
-public class TestGoogleDriveMigrator {
+public class TestGoogleDriveMigrator extends TestMigrationAbstract {
     private static final String TARGET_ROOT = "rootId123";
 
     @Mock
@@ -75,10 +72,8 @@ public class TestGoogleDriveMigrator {
         when(driveCreatePhotoMock.setFields(anyString())).thenReturn(driveCreatePhotoMock);
         when(driveCreatePhotoMock.execute()).thenReturn(createdPhotoMock);
 
-        List<String> names = List.of("bauerlite.jpg", "salad.jpg");
-        PhotoPathCollector pathCollector = getPathCollector(getStaticResources(), names);
         Migrator migrator = new GoogleDriveMigrator(TARGET_ROOT, PhotoResolver.getDefault(), driveMock);
-        migrator.migratePhotos(pathCollector.getPhotos());
+        run(migrator);
 
         verify(filesMock, times(4)).list();
         verify(driveCreateFolderMock, times(2)).execute();
@@ -98,10 +93,8 @@ public class TestGoogleDriveMigrator {
         when(fileListMock.getFiles()).thenReturn(List.of(listedFileMock));
         when(listedFileMock.getId()).thenReturn("existingId123");
 
-        List<String> names = List.of("bauerlite.jpg", "salad.jpg");
-        PhotoPathCollector pathCollector = getPathCollector(getStaticResources(), names);
         Migrator migrator = new GoogleDriveMigrator(TARGET_ROOT, PhotoResolver.getDefault(), driveMock);
-        migrator.migratePhotos(pathCollector.getPhotos());
+        run(migrator);
 
         verify(listedFileMock, times(4)).getId();
         verify(filesMock, times(0)).create(any());
@@ -125,10 +118,8 @@ public class TestGoogleDriveMigrator {
         when(driveCreateFolderMock.execute()).thenReturn(createdFolderMock);
         when(createdFolderMock.getId()).thenReturn(null);
 
-        List<String> names = List.of("bauerlite.jpg", "salad.jpg");
-        PhotoPathCollector pathCollector = getPathCollector(getStaticResources(), names);
         Migrator migrator = new GoogleDriveMigrator(TARGET_ROOT, PhotoResolver.getDefault(), driveMock);
-        migrator.migratePhotos(pathCollector.getPhotos());
+        run(migrator);
 
         verify(filesMock, times(2)).list();
         verify(driveCreateFolderMock, times(2)).execute();

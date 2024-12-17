@@ -1,10 +1,8 @@
 package io.huangsam.photohaul;
 
-import io.huangsam.photohaul.traversal.PhotoPathCollector;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Path;
-import java.util.List;
 
 public class TestHelper {
     private static final Path TEST_RESOURCES = Path.of("src/test/resources");
@@ -17,14 +15,5 @@ public class TestHelper {
     @NotNull
     public static Path getTempResources() {
         return TEST_RESOURCES.resolve("temp");
-    }
-
-    @NotNull
-    public static PhotoPathCollector getPathCollector(Path path, @NotNull List<String> names) {
-        PhotoPathCollector pathCollector = new PhotoPathCollector();
-        for (String name : names) {
-            pathCollector.addPhoto(path.resolve(name));
-        }
-        return pathCollector;
     }
 }

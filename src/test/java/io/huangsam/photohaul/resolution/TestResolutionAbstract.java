@@ -9,7 +9,7 @@ import java.util.List;
 
 import static io.huangsam.photohaul.TestHelper.getStaticResources;
 
-public abstract class TestPhotoBase {
+public abstract class TestResolutionAbstract {
     private static final Photo BAUER_PHOTO = buildBauerPhoto();
 
     private static Photo buildBauerPhoto() {

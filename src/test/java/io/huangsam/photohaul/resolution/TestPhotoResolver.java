@@ -7,7 +7,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class TestPhotoResolver extends TestPhotoBase {
+public class TestPhotoResolver extends TestResolutionAbstract {
     @Test
     void testResolveListOnMakeYear() {
         List<String> resolvedList = getPhotoResolver().resolveList(getBauerPhoto());

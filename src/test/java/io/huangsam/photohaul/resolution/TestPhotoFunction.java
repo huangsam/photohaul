@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class TestPhotoFunction extends TestPhotoBase {
+public class TestPhotoFunction extends TestResolutionAbstract {
     @Test
     void testYearTaken() {
         assertEquals("2023", PhotoFunction.yearTaken().apply(getBauerPhoto()));

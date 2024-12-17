@@ -2,7 +2,6 @@ package io.huangsam.photohaul.resolution;
 
 import io.huangsam.photohaul.model.Photo;
 import io.huangsam.photohaul.model.PhotoBuilder;
-import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Path;
 import java.util.List;

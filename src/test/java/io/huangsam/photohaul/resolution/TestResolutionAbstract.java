@@ -12,7 +12,6 @@ import static io.huangsam.photohaul.TestHelper.getStaticResources;
 public abstract class TestResolutionAbstract {
     private static final Photo BAUER_PHOTO = buildBauerPhoto();
 
-    @NotNull
     private static Photo buildBauerPhoto() {
         Path photoPath = getStaticResources().resolve("bauerlite.jpg");
         PhotoBuilder pb = new PhotoBuilder();

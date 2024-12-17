@@ -5,7 +5,6 @@ import com.drew.imaging.ImageProcessingException;
 import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.Tag;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -41,7 +40,6 @@ public class PhotoBuilder {
         return this;
     }
 
-    @NotNull
     public Photo build() {
         return new Photo(
                 path,

@@ -1,0 +1,11 @@
+# https://docs.codecov.com/docs/common-recipe-list
+# https://docs.codecov.com/docs/commit-status
+coverage:
+  status:
+    project:
+      default:
+        target: auto
+        threshold: 10%
+    patch:
+      default:
+        informational: true

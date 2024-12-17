@@ -19,7 +19,7 @@ public abstract class TestMigrationAbstract {
     }
 
     @NotNull
-    private static PhotoPathCollector getPathCollector(Path path, @NotNull List<String> names) {
+    private PhotoPathCollector getPathCollector(Path path, @NotNull List<String> names) {
         PhotoPathCollector pathCollector = new PhotoPathCollector();
         for (String name : names) {
             pathCollector.addPhoto(path.resolve(name));

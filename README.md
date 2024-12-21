@@ -42,8 +42,6 @@ such as year taken and camera make.
 
 ## Getting started
 
-Prerequisites:
-
 1. **Install Prerequisites:**
    - Java 17 or later
    - Gradle 8 or later

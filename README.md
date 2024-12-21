@@ -35,10 +35,10 @@ that "just works" for my exacting workflow?
 
 ## Value
 
-Photohaul addresses the pain points above by providing a central hub
-for photographers to filter, organize, and migrate photos to local
-storage or cloud services. The folder structure for photos can be based
-on info such as year taken and camera make.
+Photohaul addresses the pain points above by providing a central hub for
+photographers to filter, organize, and migrate photos to local storage
+and cloud services. The folder structure for photos can be based on info
+such as year taken and camera make.
 
 ## Getting started
 

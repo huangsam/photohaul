@@ -28,9 +28,10 @@ same organization to my vast collection of older photos. Lightroom settings
 cannot be applied to previously exported images, and writing custom scripts
 seemed daunting.
 
-If I also want to migrate my photos over to a NAS or a cloud provider
-like Google Drive, it typically involves many drag + drop operations.
-After a few dozen times, I get tired of doing it again and again.
+I also want to migrate my photos over to a NAS or a cloud provider like
+Google Drive, but it involves endless rounds of manual drag-and-drop
+operations. I kept thinking to myself - is there a solution out there
+that "just works" for my exacting workflow?
 
 ## Value
 

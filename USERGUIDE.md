@@ -39,14 +39,14 @@ Configure Google Drive credentials in `config.properties`
 Once the migration is complete, you can verify that your photos have been uploaded
 to Google Drive. Here's an example of how I validate the output for Google Drive.
 
-Folder creation
+**Folder creation** was successful:
 
 <img src="images/validate-step-1.png" width="800" alt="Validate step 1"/>
 
-Photo creation in 2015
+Photo creation in **2015** was successful:
 
 <img src="images/validate-step-2.png" width="700" alt="Validate step 2"/>
 
-Photo creation in 2024
+Photo creation in **2024** was successful:
 
 <img src="images/validate-step-3.png" width="700" alt="Validate step 3"/>

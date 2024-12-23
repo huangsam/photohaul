@@ -41,6 +41,8 @@ such as year taken and camera make.
 
 ## Getting started
 
+For detailed instructions: [link](USERGUIDE.md)
+
 **Install prerequisites:**
 
 - Java 17 or later

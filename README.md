@@ -41,21 +41,25 @@ such as year taken and camera make.
 
 ## Getting started
 
-1. **Install prerequisites:**
-   - Java 17 or later
-   - Gradle 8 or later
+**Install prerequisites:**
 
-2. **Build application:**
-    * Run `gradle build` in your terminal
+- Java 17 or later
+- Gradle 8 or later
 
-3. **Configure settings:**
-    * Set `PathRuleSet` to filter by extension, file size, etc.
-    * Set `MigratorMode` to `PATH`, `DROPBOX` or `GOOGLE_DRIVE`
-    * Set `PhotoResolver` to adjust folder structure
-    * Fill config file. Refer to examples in [src/main/resources](src/main/resources)
+**Build application:**
 
-4. **Run application:**
-    * Run `gradle run` in your terminal
+- Run `./gradlew build` in your terminal
+
+**Configure settings:**
+
+* Set `PathRuleSet` to filter by extension, file size, etc.
+* Set `MigratorMode` to `PATH`, `DROPBOX` or `GOOGLE_DRIVE`
+* Set `PhotoResolver` to adjust folder structure
+* Fill config file. Refer to examples in [src/main/resources](src/main/resources)
+
+**Run application:**
+
+* Run `./gradlew run` in your terminal
 
 **That's it!** Sit back and rediscover your memories! 😎 + 🍹 + 🌴
 

@@ -45,8 +45,8 @@ Folder creation
 
 Photo creation in 2015
 
-<img src="images/validate-step-2.png" width="1000" alt="Validate step 2"/>
+<img src="images/validate-step-2.png" width="500" alt="Validate step 2"/>
 
 Photo creation in 2024
 
-<img src="images/validate-step-3.png" width="1000" alt="Validate step 3"/>
+<img src="images/validate-step-3.png" width="500" alt="Validate step 3"/>

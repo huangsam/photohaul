@@ -46,7 +46,7 @@ such as year taken and camera make.
    - Java 17 or later
    - Gradle 8 or later
 
-2. **Build the application:**
+2. **Build application:**
     * Run `gradle build` in your terminal
 
 3. **Configure settings:**
@@ -55,7 +55,7 @@ such as year taken and camera make.
     * Set `PhotoResolver` to adjust folder structure
     * Refer to examples in [src/main/resources](src/main/resources)
 
-4. **Run the application:**
+4. **Run application:**
     * Run `gradle run` in your terminal
 
 **That's it!** Sit back and rediscover your memories! 😎 + 🍹 + 🌴

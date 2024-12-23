@@ -32,7 +32,7 @@ Configure Google Drive credentials in `config.properties`
 - Open your terminal and navigate to the `./photohaul` directory
 - Run the command `gradle run`. This will start the migration to Google Drive
 
-<img src="images/migration-step.png" width="1000" alt="Migration step"/>
+<img src="images/migration-step.png" width="800" alt="Migration step"/>
 
 ## Validate migration
 
@@ -41,12 +41,12 @@ to Google Drive. Here's an example of how I validate the output for Google Drive
 
 Folder creation
 
-<img src="images/validate-step-1.png" width="1000" alt="Validate step 1"/>
+<img src="images/validate-step-1.png" width="800" alt="Validate step 1"/>
 
 Photo creation in 2015
 
-<img src="images/validate-step-2.png" width="500" alt="Validate step 2"/>
+<img src="images/validate-step-2.png" width="700" alt="Validate step 2"/>
 
 Photo creation in 2024
 
-<img src="images/validate-step-3.png" width="500" alt="Validate step 3"/>
+<img src="images/validate-step-3.png" width="700" alt="Validate step 3"/>

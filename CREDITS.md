@@ -4,7 +4,7 @@ Ensure that all photos used in this project are credited properly.
 
 ## README photos
 
-`sunny-bunny-tidy-up.webp`
+`images/sunny-bunny-tidy-up.webp`
 
 - Domain: <https://giphy.com>
 - Link: <https://giphy.com/gifs/SunnyBunniesOfficial-sunnybunnies-sunny-bunnies-sunnybunny-cO9GVZKRIov75COLNb>

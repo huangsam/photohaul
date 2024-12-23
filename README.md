@@ -13,7 +13,7 @@ Effortless photo management.
 
 Say goodbye to photo clutter - 👋 + 🚀
 
-![Sunny Bunny Tidy Up](sunny-bunny-tidy-up.webp)
+![Sunny Bunny Tidy Up](images/sunny-bunny-tidy-up.webp)
 
 ## Motivation
 

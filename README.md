@@ -42,20 +42,20 @@ such as year taken and camera make.
 
 ## Getting started
 
-1. **Install Prerequisites:**
+1. **Install prerequisites:**
    - Java 17 or later
    - Gradle 8 or later
 
-2. **Build the Application:**
+2. **Build the application:**
     * Run `gradle build` in your terminal
 
-3. **Configure Settings:**
+3. **Configure settings:**
     * Set `PathRuleSet` to filter by extension, file size, etc.
     * Set `MigratorMode` to `PATH`, `DROPBOX` or `GOOGLE_DRIVE`
     * Set `PhotoResolver` to adjust folder structure
     * Refer to examples in [src/main/resources](src/main/resources)
 
-4. **Run PhotoHaul:**
+4. **Run the application:**
     * Run `gradle run` in your terminal
 
 **That's it!** Sit back and rediscover your memories! 😎 + 🍹 + 🌴

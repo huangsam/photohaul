@@ -10,7 +10,6 @@ Effortless photo management.
 - Migrate photos locally and to the cloud (Dropbox, Google Drive)
 - Customize folder structures based on date, camera, and more
 - Filter photos by file type, size, and other criteria
-- Find and retrieve your precious memories
 
 Say goodbye to photo clutter - 👋 + 🚀
 

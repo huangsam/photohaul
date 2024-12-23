@@ -53,7 +53,7 @@ such as year taken and camera make.
     * Set `PathRuleSet` to filter by extension, file size, etc.
     * Set `MigratorMode` to `PATH`, `DROPBOX` or `GOOGLE_DRIVE`
     * Set `PhotoResolver` to adjust folder structure
-    * Refer to examples in [src/main/resources](src/main/resources)
+    * Fill config file. Refer to examples in [src/main/resources](src/main/resources)
 
 4. **Run application:**
     * Run `gradle run` in your terminal

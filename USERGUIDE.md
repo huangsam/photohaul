@@ -27,6 +27,8 @@ Configure source, target, credentials in `config.properties`
 
 <img src="images/dbx-step-2.png" width="250" alt="Dropbox step 2"/>
 
+[Click here](https://github.com/dropbox/dropbox-sdk-java?tab=readme-ov-file#dropbox-for-java-tutorial) to learn more.
+
 ### Google Drive setup
 
 Set mode to `GOOGLE_DRIVE` in `Main.java`
@@ -36,6 +38,8 @@ Set mode to `GOOGLE_DRIVE` in `Main.java`
 Configure source, target, credentials in `config.properties`
 
 <img src="images/drive-step-2.png" width="250" alt="Drive step 2"/>
+
+[Click here](https://developers.google.com/drive/api/quickstart/java#set-up-environment) to learn more.
 
 ## Run migration
 

@@ -44,14 +44,16 @@ Configure source, target, credentials in `config.properties`
 ## Run migration
 
 - Open your terminal and navigate to the `./photohaul` directory
-- Run the command `gradle run`. This will start the migration to Google Drive
+- Run the command `gradle run`. This will start the migration process
+
+This is how it looks like for Google Drive:
 
 <img src="images/migration-step.png" width="800" alt="Migration step"/>
 
 ## Validate migration
 
-Once the migration is complete, you can verify that your photos have been uploaded
-to Google Drive. Here's an example of how I validate the output for Google Drive.
+Once the migration is complete, you can verify that your photos are uploaded
+successfully. Here's an example of how I validate the output for Google Drive.
 
 **Folder creation** was successful:
 

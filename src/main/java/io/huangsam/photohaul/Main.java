@@ -18,7 +18,6 @@ public class Main {
 
     public static void main(String[] args) {
         PhotoCollector photoCollector = new PhotoCollector();
-
         PathRuleSet pathRuleSet = PathRuleSet.getDefault();
 
         PathWalker pathWalker = new PathWalker(SETTINGS.getSourcePath(), pathRuleSet);

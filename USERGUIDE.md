@@ -7,13 +7,23 @@ Here's an extended version of content from the [general README](README.md).
 If you have not built the application yet, please follow the general README
 to get started first.
 
+### Path setup
+
+Set mode to `PATH` in `Main.java`
+
+<img src="images/path-step-1.png" width="500" alt="Path step 1"/>
+
+Configure source, target in `config.properties`
+
+<img src="images/path-step-2.png" width="250" alt="Path step 2"/>
+
 ### Dropbox setup
 
 Set mode to `DROPBOX` in `Main.java`
 
 <img src="images/dbx-step-1.png" width="500" alt="Dropbox step 1"/>
 
-Configure Dropbox credentials in `config.properties`
+Configure source, target, credentials in `config.properties`
 
 <img src="images/dbx-step-2.png" width="250" alt="Dropbox step 2"/>
 
@@ -23,7 +33,7 @@ Set mode to `GOOGLE_DRIVE` in `Main.java`
 
 <img src="images/drive-step-1.png" width="500" alt="Drive step 1"/>
 
-Configure Google Drive credentials in `config.properties`
+Configure source, target, credentials in `config.properties`
 
 <img src="images/drive-step-2.png" width="250" alt="Drive step 2"/>
 

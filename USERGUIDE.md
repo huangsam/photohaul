@@ -44,7 +44,7 @@ Configure source, target, credentials in `config.properties`
 ## Run migration
 
 - Open your terminal and navigate to the `./photohaul` directory
-- Run the command `gradle run`. This will start the migration process
+- Run the command `./gradlew run`. This will start the migration process
 
 This is how it looks like for Google Drive:
 

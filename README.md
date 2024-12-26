@@ -15,8 +15,6 @@ Say goodbye to photo clutter - 👋 + 🚀
 
 ![Migration](images/migration-step.png)
 
-![Sunny Bunny Tidy Up](images/sunny-bunny-tidy-up.webp)
-
 ## Motivation
 
 As an avid photographer, I use Adobe Lightroom to organize my edited SLR
@@ -66,5 +64,7 @@ For detailed instructions: [link](USERGUIDE.md)
 * Run `./gradlew run` in your terminal
 
 **That's it!** Sit back and rediscover your memories! 😎 + 🍹 + 🌴
+
+![Sunny Bunny Tidy Up](images/sunny-bunny-tidy-up.webp)
 
 You're welcome 🙏

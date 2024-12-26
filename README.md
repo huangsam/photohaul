@@ -13,7 +13,7 @@ Effortless photo management.
 
 Say goodbye to photo clutter - 👋 + 🚀
 
-![Migration](images/migration-step.png)
+![Sunny Bunny Tidy Up](images/sunny-bunny-tidy-up.webp)
 
 ## Motivation
 
@@ -65,6 +65,6 @@ For detailed instructions: [link](USERGUIDE.md)
 
 **That's it!** Sit back and rediscover your memories! 😎 + 🍹 + 🌴
 
-![Sunny Bunny Tidy Up](images/sunny-bunny-tidy-up.webp)
+![Migration](images/migration-step.png)
 
 You're welcome 🙏

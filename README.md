@@ -54,17 +54,17 @@ For detailed instructions: [link](USERGUIDE.md)
 
 **Configure settings:**
 
-* Set `PathRuleSet` to filter by extension, file size, etc.
-* Set `MigratorMode` to `PATH`, `DROPBOX` or `GOOGLE_DRIVE`
-* Set `PhotoResolver` to adjust folder structure
-* Fill config file. Refer to examples in [src/main/resources](src/main/resources)
+- Set `PathRuleSet` to filter by extension, file size, etc.
+- Set `MigratorMode` to `PATH`, `DROPBOX` or `GOOGLE_DRIVE`
+- Set `PhotoResolver` to adjust folder structure
+- Fill config file. Refer to examples in [src/main/resources](src/main/resources)
 
 **Run application:**
 
-* Run `./gradlew run` in your terminal
-
-**That's it!** Sit back and rediscover your memories! 😎 + 🍹 + 🌴
+- Run `./gradlew run` in your terminal
 
 ![Migration](images/migration-step.png)
+
+**That's it!** Sit back and rediscover your memories! 😎 + 🍹 + 🌴
 
 You're welcome 🙏

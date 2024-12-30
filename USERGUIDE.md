@@ -55,7 +55,9 @@ This is how it looks like for Google Drive:
 ## Validate migration
 
 Once the migration is complete, you can verify that your photos are uploaded
-successfully. Here's an example of how I validate the output for Google Drive.
+successfully.
+
+### Google Drive validation
 
 **Folder creation** was successful:
 

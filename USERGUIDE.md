@@ -17,6 +17,8 @@ Configure source, target in `config.properties`
 
 <img src="images/path-step-2.png" width="250" alt="Path step 2"/>
 
+Refer to `PathMigrator` to learn more about the `path.action` values.
+
 ### Dropbox setup
 
 Set mode to `DROPBOX` in `Main.java`

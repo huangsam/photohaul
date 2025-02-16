@@ -1,9 +1,8 @@
 # Configuration guide
 
-Edit `config.properties` as you see fit. This is the default configuration file
-for the Photohaul application. Use any of the `*-example.properties` files for
-personal reference.
+Edit `config.properties` for Photohaul settings.
 
-One helpful tip is to keep copies of existing configuration in the `personal` subfolder .
-That way, you do not have to run `git stash` on the repository to avoid committing
-private settings unintentionally.
+Refer to the `*-example.properties` files as templates.
+
+Copy your configuration files to the `personal` subfolder
+to avoid accidentally committing them.

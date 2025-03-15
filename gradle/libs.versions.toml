@@ -8,9 +8,9 @@ jetbrains-annotations = "26.0.1"
 junit-bom = "5.12.1"
 logback-classic = "1.5.17"
 metadata-extractor = "2.19.0"
-mockito = "5.14.2"
+mockito = "5.16.0"
 slf4j-api = "2.0.17"
-task-tree = "4.0.0"
+task-tree = "4.0.1"
 
 [libraries]
 dropbox-sdk = { module = "com.dropbox.core:dropbox-core-sdk", version.ref = "dropbox-sdk" }

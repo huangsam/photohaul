@@ -4,8 +4,8 @@ package io.huangsam.photohaul.migration;
  * This resembles an issue with methods called in {@link MigratorFactory}
  * and {@link Migrator}.
  *
- * <p> To provide more context on the issue origin, we provide {@code mode} as
- * another constructor field.
+ * <p> To provide more context on the issue's origin, we provide {@code mode} as
+ * an additional constructor field.
  */
 public class MigrationException extends RuntimeException {
     private final MigratorMode mode;

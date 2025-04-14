@@ -26,11 +26,6 @@ jobs:
         with:
           java-version: ${{ matrix.java-version }}
           distribution: 'zulu'
-      - name: Cache Gradle wrapper
-        uses: actions/cache@v4
-        with:
-          path: ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
       - name: Cache Gradle dependencies
         uses: actions/cache@v4
         with:

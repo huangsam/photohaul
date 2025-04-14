@@ -26,13 +26,7 @@ jobs:
         with:
           java-version: ${{ matrix.java-version }}
           distribution: 'zulu'
-      - name: Cache Gradle dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-caches-${{ hashFiles('**/*.gradle*', 'gradle.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-caches-
+          cache: 'gradle'
       - name: Build source with Gradle
         run: gradle build
       - name: Upload coverage data to Codecov

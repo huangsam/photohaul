@@ -18,27 +18,38 @@ For example, to use a custom file located at `personal/config.properties`.
 
 ### Path setup
 
-Configure source, target in the config:
+Configure the following property fields:
 
-<img src="images/setup-path.png" width="250" alt="Path setup"/>
+- `migrator.mode`
+- `path.source`
+- `path.target`
+- `path.action`
 
 Refer to `PathMigrator` to learn more about the `path.action` values.
 
 ### Dropbox setup
 
-Configure source, target, credentials in the config:
+Configure the following property fields:
 
-<img src="images/setup-dbx.png" width="250" alt="Dropbox setup"/>
+- `migrator.mode`
+- `path.source`
+- `dbx.target`
+- `dbx.clientId`
+- `dbx.accessToken`
 
-[Click here](https://github.com/dropbox/dropbox-sdk-java?tab=readme-ov-file#dropbox-for-java-tutorial) to learn more.
+[Click here](https://github.com/dropbox/dropbox-sdk-java?tab=readme-ov-file#dropbox-for-java-tutorial) to learn how to setup the `dbx` fields.
 
 ### Google Drive setup
 
-Configure source, target, credentials in the config:
+Configure the following property fields:
 
-<img src="images/setup-drive.png" width="250" alt="Drive setup"/>
+- `migrator.mode`
+- `path.source`
+- `drive.target`
+- `drive.credentialFile`
+- `drive.appName`
 
-[Click here](https://developers.google.com/drive/api/quickstart/java#set-up-environment) to learn more.
+[Click here](https://developers.google.com/drive/api/quickstart/java#set-up-environment) to learn how to setup the `drive` fields.
 
 ## Run migration
 

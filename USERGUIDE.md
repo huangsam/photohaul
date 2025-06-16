@@ -62,8 +62,9 @@ This is how it looks like for Google Drive:
 
 ## Validate migration
 
-Once the migration is complete, you can verify that your photos are uploaded
-successfully. Below is an example of validating changes on Google Drive.
+Once the migration is complete, you can verify that your photos are uploaded successfully.
+
+Below is an example of validating changes on Google Drive.
 
 ### Google Drive validation
 

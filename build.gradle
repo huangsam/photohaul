@@ -29,6 +29,7 @@ dependencies {
 
 application {
     mainClass = 'io.huangsam.photohaul.Main'
+    applicationDefaultJvmArgs = ["-Dphotohaul.config=${project.findProperty('configFile') ?: 'config.properties'}"]
 }
 
 test {

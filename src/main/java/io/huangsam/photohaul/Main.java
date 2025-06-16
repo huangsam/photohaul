@@ -23,7 +23,7 @@ public class Main {
         PathWalker pathWalker = new PathWalker(SETTINGS.getSourcePath(), pathRuleSet);
         pathWalker.traverse(photoCollector);
 
-        MigratorMode migratorMode = MigratorMode.PATH;
+        MigratorMode migratorMode = SETTINGS.getMigratorMode();
         PhotoResolver photoResolver = PhotoResolver.getDefault();
 
         MigratorFactory migratorFactory = new MigratorFactory();

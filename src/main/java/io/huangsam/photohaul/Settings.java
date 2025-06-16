@@ -1,5 +1,6 @@
 package io.huangsam.photohaul;
 
+import io.huangsam.photohaul.migration.MigratorMode;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
@@ -50,5 +51,9 @@ public class Settings {
 
     public Path getSourcePath() {
         return Paths.get(System.getProperty("user.home")).resolve(getValue("path.source"));
+    }
+
+    public MigratorMode getMigratorMode() {
+        return MigratorMode.valueOf(getValue("migrator.mode"));
     }
 }

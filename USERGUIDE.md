@@ -20,7 +20,7 @@ For example, to use a custom file located at `personal/config.properties`.
 
 Configure source, target in the config:
 
-<img src="images/path-step-2.png" width="250" alt="Path step 2"/>
+<img src="images/setup-path.png" width="250" alt="Path setup"/>
 
 Refer to `PathMigrator` to learn more about the `path.action` values.
 
@@ -28,7 +28,7 @@ Refer to `PathMigrator` to learn more about the `path.action` values.
 
 Configure source, target, credentials in the config:
 
-<img src="images/dbx-step-2.png" width="250" alt="Dropbox step 2"/>
+<img src="images/setup-dbx.png" width="250" alt="Dropbox setup"/>
 
 [Click here](https://github.com/dropbox/dropbox-sdk-java?tab=readme-ov-file#dropbox-for-java-tutorial) to learn more.
 
@@ -36,7 +36,7 @@ Configure source, target, credentials in the config:
 
 Configure source, target, credentials in the config:
 
-<img src="images/drive-step-2.png" width="250" alt="Drive step 2"/>
+<img src="images/setup-drive.png" width="250" alt="Drive setup"/>
 
 [Click here](https://developers.google.com/drive/api/quickstart/java#set-up-environment) to learn more.
 

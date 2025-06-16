@@ -40,6 +40,8 @@ public class Settings {
      * Constructs Settings by loading properties from a named resource file.
      *
      * @param name The name of the resource file.
+     * @throws IllegalStateException if required settings not found.
+     * @throws RuntimeException if settings file cannot be parsed.
      */
     public Settings(String name) {
         properties = new Properties();
@@ -83,7 +85,7 @@ public class Settings {
     /**
      * Retrieves a string value from settings, with a fallback default.
      *
-     * @param key   The key to look up.
+     * @param key The key to look up.
      * @param other The default value to return if the key is not found.
      * @return The string value, or the default if not found.
      */
@@ -97,9 +99,10 @@ public class Settings {
      * against the user's home directory.
      *
      * @return The resolved source path.
+     * @throws IllegalArgumentException if "path.source" is missing.
      */
     public Path getSourcePath() {
-        String relativeSourcePath = getValue("path.source"); // This will throw if missing
+        String relativeSourcePath = getValue("path.source");
         return Paths.get(System.getProperty("user.home")).resolve(relativeSourcePath);
     }
 
@@ -107,9 +110,9 @@ public class Settings {
      * Retrieves the MigratorMode from the {@code migrator.mode} property.
      *
      * @return The MigratorMode enum value.
-     * @throws IllegalArgumentException if the value found is not a valid MigratorMode.
+     * @throws IllegalArgumentException if "migrator.mode" is missing or invalid.
      */
     public MigratorMode getMigratorMode() {
-        return MigratorMode.valueOf(getValue("migrator.mode")); // This will throw if missing or invalid enum value
+        return MigratorMode.valueOf(getValue("migrator.mode"));
     }
 }

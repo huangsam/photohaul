@@ -7,13 +7,18 @@ Here's an extended version of content from the [general README](README.md).
 If you have not built the application yet, please follow the general README
 to get started first.
 
+You can specify a different configuration file for various environments or specific scenarios.
+To do this, use the `-PconfigFile` Gradle property when running the application.
+
+For example, to use a custom file located at `personal/config.properties`.
+
+```shell
+./gradlew run -PconfigFile=personal/path.properties
+```
+
 ### Path setup
 
-Set mode to `PATH` in `Main.java`
-
-<img src="images/path-step-1.png" width="500" alt="Path step 1"/>
-
-Configure source, target in `config.properties`
+Configure source, target in the config:
 
 <img src="images/path-step-2.png" width="250" alt="Path step 2"/>
 
@@ -21,11 +26,7 @@ Refer to `PathMigrator` to learn more about the `path.action` values.
 
 ### Dropbox setup
 
-Set mode to `DROPBOX` in `Main.java`
-
-<img src="images/dbx-step-1.png" width="500" alt="Dropbox step 1"/>
-
-Configure source, target, credentials in `config.properties`
+Configure source, target, credentials in the config:
 
 <img src="images/dbx-step-2.png" width="250" alt="Dropbox step 2"/>
 
@@ -33,11 +34,7 @@ Configure source, target, credentials in `config.properties`
 
 ### Google Drive setup
 
-Set mode to `GOOGLE_DRIVE` in `Main.java`
-
-<img src="images/drive-step-1.png" width="500" alt="Drive step 1"/>
-
-Configure source, target, credentials in `config.properties`
+Configure source, target, credentials in the config:
 
 <img src="images/drive-step-2.png" width="250" alt="Drive step 2"/>
 
@@ -55,7 +52,7 @@ This is how it looks like for Google Drive:
 ## Validate migration
 
 Once the migration is complete, you can verify that your photos are uploaded
-successfully.
+successfully. Below is an example of validating changes on Google Drive.
 
 ### Google Drive validation
 

@@ -56,7 +56,7 @@ Configure the following property fields:
 - Open your terminal and navigate to the `./photohaul` directory
 - Run the command `./gradlew run`. This will start the migration process
 
-This is how it looks like for Google Drive:
+This is how it looks like for the `PATH` migrator mode:
 
 <img src="images/migration-step.png" width="800" alt="Migration step"/>
 

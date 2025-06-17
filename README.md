@@ -63,7 +63,16 @@ For detailed instructions: [link](USERGUIDE.md)
 
 - Run `./gradlew run` in your terminal
 
-![Migration](images/migration-step.png)
+```text
+> Task :run
+20:05:18.533 [main] INFO io.huangsam.photohaul.Settings -- Use config file from photohaul.config: config.properties
+20:05:18.538 [main] DEBUG io.huangsam.photohaul.traversal.PathWalker -- Start traversal of /Users/samhuang/Pictures/Dummy PNG
+20:05:18.768 [main] DEBUG io.huangsam.photohaul.migration.GoogleDriveMigrator -- Start Drive migration to 10uRd6...
+20:05:23.145 [main] INFO io.huangsam.photohaul.Main -- Finish with success=6 failure=0
+
+BUILD SUCCESSFUL in 5s
+3 actionable tasks: 1 executed, 2 up-to-date
+```
 
 **That's it!** Sit back and rediscover your memories! 😎 + 🍹 + 🌴
 

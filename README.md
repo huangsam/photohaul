@@ -46,8 +46,8 @@ For detailed instructions: [link](USERGUIDE.md)
 
 **Install prerequisites:**
 
-- Java 17 or later
-- Gradle 8 or later
+- Java 21 or later
+- Gradle 9 or later
 
 **Build application:**
 

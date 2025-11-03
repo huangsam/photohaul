@@ -3,6 +3,7 @@
 [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/huangsam/photohaul/ci.yml)](https://github.com/huangsam/photohaul/actions)
 [![Code Coverage](https://img.shields.io/codecov/c/github/huangsam/photohaul)](https://codecov.io/gh/huangsam/photohaul)
 [![License](https://img.shields.io/github/license/huangsam/photohaul)](https://github.com/huangsam/photohaul/blob/main/LICENSE)
+[![GitHub Release](https://img.shields.io/github/v/release/huangsam/photohaul)](https://github.com/huangsam/photohaul/releases/latest)
 
 Effortless photo management.
 

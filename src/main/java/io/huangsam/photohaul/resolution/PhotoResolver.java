@@ -7,16 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-public class PhotoResolver {
-    private final List<Function<Photo, String>> photoFunctions;
-
+public record PhotoResolver(List<Function<Photo, String>> photoFunctions) {
     @NotNull
     public static PhotoResolver getDefault() {
         return new PhotoResolver(List.of(PhotoFunction.yearTaken()));
-    }
-
-    public PhotoResolver(List<Function<Photo, String>> photoFunctions) {
-        this.photoFunctions = photoFunctions;
     }
 
     public List<String> resolveList(Photo photo) {

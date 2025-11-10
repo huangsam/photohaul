@@ -14,16 +14,8 @@ import static org.slf4j.LoggerFactory.getLogger;
  * This class is responsible for traversing a source directory and filtering
  * files based on a given rule set.
  */
-public class PathWalker {
+public record PathWalker(Path sourceRoot, PathRuleSet pathRuleSet) {
     private static final Logger LOG = getLogger(PathWalker.class);
-
-    private final Path sourceRoot;
-    private final PathRuleSet pathRuleSet;
-
-    public PathWalker(Path sourceRoot, PathRuleSet pathRuleSet) {
-        this.sourceRoot = sourceRoot;
-        this.pathRuleSet = pathRuleSet;
-    }
 
     /**
      * Traverse source directory recursively, passing relevant files to

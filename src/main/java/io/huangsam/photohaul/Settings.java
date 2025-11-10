@@ -12,12 +12,10 @@ import java.util.Properties;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-public class Settings {
+public record Settings(Properties properties) {
     private static final Logger LOG = getLogger(Settings.class);
     private static final String CONFIG_FILE_SYSTEM_PROPERTY = "photohaul.config";
     private static final String CONFIG_FILE_DEFAULT = "config.properties";
-
-    private final Properties properties;
 
     /**
      * Provides the default Settings instance, attempting to load from a system property
@@ -41,10 +39,10 @@ public class Settings {
      *
      * @param name The name of the resource file.
      * @throws IllegalStateException if required settings not found.
-     * @throws RuntimeException if settings file cannot be parsed.
+     * @throws RuntimeException      if settings file cannot be parsed.
      */
     public Settings(String name) {
-        properties = new Properties();
+        this(new Properties());
         try (InputStream input = getClass().getClassLoader().getResourceAsStream(name)) {
             if (input == null) {
                 LOG.error("Settings file '{}' not found in classpath.", name);
@@ -60,10 +58,9 @@ public class Settings {
     /**
      * Constructs Settings using an existing Properties object. Useful for testing or advanced scenarios.
      *
-     * @param input An existing Properties object.
+     * @param properties An existing Properties object.
      */
-    public Settings(Properties input) {
-        this.properties = input;
+    public Settings {
     }
 
     /**
@@ -85,7 +82,7 @@ public class Settings {
     /**
      * Retrieves a string value from settings, with a fallback default.
      *
-     * @param key The key to look up.
+     * @param key   The key to look up.
      * @param other The default value to return if the key is not found.
      * @return The string value, or the default if not found.
      */

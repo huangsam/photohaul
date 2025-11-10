@@ -7,9 +7,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class PathRuleSet {
-    private final List<Predicate<Path>> rules;
-
+public record PathRuleSet(List<Predicate<Path>> rules) {
     @NotNull
     public static PathRuleSet getDefault() {
         return new PathRuleSet(List.of(
@@ -17,10 +15,6 @@ public class PathRuleSet {
                 PathRule.isPublic(),
                 PathRule.validExtensions().or(PathRule.isImageContent()),
                 PathRule.minimumBytes(100L)));
-    }
-
-    public PathRuleSet(List<Predicate<Path>> rules) {
-        this.rules = rules;
     }
 
     public boolean matches(Path path) {

@@ -53,6 +53,12 @@ public class TestSettings {
     }
 
     @Test
+    void testGetMigratorMode() {
+        Settings settings = new Settings("path-example.properties");
+        assertEquals(io.huangsam.photohaul.migration.MigratorMode.PATH, settings.getMigratorMode());
+    }
+
+    @Test
     void testLoadFromFilesystem(@TempDir Path tmp) throws IOException {
         // Arrange: create a temp properties file
         Path props = tmp.resolve("custom.properties");
@@ -68,5 +74,24 @@ public class TestSettings {
     @Test
     void testMissingSettingsThrows() {
         assertThrows(IllegalStateException.class, () -> new Settings("__definitely_not_here__.properties"));
+    }
+
+    @Test
+    void testSystemPropertyOverrideFilesystem(@TempDir Path tmp) throws IOException {
+        Path props = tmp.resolve("override.properties");
+        Files.writeString(props, "migrator.mode=PATH\nfoo.bar=baz\n");
+        String original = System.getProperty("photohaul.config");
+        try {
+            System.setProperty("photohaul.config", props.toString());
+            Settings settings = Settings.getDefault();
+            assertEquals("baz", settings.getValue("foo.bar"));
+            assertEquals(io.huangsam.photohaul.migration.MigratorMode.PATH, settings.getMigratorMode());
+        } finally {
+            if (original == null) {
+                System.clearProperty("photohaul.config");
+            } else {
+                System.setProperty("photohaul.config", original);
+            }
+        }
     }
 }

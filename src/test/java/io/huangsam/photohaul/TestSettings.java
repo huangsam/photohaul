@@ -1,7 +1,11 @@
 package io.huangsam.photohaul;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -46,5 +50,23 @@ public class TestSettings {
     @Test
     void testGetDefaultConfig() {
         assertNotNull(Settings.getDefault());
+    }
+
+    @Test
+    void testLoadFromFilesystem(@TempDir Path tmp) throws IOException {
+        // Arrange: create a temp properties file
+        Path props = tmp.resolve("custom.properties");
+        Files.writeString(props, "hello=filesystem\n");
+
+        // Act: load using absolute filesystem path
+        Settings settings = new Settings(props.toString());
+
+        // Assert
+        assertEquals("filesystem", settings.getValue("hello"));
+    }
+
+    @Test
+    void testMissingSettingsThrows() {
+        assertThrows(IllegalStateException.class, () -> new Settings("__definitely_not_here__.properties"));
     }
 }

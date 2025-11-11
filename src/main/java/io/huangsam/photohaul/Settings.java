@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
@@ -35,20 +36,50 @@ public record Settings(Properties properties) {
     }
 
     /**
-     * Constructs Settings by loading properties from a named resource file.
+     * Constructs Settings by loading properties from a classpath resource name, with a filesystem fallback.
      *
-     * @param name The name of the resource file.
-     * @throws IllegalStateException if required settings not found.
-     * @throws RuntimeException      if settings file cannot be parsed.
+     * Loading order:
+     * 1) Try classpath resource via ClassLoader#getResourceAsStream(name)
+     * 2) If not found, try reading from the filesystem path specified by {@code name}
+     *
+     * @param name The classpath resource name or filesystem path.
+     * @throws IllegalStateException if the settings file is not found in either location.
+     * @throws RuntimeException      if the settings file cannot be parsed.
      */
     public Settings(String name) {
         this(new Properties());
-        try (InputStream input = getClass().getClassLoader().getResourceAsStream(name)) {
+        boolean fromClasspath = true;
+        Path fsPath = null;
+
+        // Resolve input stream from classpath first, then filesystem fallback
+        InputStream resolved = getClass().getClassLoader().getResourceAsStream(name);
+        if (resolved == null) {
+            fromClasspath = false;
+            fsPath = Paths.get(name);
+            try {
+                if (Files.exists(fsPath)) {
+                    resolved = Files.newInputStream(fsPath);
+                }
+            } catch (IOException e) {
+                LOG.error("Error opening settings file from filesystem '{}': {}", name, e.getMessage());
+                throw new RuntimeException("Failed to open settings file: " + name, e);
+            }
+        }
+
+        // Load properties from the resolved input stream
+        try (InputStream input = resolved) {
             if (input == null) {
-                LOG.error("Settings file '{}' not found in classpath.", name);
+                LOG.error("Settings file '{}' not found in classpath or filesystem.", name);
                 throw new IllegalStateException("Required settings file not found: " + name);
             }
+
             properties.load(input);
+
+            if (fromClasspath) {
+                LOG.info("Loaded settings from classpath: {}", name);
+            } else {
+                LOG.info("Loaded settings from filesystem: {}", fsPath.toAbsolutePath());
+            }
         } catch (IOException e) {
             LOG.error("Error reading settings file '{}': {}", name, e.getMessage());
             throw new RuntimeException("Failed to load settings file: " + name, e);

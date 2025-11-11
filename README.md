@@ -63,7 +63,8 @@ For detailed instructions: [link](USERGUIDE.md)
 **Run application:**
 
 - Run `./gradlew run` in your terminal
-- Optional: override with `-Dphotohaul.config=personal/path.properties`
+ - Optional: override with `-Dphotohaul.config=personal/path.properties` (classpath) or an absolute/relative filesystem path
+	 (e.g., `-Dphotohaul.config=./src/main/resources/personal/path.properties`).
 
 ```text
 > Task :run

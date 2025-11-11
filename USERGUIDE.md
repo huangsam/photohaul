@@ -8,7 +8,7 @@ If you have not built the application yet, please follow the general README
 to get started first.
 
 You can specify a different configuration file for various environments or specific scenarios by passing a JVM system property.
-Use the `-Dphotohaul.config=<classpath-resource>` flag when running the application. The value must be the classpath resource name (relative to `src/main/resources`).
+Use the `-Dphotohaul.config=<classpath-resource-or-filesystem-path>` flag when running the application. The value can be either the classpath resource name (relative to `src/main/resources`) or a filesystem path.
 
 Examples:
 
@@ -16,13 +16,16 @@ Examples:
 # Use the default file (no override)
 ./gradlew run
 
-# Override with a custom resource under src/main/resources/personal
+# Override with a classpath resource under src/main/resources/personal
 ./gradlew run -Dphotohaul.config=personal/path.properties
+
+# Or override with a filesystem path (absolute or relative)
+./gradlew run -Dphotohaul.config=./src/main/resources/personal/path.properties
 ```
 
 Notes:
 
-- Use classpath name (`personal/path.properties`), not a filesystem path.
+- You can use either a classpath name (`personal/path.properties`) or a filesystem path.
 - Default is `config.properties` if not overridden.
 
 ### Path setup

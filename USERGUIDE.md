@@ -7,14 +7,23 @@ Here's an extended version of content from the [general README](README.md).
 If you have not built the application yet, please follow the general README
 to get started first.
 
-You can specify a different configuration file for various environments or specific scenarios.
-To do this, use the `-PconfigFile` Gradle property when running the application.
+You can specify a different configuration file for various environments or specific scenarios by passing a JVM system property.
+Use the `-Dphotohaul.config=<classpath-resource>` flag when running the application. The value must be the classpath resource name (relative to `src/main/resources`).
 
-For example, to use a custom file located at `personal/config.properties`.
+Examples:
 
 ```shell
-./gradlew run -PconfigFile=personal/path.properties
+# Use the default file (no override)
+./gradlew run
+
+# Override with a custom resource under src/main/resources/personal
+./gradlew run -Dphotohaul.config=personal/path.properties
 ```
+
+Notes:
+
+- Use classpath name (`personal/path.properties`), not a filesystem path.
+- Default is `config.properties` if not overridden.
 
 ### Path setup
 

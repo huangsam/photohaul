@@ -29,7 +29,18 @@ dependencies {
 
 application {
     mainClass = 'io.huangsam.photohaul.Main'
-    applicationDefaultJvmArgs = ["-Dphotohaul.config=${project.findProperty('configFile') ?: 'config.properties'}"]
+}
+
+// Forward only the JVM system property -Dphotohaul.config to the app's JVM when provided.
+// Default behavior (no -D) relies on Settings to use "config.properties".
+tasks.named('run', JavaExec) {
+    def override = System.getProperty('photohaul.config')
+    if (override != null && override.toString().trim()) {
+        systemProperty 'photohaul.config', override
+        logger.lifecycle("[run] photohaul.config = ${override}")
+    } else {
+        logger.lifecycle('[run] photohaul.config not provided; using default config.properties')
+    }
 }
 
 test {

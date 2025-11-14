@@ -56,7 +56,8 @@ public class PhotoDeduplicator {
                 LOG.warn("Cannot calculate hash for {}: {}, including as unique", 
                         photo.name(), e.getMessage());
                 // If we can't calculate hash, include the photo to avoid data loss
-                uniquePhotos.put(photo.path().toString(), photo);
+                // Use UUID to ensure each unhashable file is treated as unique
+                uniquePhotos.put(java.util.UUID.randomUUID().toString(), photo);
             }
         }
 

@@ -101,7 +101,7 @@ public class TestDeduplicationIntegration {
         // Traverse and collect
         PhotoCollector photoCollector = new PhotoCollector();
         PathRuleSet pathRuleSet = new PathRuleSet(List.of(
-                java.nio.file.Files::isRegularFile
+                Files::isRegularFile
         ));
         PathWalker pathWalker = new PathWalker(sourceDir, pathRuleSet);
         pathWalker.traverse(photoCollector);

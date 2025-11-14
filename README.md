@@ -41,12 +41,8 @@ photographers to filter, organize, and migrate photos to local storage
 and cloud services. The folder structure for photos can be based on info
 such as year taken and camera make.
 
-**Duplicate Detection:** Photohaul automatically detects duplicate photos
-using SHA-256 content hashing. When processing your photo collection, it
-identifies files with identical content (even if they have different names
-or locations) and ensures only unique photos are migrated to the destination.
-This saves storage space and prevents cluttering your organized collection
-with duplicates.
+**Duplicate Detection:** Automatically detects and skips duplicate photos
+using SHA-256 content hashing, ensuring only unique files are migrated.
 
 ## Getting started
 

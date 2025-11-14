@@ -8,6 +8,7 @@
 Effortless photo management.
 
 - Reorganize 10K+ photos (30 GB) in seconds!
+- **Automatic duplicate detection using SHA-256 hashing**
 - Migrate photos locally and to the cloud (Dropbox, Google Drive)
 - Customize folder structures based on date, camera, and more
 - Filter photos by file type, size, and other criteria
@@ -40,6 +41,9 @@ photographers to filter, organize, and migrate photos to local storage
 and cloud services. The folder structure for photos can be based on info
 such as year taken and camera make.
 
+**Duplicate Detection:** Automatically detects and skips duplicate photos
+using SHA-256 content hashing, ensuring only unique files are migrated.
+
 ## Getting started
 
 For detailed instructions: [link](USERGUIDE.md)
@@ -70,7 +74,8 @@ For detailed instructions: [link](USERGUIDE.md)
 > Task :run
 20:05:18.533 [main] INFO io.huangsam.photohaul.Settings -- Use config file from photohaul.config: config.properties
 20:05:18.538 [main] DEBUG io.huangsam.photohaul.traversal.PathWalker -- Start traversal of /Users/samhuang/Pictures/Dummy PNG
-20:05:18.768 [main] DEBUG io.huangsam.photohaul.migration.GoogleDriveMigrator -- Start Drive migration to 10uRd6...
+20:05:18.768 [main] INFO io.huangsam.photohaul.deduplication.PhotoDeduplicator -- Deduplication complete: 6 unique photos, 3 duplicates removed
+20:05:18.770 [main] DEBUG io.huangsam.photohaul.migration.GoogleDriveMigrator -- Start Drive migration to 10uRd6...
 20:05:23.145 [main] INFO io.huangsam.photohaul.Main -- Finish with success=6 failure=0
 
 BUILD SUCCESSFUL in 5s

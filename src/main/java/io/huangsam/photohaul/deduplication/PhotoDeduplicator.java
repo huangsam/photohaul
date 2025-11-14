@@ -49,11 +49,11 @@ public class PhotoDeduplicator {
                 } else {
                     duplicateCount++;
                     Photo original = uniquePhotos.get(hash);
-                    LOG.debug("Skipping duplicate: {} (original: {}, hash: {})", 
+                    LOG.debug("Skipping duplicate: {} (original: {}, hash: {})",
                             photo.name(), original.name(), hash);
                 }
             } catch (IOException | NoSuchAlgorithmException e) {
-                LOG.warn("Cannot calculate hash for {}: {}, including as unique", 
+                LOG.warn("Cannot calculate hash for {}: {}, including as unique",
                         photo.name(), e.getMessage());
                 // If we can't calculate hash, include the photo to avoid data loss
                 // Use UUID to ensure each unhashable file is treated as unique
@@ -61,7 +61,7 @@ public class PhotoDeduplicator {
             }
         }
 
-        LOG.info("Deduplication complete: {} unique photos, {} duplicates removed", 
+        LOG.info("Deduplication complete: {} unique photos, {} duplicates removed",
                 uniquePhotos.size(), duplicateCount);
         return uniquePhotos.values();
     }
@@ -77,16 +77,16 @@ public class PhotoDeduplicator {
     @NotNull
     private String calculateHash(@NotNull Photo photo) throws IOException, NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance(HASH_ALGORITHM);
-        
+
         try (InputStream inputStream = Files.newInputStream(photo.path())) {
             byte[] buffer = new byte[8192];
             int bytesRead;
-            
+
             while ((bytesRead = inputStream.read(buffer)) != -1) {
                 digest.update(buffer, 0, bytesRead);
             }
         }
-        
+
         byte[] hashBytes = digest.digest();
         return bytesToHex(hashBytes);
     }
@@ -98,7 +98,7 @@ public class PhotoDeduplicator {
      * @return hex-encoded string
      */
     @NotNull
-    private String bytesToHex(@NotNull byte[] bytes) {
+    private String bytesToHex(byte[] bytes) {
         StringBuilder hexString = new StringBuilder();
         for (byte b : bytes) {
             String hex = Integer.toHexString(0xff & b);

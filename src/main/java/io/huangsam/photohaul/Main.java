@@ -27,7 +27,6 @@ public class Main {
         PathWalker pathWalker = new PathWalker(SETTINGS.getSourcePath(), pathRuleSet);
         pathWalker.traverse(photoCollector);
 
-        // Deduplicate photos based on SHA-256 hash
         PhotoDeduplicator deduplicator = new PhotoDeduplicator();
         Collection<Photo> uniquePhotos = deduplicator.deduplicate(photoCollector.getPhotos());
 

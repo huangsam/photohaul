@@ -8,10 +8,10 @@
 Effortless photo management.
 
 - Reorganize 10K+ photos (30 GB) in seconds!
-- **Automatic duplicate detection using SHA-256 hashing**
 - Migrate photos locally and to the cloud (Dropbox, Google Drive)
 - Customize folder structures based on date, camera, and more
 - Filter photos by file type, size, and other criteria
+- Detect photo duplicates using modern hash techniques
 
 Say goodbye to photo clutter - 👋 + 🚀
 

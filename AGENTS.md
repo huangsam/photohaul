@@ -1,9 +1,11 @@
 # Photohaul Codebase Overview for Agents
 
 ## Project Description
+
 Photohaul is a Java-based CLI application for migrating photo collections to various destinations (local paths, Dropbox, Google Drive) with built-in deduplication to avoid uploading duplicates. It uses SHA-256 hashing for accurate duplicate detection and supports lazy metadata extraction for performance.
 
 Main Class: `io.huangsam.photohaul.Main`
+
 Build Tool: Gradle (with application plugin for CLI execution)
 
 ## Directory Structure (`src/`)

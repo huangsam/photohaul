@@ -29,6 +29,10 @@ dependencies {
 
 application {
     mainClass = 'io.huangsam.photohaul.Main'
+    // JVM performance tuning for photo processing workloads
+    // -Xmx1g: Increase max heap size to 1GB for memory-intensive operations
+    // -XX:+UseG1GC: Use G1 garbage collector for better performance with large heaps
+    applicationDefaultJvmArgs = ['-Xmx1g', '-XX:+UseG1GC']
 }
 
 // Forward only the JVM system property -Dphotohaul.config to the app's JVM when provided.

@@ -35,6 +35,6 @@ public class TestPhoto {
 
     @NotNull
     private static Photo getPhoto(String pathName) {
-        return new Photo(Path.of(pathName), null, null, null, null, null, null, null);
+        return new Photo(Path.of(pathName));
     }
 }

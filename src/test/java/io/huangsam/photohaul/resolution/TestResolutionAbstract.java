@@ -1,7 +1,6 @@
 package io.huangsam.photohaul.resolution;
 
 import io.huangsam.photohaul.model.Photo;
-import io.huangsam.photohaul.model.PhotoBuilder;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -13,8 +12,7 @@ public abstract class TestResolutionAbstract {
 
     private static Photo buildBauerPhoto() {
         Path photoPath = getStaticResources().resolve("bauerlite.jpg");
-        PhotoBuilder pb = new PhotoBuilder();
-        return pb.fill(photoPath).build();
+        return new Photo(photoPath);
     }
 
     Photo getBauerPhoto() {

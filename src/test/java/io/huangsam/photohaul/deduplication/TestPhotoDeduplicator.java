@@ -1,7 +1,6 @@
 package io.huangsam.photohaul.deduplication;
 
 import io.huangsam.photohaul.model.Photo;
-import io.huangsam.photohaul.model.PhotoBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -20,10 +19,9 @@ public class TestPhotoDeduplicator {
     @Test
     void testDeduplicateWithNoDuplicates() {
         // Use existing test files which are unique
-        PhotoBuilder pb = new PhotoBuilder();
         List<Photo> photos = List.of(
-                pb.fill(getStaticResources().resolve("bauerlite.jpg")).build(),
-                pb.fill(getStaticResources().resolve("salad.jpg")).build()
+                new Photo(getStaticResources().resolve("bauerlite.jpg")),
+                new Photo(getStaticResources().resolve("salad.jpg"))
         );
 
         PhotoDeduplicator deduplicator = new PhotoDeduplicator();
@@ -51,12 +49,11 @@ public class TestPhotoDeduplicator {
         Files.write(unique, content2);
 
         // Create Photo objects
-        PhotoBuilder pb = new PhotoBuilder();
         List<Photo> photos = List.of(
-                pb.fill(original).build(),
-                pb.fill(duplicate1).build(),
-                pb.fill(duplicate2).build(),
-                pb.fill(unique).build()
+                new Photo(original),
+                new Photo(duplicate1),
+                new Photo(duplicate2),
+                new Photo(unique)
         );
 
         PhotoDeduplicator deduplicator = new PhotoDeduplicator();
@@ -81,9 +78,8 @@ public class TestPhotoDeduplicator {
 
     @Test
     void testDeduplicateWithSinglePhoto() {
-        PhotoBuilder pb = new PhotoBuilder();
         List<Photo> photos = List.of(
-                pb.fill(getStaticResources().resolve("bauerlite.jpg")).build()
+                new Photo(getStaticResources().resolve("bauerlite.jpg"))
         );
 
         PhotoDeduplicator deduplicator = new PhotoDeduplicator();
@@ -104,11 +100,10 @@ public class TestPhotoDeduplicator {
         Files.write(second, content);
         Files.write(third, content);
 
-        PhotoBuilder pb = new PhotoBuilder();
         List<Photo> photos = List.of(
-                pb.fill(first).build(),
-                pb.fill(second).build(),
-                pb.fill(third).build()
+                new Photo(first),
+                new Photo(second),
+                new Photo(third)
         );
 
         PhotoDeduplicator deduplicator = new PhotoDeduplicator();
@@ -125,9 +120,8 @@ public class TestPhotoDeduplicator {
         // Create a photo with a path that doesn't exist
         Path nonExistent = tempDir.resolve("nonexistent.jpg");
 
-        PhotoBuilder pb = new PhotoBuilder();
         List<Photo> photos = List.of(
-                pb.fill(nonExistent).build()
+                new Photo(nonExistent)
         );
 
         PhotoDeduplicator deduplicator = new PhotoDeduplicator();

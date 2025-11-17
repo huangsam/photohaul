@@ -112,7 +112,7 @@ public class PhotoDeduplicator {
         MessageDigest digest = MessageDigest.getInstance(HASH_ALGORITHM);
 
         try (InputStream inputStream = Files.newInputStream(photo.path())) {
-            byte[] buffer = new byte[8192];
+            byte[] buffer = new byte[65536]; // 64KB
             int bytesRead;
 
             while ((bytesRead = inputStream.read(buffer)) != -1) {

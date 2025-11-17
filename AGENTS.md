@@ -10,24 +10,41 @@ Build Tool: Gradle (with application plugin for CLI execution)
 
 ## Directory Structure (`src/`)
 
-### `src/main/java/io/huangsam/photohaul/`
+### Package `io.huangsam.photohaul`
 
-- **`Main.java`**: Entry point for the CLI app. Parses arguments, loads config, and orchestrates photo collection, deduplication, and migration.
-- **`model/`**:
-  - `Photo.java`: Immutable photo representation with lazy-loaded metadata (e.g., EXIF data like taken time, camera make/model). Uses double-checked locking for thread-safe loading.
-  - `PhotoBuilder.java`: Builder pattern for creating Photo instances (used in tests or special cases).
-- **`deduplication/`**:
-  - `PhotoDeduplicator.java`: Core logic for multi-level deduplication (size → partial hash → full SHA-256). Processes photos in streams for efficiency.
-- **`migration/`**:
-  - `Migrator.java`: Interface for migration strategies.
-  - `PathMigrator.java`: Migrates to local file system paths (move/copy/dry-run).
-  - `DropboxMigrator.java`: Uploads to Dropbox using their SDK.
-  - `GoogleDriveMigrator.java`: Uploads to Google Drive via API.
-  - `MigratorFactory.java`: Factory for creating migrators based on config.
-- **`resolution/`**:
-  - `PhotoResolver.java`: Interface for resolving photo paths/folders (e.g., by date).
-  - Implementations like `DateResolver.java` for organizing by year/month.
-- **`settings/`**: Configuration loading from properties files (e.g., API keys, paths).
+- Main entry point for the CLI application.
+- Handles argument parsing and configuration loading.
+- Orchestrates photo collection, deduplication, and migration processes.
+
+### Package `io.huangsam.photohaul.model`
+
+- Defines core data models for photos.
+- Implements lazy-loaded metadata extraction for performance.
+- Provides builder patterns for photo instances.
+
+### Package `io.huangsam.photohaul.deduplication`
+
+- Implements multi-level photo deduplication logic.
+- Uses size, partial hash, and full SHA-256 hashing for efficient duplicate detection.
+- Processes photos in streams for parallel-friendly operations.
+
+### Package `io.huangsam.photohaul.migration`
+
+- Provides migration strategies and implementations.
+- Supports transferring photos to local paths, Dropbox, and Google Drive.
+- Includes factory patterns for configurability.
+
+### Package `io.huangsam.photohaul.resolution`
+
+- Handles photo path resolution and organization.
+- Supports date-based folder structures for migrated photos.
+- Provides interfaces for custom resolution logic.
+
+### Package `io.huangsam.photohaul.settings`
+
+- Manages configuration loading from properties files.
+- Handles API keys and migration settings.
+- Supports environment-specific configurations.
 
 ### `src/main/resources/`
 

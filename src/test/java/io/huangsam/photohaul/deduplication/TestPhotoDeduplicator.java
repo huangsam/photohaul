@@ -17,7 +17,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestPhotoDeduplicator {
-
     @Test
     void testDeduplicateWithNoDuplicates() {
         // Use existing test files which are unique

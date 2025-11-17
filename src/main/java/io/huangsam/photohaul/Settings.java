@@ -87,14 +87,6 @@ public record Settings(Properties properties) {
     }
 
     /**
-     * Constructs Settings using an existing Properties object. Useful for testing or advanced scenarios.
-     *
-     * @param properties An existing Properties object.
-     */
-    public Settings {
-    }
-
-    /**
      * Retrieves a mandatory string value from settings. Throws NullPointerException if key is not found.
      *
      * @param key The key to look up.

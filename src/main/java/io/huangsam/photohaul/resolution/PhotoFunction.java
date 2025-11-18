@@ -10,13 +10,33 @@ import java.util.function.Function;
 
 public class PhotoFunction {
     @NotNull
-    public static Function<Photo, String> yearTaken() {
-        return photo -> {
-            LocalDateTime takenTime = photo.takenAt();
-            return (takenTime == null)
-                    ? null
-                    : String.valueOf(takenTime.getYear());
-        };
+    public static Function<Photo, String> aperture() {
+        return Photo::aperture;
+    }
+
+    @NotNull
+    public static Function<Photo, String> flash() {
+        return Photo::flash;
+    }
+
+    @NotNull
+    public static Function<Photo, String> focalLength() {
+        return Photo::focalLength;
+    }
+
+    @NotNull
+    public static Function<Photo, String> make() {
+        return Photo::make;
+    }
+
+    @NotNull
+    public static Function<Photo, String> model() {
+        return Photo::model;
+    }
+
+    @NotNull
+    public static Function<Photo, String> shutterSpeed() {
+        return Photo::shutterSpeed;
     }
 
     @NotNull
@@ -26,6 +46,16 @@ public class PhotoFunction {
             return (modifiedTime == null)
                     ? null
                     : String.valueOf(modifiedTime.toInstant().atZone(ZoneId.systemDefault()).getYear());
+        };
+    }
+
+    @NotNull
+    public static Function<Photo, String> yearTaken() {
+        return photo -> {
+            LocalDateTime takenTime = photo.takenAt();
+            return (takenTime == null)
+                    ? null
+                    : String.valueOf(takenTime.getYear());
         };
     }
 }

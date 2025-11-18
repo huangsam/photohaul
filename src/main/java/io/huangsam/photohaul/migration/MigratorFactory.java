@@ -73,18 +73,19 @@ public class MigratorFactory {
         String app = settings.getValue("drive.appName");
         try {
             com.google.api.client.http.HttpTransport transport = GoogleNetHttpTransport.newTrustedTransport();
-            InputStream in = getClass().getClassLoader().getResourceAsStream(fileName);
-            if (in == null) {
-                throw new FileNotFoundException("Cannot find " + fileName);
+            try (InputStream in = getClass().getClassLoader().getResourceAsStream(fileName)) {
+                if (in == null) {
+                    throw new FileNotFoundException("Cannot find " + fileName);
+                }
+                GoogleCredentials credentials = GoogleCredentials.fromStream(in).createScoped(SCOPES);
+                HttpRequestInitializer requestInitializer = new HttpCredentialsAdapter(credentials);
+
+                Drive service = new Drive.Builder(transport, JSON_FACTORY, requestInitializer)
+                        .setApplicationName(app)
+                        .build();
+
+                return new GoogleDriveMigrator(settings.getValue("drive.target"), resolver, service, transport);
             }
-            GoogleCredentials credentials = GoogleCredentials.fromStream(in).createScoped(SCOPES);
-            HttpRequestInitializer requestInitializer = new HttpCredentialsAdapter(credentials);
-
-            Drive service = new Drive.Builder(transport, JSON_FACTORY, requestInitializer)
-                    .setApplicationName(app)
-                    .build();
-
-            return new GoogleDriveMigrator(settings.getValue("drive.target"), resolver, service, transport);
         } catch (GeneralSecurityException | IOException e) {
             throw new MigrationException(e.getMessage(), MigratorMode.GOOGLE_DRIVE);
         }

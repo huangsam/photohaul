@@ -88,7 +88,12 @@ public class MigratorFactory {
     @NotNull
     private FtpMigrator makeFtp(@NotNull Settings settings, PhotoResolver resolver) {
         String host = settings.getValue("ftp.host");
-        int port = Integer.parseInt(settings.getValue("ftp.port", "21"));
+        int port;
+        try {
+            port = Integer.parseInt(settings.getValue("ftp.port", "21"));
+        } catch (NumberFormatException e) {
+            throw new MigrationException("Invalid FTP port number", MigratorMode.FTP);
+        }
         String username = settings.getValue("ftp.username");
         String password = settings.getValue("ftp.password");
         String target = settings.getValue("ftp.target");

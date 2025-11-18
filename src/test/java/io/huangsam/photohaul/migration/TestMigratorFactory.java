@@ -34,4 +34,11 @@ public class TestMigratorFactory {
         MigrationException exception = assertThrows(MigrationException.class, () -> FACTORY.make(MigratorMode.GOOGLE_DRIVE, settings, RESOLVER));
         assertEquals(MigratorMode.GOOGLE_DRIVE, exception.getMode());
     }
+
+    @Test
+    void testMakeFtpMigratorSuccess() {
+        Settings settings = new Settings("ftp-example.properties");
+        Migrator migrator = FACTORY.make(MigratorMode.FTP, settings, RESOLVER);
+        assertSame(FtpMigrator.class, migrator.getClass());
+    }
 }

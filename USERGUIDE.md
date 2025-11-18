@@ -63,6 +63,20 @@ Configure the following property fields:
 
 [Click here](https://developers.google.com/drive/api/quickstart/java#set-up-environment) to learn how to setup the `drive` fields.
 
+### FTP setup
+
+Configure the following property fields:
+
+- `migrator.mode`
+- `path.source`
+- `ftp.host`
+- `ftp.port` (optional, defaults to 21)
+- `ftp.username`
+- `ftp.password`
+- `ftp.target`
+
+Ensure your FTP server supports passive mode for reliable transfers. Use SFTP if available for secure connections.
+
 ## Run migration
 
 - Open your terminal and navigate to the `./photohaul` directory

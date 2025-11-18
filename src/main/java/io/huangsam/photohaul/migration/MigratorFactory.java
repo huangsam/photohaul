@@ -40,6 +40,7 @@ public class MigratorFactory {
             case PATH -> makePath(settings, resolver);
             case DROPBOX -> makeDropbox(settings, resolver);
             case GOOGLE_DRIVE -> makeGoogleDrive(settings, resolver);
+            case FTP -> makeFtp(settings, resolver);
         };
     }
 
@@ -82,5 +83,15 @@ public class MigratorFactory {
         } catch (GeneralSecurityException | IOException e) {
             throw new MigrationException(e.getMessage(), MigratorMode.GOOGLE_DRIVE);
         }
+    }
+
+    @NotNull
+    private FtpMigrator makeFtp(@NotNull Settings settings, PhotoResolver resolver) {
+        String host = settings.getValue("ftp.host");
+        int port = Integer.parseInt(settings.getValue("ftp.port", "21"));
+        String username = settings.getValue("ftp.username");
+        String password = settings.getValue("ftp.password");
+        String target = settings.getValue("ftp.target");
+        return new FtpMigrator(host, port, username, password, target, resolver);
     }
 }

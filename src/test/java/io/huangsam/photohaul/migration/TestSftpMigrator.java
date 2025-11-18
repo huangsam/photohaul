@@ -38,7 +38,7 @@ public class TestSftpMigrator extends TestMigrationAbstract {
         verify(sshClientMock).newSFTPClient();
         verify(sftpClientMock, times(2)).mkdirs(anyString()); // occurs due to mocking
         verify(sftpClientMock, times(2)).put(anyString(), anyString());
-        verify(sshClientMock).disconnect();
+        verify(sshClientMock).close();
 
         assertEquals(2, migrator.getSuccessCount());
         assertEquals(0, migrator.getFailureCount());
@@ -53,6 +53,7 @@ public class TestSftpMigrator extends TestMigrationAbstract {
 
         verify(sshClientMock).connect("host", 22);
         verify(sshClientMock, times(0)).authPassword(anyString(), anyString());
+        verify(sshClientMock).close();
 
         assertEquals(0, migrator.getSuccessCount());
         assertEquals(2, migrator.getFailureCount());
@@ -68,6 +69,7 @@ public class TestSftpMigrator extends TestMigrationAbstract {
 
         verify(sftpClientMock, times(2)).mkdirs(anyString()); // occurs due to mocking
         verify(sftpClientMock, times(2)).put(anyString(), anyString());
+        verify(sshClientMock).close();
 
         assertEquals(0, migrator.getSuccessCount());
         assertEquals(2, migrator.getFailureCount());
@@ -76,7 +78,7 @@ public class TestSftpMigrator extends TestMigrationAbstract {
     @Test
     void testMigratePhotosCloseFailure() throws IOException {
         when(sshClientMock.newSFTPClient()).thenReturn(sftpClientMock);
-        doThrow(new IOException("Close failed")).when(sftpClientMock).close();
+        doThrow(new IOException("Close failed")).when(sshClientMock).close();
 
         Migrator migrator = new SftpMigrator("host", 22, "user", "pass", "/target", new PhotoResolver(List.of()), () -> sshClientMock);
         run(migrator);
@@ -86,8 +88,7 @@ public class TestSftpMigrator extends TestMigrationAbstract {
         verify(sshClientMock).newSFTPClient();
         verify(sftpClientMock, times(2)).mkdirs(anyString());
         verify(sftpClientMock, times(2)).put(anyString(), anyString());
-        verify(sftpClientMock).close();
-        verify(sshClientMock).disconnect();
+        verify(sshClientMock).close();
 
         assertEquals(2, migrator.getSuccessCount());
         assertEquals(0, migrator.getFailureCount());

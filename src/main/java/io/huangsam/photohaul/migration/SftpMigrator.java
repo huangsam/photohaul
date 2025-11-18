@@ -47,9 +47,8 @@ public class SftpMigrator implements Migrator {
     @Override
     public void migratePhotos(@NotNull java.util.Collection<Photo> photos) {
         LOG.debug("Start SFTP migration to {}@{}:{}", username, host, port);
-        SSHClient sshClient = sshClientSupplier.get();
         int processedCount = 0;
-        try {
+        try (SSHClient sshClient = sshClientSupplier.get()) {
             sshClient.loadKnownHosts();
             sshClient.connect(host, port);
             sshClient.authPassword(username, password);
@@ -76,12 +75,6 @@ public class SftpMigrator implements Migrator {
         } catch (IOException e) {
             LOG.error("SFTP connection error: {}", e.getMessage());
             failureCount += (photos.size() - processedCount);
-        } finally {
-            try {
-                sshClient.disconnect();
-            } catch (IOException e) {
-                LOG.warn("Error disconnecting SFTP: {}", e.getMessage());
-            }
         }
     }
 

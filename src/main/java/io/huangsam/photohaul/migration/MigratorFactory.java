@@ -85,7 +85,7 @@ public class MigratorFactory {
         }
     }
 
-        @NotNull
+    @NotNull
     private SftpMigrator makeSftp(@NotNull Settings settings, PhotoResolver resolver) {
         String host = settings.getValue("sftp.host");
         int port = Integer.parseInt(settings.getValue("sftp.port", "22"));

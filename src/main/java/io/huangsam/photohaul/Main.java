@@ -34,12 +34,13 @@ public class Main {
         PhotoResolver photoResolver = PhotoResolver.getDefault();
 
         MigratorFactory migratorFactory = new MigratorFactory();
-        try {
-            Migrator migrator = migratorFactory.make(migratorMode, SETTINGS, photoResolver);
+        try (Migrator migrator = migratorFactory.make(migratorMode, SETTINGS, photoResolver)) {
             migrator.migratePhotos(uniquePhotos);
             LOG.info("Finish with success={} failure={}", migrator.getSuccessCount(), migrator.getFailureCount());
         } catch (MigrationException e) {
             LOG.error("Cannot migrate with mode {}: {}", e.getMode(), e.getMessage());
+        } catch (Exception e) {
+            LOG.error("Error during migration or closing migrator: {}", e.getMessage());
         }
     }
 }

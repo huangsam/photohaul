@@ -13,6 +13,10 @@ import com.google.auth.oauth2.GoogleCredentials;
 import io.huangsam.photohaul.Settings;
 import io.huangsam.photohaul.resolution.PhotoResolver;
 import org.jetbrains.annotations.NotNull;
+import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
+import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.s3.S3Client;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -41,6 +45,7 @@ public class MigratorFactory {
             case DROPBOX -> makeDropbox(settings, resolver);
             case GOOGLE_DRIVE -> makeGoogleDrive(settings, resolver);
             case SFTP -> makeSftp(settings, resolver);
+            case S3 -> makeS3(settings, resolver);
         };
     }
 
@@ -67,19 +72,21 @@ public class MigratorFactory {
     private GoogleDriveMigrator makeGoogleDrive(@NotNull Settings settings, PhotoResolver resolver) {
         String fileName = settings.getValue("drive.credentialFile");
         String app = settings.getValue("drive.appName");
-        try (InputStream in = getClass().getClassLoader().getResourceAsStream(fileName)) {
-            if (in == null) {
-                throw new FileNotFoundException("Cannot find " + fileName);
+        try {
+            com.google.api.client.http.HttpTransport transport = GoogleNetHttpTransport.newTrustedTransport();
+            try (InputStream in = getClass().getClassLoader().getResourceAsStream(fileName)) {
+                if (in == null) {
+                    throw new FileNotFoundException("Cannot find " + fileName);
+                }
+                GoogleCredentials credentials = GoogleCredentials.fromStream(in).createScoped(SCOPES);
+                HttpRequestInitializer requestInitializer = new HttpCredentialsAdapter(credentials);
+
+                Drive service = new Drive.Builder(transport, JSON_FACTORY, requestInitializer)
+                        .setApplicationName(app)
+                        .build();
+
+                return new GoogleDriveMigrator(settings.getValue("drive.target"), resolver, service, transport);
             }
-            GoogleCredentials credentials = GoogleCredentials.fromStream(in).createScoped(SCOPES);
-            HttpRequestInitializer requestInitializer = new HttpCredentialsAdapter(credentials);
-
-            Drive service = new Drive.Builder(
-                    GoogleNetHttpTransport.newTrustedTransport(), JSON_FACTORY, requestInitializer)
-                    .setApplicationName(app)
-                    .build();
-
-            return new GoogleDriveMigrator(settings.getValue("drive.target"), resolver, service);
         } catch (GeneralSecurityException | IOException e) {
             throw new MigrationException(e.getMessage(), MigratorMode.GOOGLE_DRIVE);
         }
@@ -93,5 +100,19 @@ public class MigratorFactory {
         String password = settings.getValue("sftp.password");
         String target = settings.getValue("sftp.target");
         return new SftpMigrator(host, port, username, password, target, resolver);
+    }
+
+    @NotNull
+    private S3Migrator makeS3(@NotNull Settings settings, PhotoResolver resolver) {
+        String accessKey = settings.getValue("s3.accessKey");
+        String secretKey = settings.getValue("s3.secretKey");
+        String region = settings.getValue("s3.region", "us-east-1");
+        String bucket = settings.getValue("s3.bucket");
+        AwsBasicCredentials credentials = AwsBasicCredentials.create(accessKey, secretKey);
+        S3Client s3Client = S3Client.builder()
+                .credentialsProvider(StaticCredentialsProvider.create(credentials))
+                .region(Region.of(region))
+                .build();
+        return new S3Migrator(bucket, resolver, s3Client);
     }
 }

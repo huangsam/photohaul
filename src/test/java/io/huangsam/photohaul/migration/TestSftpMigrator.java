@@ -1,6 +1,8 @@
 package io.huangsam.photohaul.migration;
 
+import io.huangsam.photohaul.model.Photo;
 import io.huangsam.photohaul.resolution.PhotoResolver;
+import io.huangsam.photohaul.resolution.ResolutionException;
 import net.schmizz.sshj.SSHClient;
 import net.schmizz.sshj.sftp.SFTPClient;
 import org.junit.jupiter.api.Test;
@@ -9,9 +11,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
@@ -26,11 +28,15 @@ public class TestSftpMigrator extends TestMigrationAbstract {
     @Mock
     SFTPClient sftpClientMock;
 
-    @Test
-    void testMigratePhotosSuccess() throws IOException {
-        when(sshClientMock.newSFTPClient()).thenReturn(sftpClientMock);
+    @Mock
+    PhotoResolver photoResolverMock;
 
-        Migrator migrator = new SftpMigrator("host", 22, "user", "pass", "/target", new PhotoResolver(List.of()), () -> sshClientMock);
+    @Test
+    void testMigratePhotosSuccess() throws Exception {
+        when(sshClientMock.newSFTPClient()).thenReturn(sftpClientMock);
+        when(photoResolverMock.resolveString(any(Photo.class))).thenReturn("some/path");
+
+        Migrator migrator = new SftpMigrator("host", 22, "user", "pass", "/target", photoResolverMock, () -> sshClientMock);
         run(migrator);
 
         verify(sshClientMock).connect("host", 22);
@@ -42,13 +48,15 @@ public class TestSftpMigrator extends TestMigrationAbstract {
 
         assertEquals(2, migrator.getSuccessCount());
         assertEquals(0, migrator.getFailureCount());
+
+        migrator.close(); // No-op
     }
 
     @Test
-    void testMigratePhotosConnectionFailure() throws IOException {
+    void testMigratePhotosConnectionFailure() throws Exception {
         doThrow(new IOException("Connection failed")).when(sshClientMock).connect("host", 22);
 
-        Migrator migrator = new SftpMigrator("host", 22, "user", "pass", "/target", new PhotoResolver(List.of()), () -> sshClientMock);
+        Migrator migrator = new SftpMigrator("host", 22, "user", "pass", "/target", photoResolverMock, () -> sshClientMock);
         run(migrator);
 
         verify(sshClientMock).connect("host", 22);
@@ -57,14 +65,17 @@ public class TestSftpMigrator extends TestMigrationAbstract {
 
         assertEquals(0, migrator.getSuccessCount());
         assertEquals(2, migrator.getFailureCount());
+
+        migrator.close(); // No-op
     }
 
     @Test
-    void testMigratePhotosUploadFailure() throws IOException {
+    void testMigratePhotosUploadFailure() throws Exception {
         when(sshClientMock.newSFTPClient()).thenReturn(sftpClientMock);
         doThrow(new IOException("Upload failed")).when(sftpClientMock).put(anyString(), anyString());
+        when(photoResolverMock.resolveString(any(Photo.class))).thenReturn("some/path");
 
-        Migrator migrator = new SftpMigrator("host", 22, "user", "pass", "/target", new PhotoResolver(List.of()), () -> sshClientMock);
+        Migrator migrator = new SftpMigrator("host", 22, "user", "pass", "/target", photoResolverMock, () -> sshClientMock);
         run(migrator);
 
         verify(sftpClientMock, times(2)).mkdirs(anyString()); // occurs due to mocking
@@ -73,14 +84,17 @@ public class TestSftpMigrator extends TestMigrationAbstract {
 
         assertEquals(0, migrator.getSuccessCount());
         assertEquals(2, migrator.getFailureCount());
+
+        migrator.close(); // No-op
     }
 
     @Test
-    void testMigratePhotosCloseFailure() throws IOException {
+    void testMigratePhotosCloseFailure() throws Exception {
         when(sshClientMock.newSFTPClient()).thenReturn(sftpClientMock);
         doThrow(new IOException("Close failed")).when(sshClientMock).close();
+        when(photoResolverMock.resolveString(any(Photo.class))).thenReturn("some/path");
 
-        Migrator migrator = new SftpMigrator("host", 22, "user", "pass", "/target", new PhotoResolver(List.of()), () -> sshClientMock);
+        Migrator migrator = new SftpMigrator("host", 22, "user", "pass", "/target", photoResolverMock, () -> sshClientMock);
         run(migrator);
 
         verify(sshClientMock).connect("host", 22);
@@ -92,5 +106,28 @@ public class TestSftpMigrator extends TestMigrationAbstract {
 
         assertEquals(2, migrator.getSuccessCount());
         assertEquals(0, migrator.getFailureCount());
+
+        migrator.close(); // No-op
+    }
+
+    @Test
+    void testMigratePhotosWithResolutionException() throws Exception {
+        when(sshClientMock.newSFTPClient()).thenReturn(sftpClientMock);
+        when(photoResolverMock.resolveString(any(Photo.class))).thenThrow(new ResolutionException("Resolution failed"));
+
+        Migrator migrator = new SftpMigrator("host", 22, "user", "pass", "/target", photoResolverMock, () -> sshClientMock);
+        run(migrator);
+
+        verify(sshClientMock).connect("host", 22);
+        verify(sshClientMock).authPassword("user", "pass");
+        verify(sshClientMock).newSFTPClient();
+        verify(sftpClientMock, times(2)).mkdirs(anyString());
+        verify(sftpClientMock, times(2)).put(anyString(), anyString());
+        verify(sshClientMock).close();
+
+        assertEquals(2, migrator.getSuccessCount());
+        assertEquals(0, migrator.getFailureCount());
+
+        migrator.close(); // No-op
     }
 }

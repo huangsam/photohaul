@@ -77,6 +77,19 @@ Configure the following property fields:
 
 SFTP (SSH File Transfer Protocol) is used for secure file transfers over SSH. Host keys are verified against your known hosts file for security. Ensure your server supports SFTP.
 
+### S3 setup
+
+Configure the following property fields:
+
+- `migrator.mode`
+- `path.source`
+- `s3.bucket`
+- `s3.accessKey`
+- `s3.secretKey`
+- `s3.region` (optional, defaults to us-east-1)
+
+Amazon S3 (Simple Storage Service) is used for scalable cloud storage. You'll need AWS credentials with S3 permissions. [Click here](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/get-started.html) to learn how to obtain and configure AWS credentials.
+
 ## Run migration
 
 - Open your terminal and navigate to the `./photohaul` directory

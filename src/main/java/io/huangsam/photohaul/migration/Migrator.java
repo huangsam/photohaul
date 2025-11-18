@@ -11,7 +11,7 @@ import java.util.Collection;
  * <p> This contract allows consumers to migrate photos without knowing whether
  * the operations happen locally or in the cloud.
  */
-public interface Migrator {
+public interface Migrator extends AutoCloseable {
     /**
      * Migrate a collection of photos to a specific target.
      *

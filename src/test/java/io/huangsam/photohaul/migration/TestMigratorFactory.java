@@ -41,4 +41,11 @@ public class TestMigratorFactory {
         Migrator migrator = FACTORY.make(MigratorMode.SFTP, settings, RESOLVER);
         assertSame(SftpMigrator.class, migrator.getClass());
     }
+
+    @Test
+    void testMakeS3MigratorSuccess() {
+        Settings settings = new Settings("s3-example.properties");
+        Migrator migrator = FACTORY.make(MigratorMode.S3, settings, RESOLVER);
+        assertSame(S3Migrator.class, migrator.getClass());
+    }
 }

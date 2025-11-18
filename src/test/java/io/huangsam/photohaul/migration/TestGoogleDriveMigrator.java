@@ -1,9 +1,12 @@
 package io.huangsam.photohaul.migration;
 
+import com.google.api.client.http.HttpTransport;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
+import io.huangsam.photohaul.model.Photo;
 import io.huangsam.photohaul.resolution.PhotoResolver;
+import io.huangsam.photohaul.resolution.ResolutionException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -11,7 +14,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
-import java.io.IOException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -28,6 +30,12 @@ public class TestGoogleDriveMigrator extends TestMigrationAbstract {
 
     @Mock
     Drive driveMock;
+
+    @Mock
+    HttpTransport httpTransportMock;
+
+    @Mock
+    PhotoResolver photoResolverMock;
 
     @Mock
     Drive.Files filesMock;
@@ -54,7 +62,7 @@ public class TestGoogleDriveMigrator extends TestMigrationAbstract {
     File createdPhotoMock;
 
     @Test
-    void testMigratePhotosAllSuccess() throws IOException {
+    void testMigratePhotosAllSuccess() throws Exception {
         when(driveMock.files()).thenReturn(filesMock);
 
         when(filesMock.list()).thenReturn(driveListMock);
@@ -72,7 +80,9 @@ public class TestGoogleDriveMigrator extends TestMigrationAbstract {
         when(driveCreatePhotoMock.setFields(anyString())).thenReturn(driveCreatePhotoMock);
         when(driveCreatePhotoMock.execute()).thenReturn(createdPhotoMock);
 
-        Migrator migrator = new GoogleDriveMigrator(TARGET_ROOT, PhotoResolver.getDefault(), driveMock);
+        when(photoResolverMock.resolveString(any(Photo.class))).thenReturn("some/path");
+
+        Migrator migrator = new GoogleDriveMigrator(TARGET_ROOT, photoResolverMock, driveMock, httpTransportMock);
         run(migrator);
 
         verify(filesMock, times(4)).list();
@@ -81,10 +91,13 @@ public class TestGoogleDriveMigrator extends TestMigrationAbstract {
 
         assertEquals(2, migrator.getSuccessCount());
         assertEquals(0, migrator.getFailureCount());
+
+        migrator.close();
+        verify(httpTransportMock).shutdown();
     }
 
     @Test
-    void testMigratePhotosAllExisting() throws IOException {
+    void testMigratePhotosAllExisting() throws Exception {
         when(driveMock.files()).thenReturn(filesMock);
 
         when(filesMock.list()).thenReturn(driveListMock);
@@ -93,7 +106,9 @@ public class TestGoogleDriveMigrator extends TestMigrationAbstract {
         when(fileListMock.getFiles()).thenReturn(List.of(listedFileMock));
         when(listedFileMock.getId()).thenReturn("existingId123");
 
-        Migrator migrator = new GoogleDriveMigrator(TARGET_ROOT, PhotoResolver.getDefault(), driveMock);
+        when(photoResolverMock.resolveString(any(Photo.class))).thenReturn("some/path");
+
+        Migrator migrator = new GoogleDriveMigrator(TARGET_ROOT, photoResolverMock, driveMock, httpTransportMock);
         run(migrator);
 
         verify(listedFileMock, times(4)).getId();
@@ -102,10 +117,13 @@ public class TestGoogleDriveMigrator extends TestMigrationAbstract {
 
         assertEquals(2, migrator.getSuccessCount());
         assertEquals(0, migrator.getFailureCount());
+
+        migrator.close();
+        verify(httpTransportMock).shutdown();
     }
 
     @Test
-    void testMigratePhotosWithNullFolder() throws IOException {
+    void testMigratePhotosWithNullFolder() throws Exception {
         when(driveMock.files()).thenReturn(filesMock);
 
         when(filesMock.list()).thenReturn(driveListMock);
@@ -118,7 +136,9 @@ public class TestGoogleDriveMigrator extends TestMigrationAbstract {
         when(driveCreateFolderMock.execute()).thenReturn(createdFolderMock);
         when(createdFolderMock.getId()).thenReturn(null);
 
-        Migrator migrator = new GoogleDriveMigrator(TARGET_ROOT, PhotoResolver.getDefault(), driveMock);
+        when(photoResolverMock.resolveString(any(Photo.class))).thenReturn("some/path");
+
+        Migrator migrator = new GoogleDriveMigrator(TARGET_ROOT, photoResolverMock, driveMock, httpTransportMock);
         run(migrator);
 
         verify(filesMock, times(2)).list();
@@ -126,5 +146,43 @@ public class TestGoogleDriveMigrator extends TestMigrationAbstract {
 
         assertEquals(0, migrator.getSuccessCount());
         assertEquals(2, migrator.getFailureCount());
+
+        migrator.close();
+        verify(httpTransportMock).shutdown();
+    }
+
+    @Test
+    void testMigratePhotosWithResolutionException() throws Exception {
+        when(driveMock.files()).thenReturn(filesMock);
+
+        when(filesMock.list()).thenReturn(driveListMock);
+        when(driveListMock.setQ(anyString())).thenReturn(driveListMock);
+        when(driveListMock.execute()).thenReturn(fileListMock);
+        when(fileListMock.getFiles()).thenReturn(List.of(listedFileMock));
+        when(listedFileMock.getId()).thenReturn(null);
+
+        when(filesMock.create(any())).thenReturn(driveCreateFolderMock);
+        when(driveCreateFolderMock.setFields(anyString())).thenReturn(driveCreateFolderMock);
+        when(driveCreateFolderMock.execute()).thenReturn(createdFolderMock);
+        when(createdFolderMock.getId()).thenReturn("nestedId123");
+
+        when(filesMock.create(any(), any())).thenReturn(driveCreatePhotoMock);
+        when(driveCreatePhotoMock.setFields(anyString())).thenReturn(driveCreatePhotoMock);
+        when(driveCreatePhotoMock.execute()).thenReturn(createdPhotoMock);
+
+        when(photoResolverMock.resolveString(any(Photo.class))).thenThrow(new ResolutionException("Resolution failed"));
+
+        Migrator migrator = new GoogleDriveMigrator(TARGET_ROOT, photoResolverMock, driveMock, httpTransportMock);
+        run(migrator);
+
+        verify(filesMock, times(4)).list();
+        verify(driveCreateFolderMock, times(2)).execute();
+        verify(driveCreatePhotoMock, times(2)).execute();
+
+        assertEquals(2, migrator.getSuccessCount());
+        assertEquals(0, migrator.getFailureCount());
+
+        migrator.close();
+        verify(httpTransportMock).shutdown();
     }
 }

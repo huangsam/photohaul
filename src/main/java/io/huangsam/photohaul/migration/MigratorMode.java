@@ -16,5 +16,8 @@ public enum MigratorMode {
     DROPBOX,
 
     /** Migrate photos to a Google Drive account. */
-    GOOGLE_DRIVE
+    GOOGLE_DRIVE,
+
+    /** Migrate photos to an SFTP server. */
+    SFTP
 }

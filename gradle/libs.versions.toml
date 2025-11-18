@@ -1,4 +1,5 @@
 [versions]
+sshj = "0.40.0"
 dropbox-sdk = "7.0.0"
 google-api-client = "2.8.1"
 google-api-drive = "v3-rev20251019-2.0.0"
@@ -13,6 +14,7 @@ slf4j-api = "2.0.17"
 task-tree = "4.0.1"
 
 [libraries]
+sshj = { module = "com.hierynomus:sshj", version.ref = "sshj" }
 dropbox-sdk = { module = "com.dropbox.core:dropbox-core-sdk", version.ref = "dropbox-sdk" }
 google-api-client = { module = "com.google.api-client:google-api-client", version.ref = "google-api-client" }
 google-api-drive = { module = "com.google.apis:google-api-services-drive", version.ref = "google-api-drive" }

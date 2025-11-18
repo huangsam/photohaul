@@ -31,7 +31,7 @@ Build Tool: Gradle (with application plugin for CLI execution)
 ### Package `io.huangsam.photohaul.migration`
 
 - Provides migration strategies and implementations.
-- Supports transferring photos to local paths, Dropbox, and Google Drive.
+- Supports transferring photos to local paths, Dropbox, Google Drive, and SFTP servers.
 - Includes factory patterns for configurability.
 
 ### Package `io.huangsam.photohaul.resolution`
@@ -53,7 +53,7 @@ Build Tool: Gradle (with application plugin for CLI execution)
 
 ### `src/test/java/io/huangsam/photohaul/`
 
-- Unit tests for all major classes (e.g., `TestPhoto.java`, `TestPhotoDeduplicator.java`).
+- Unit tests for all major classes.
 - Integration tests for end-to-end flows.
 - Uses JUnit 5, Mockito for mocking.
 
@@ -70,7 +70,7 @@ Build Tool: Gradle (with application plugin for CLI execution)
 ### Dependencies (via `gradle/libs.versions.toml`)
 
 - **Core**: JetBrains Annotations, SLF4J/Logback for logging.
-- **APIs**: Google Drive API, Dropbox SDK for cloud migrations.
+- **APIs**: Google Drive API, Dropbox SDK, SSHJ for SFTP.
 - **Metadata**: Drew Noakes' metadata-extractor for EXIF data.
 - **Testing**: JUnit 5, Mockito.
 

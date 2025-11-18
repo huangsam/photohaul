@@ -63,6 +63,20 @@ Configure the following property fields:
 
 [Click here](https://developers.google.com/drive/api/quickstart/java#set-up-environment) to learn how to setup the `drive` fields.
 
+### SFTP setup
+
+Configure the following property fields:
+
+- `migrator.mode`
+- `path.source`
+- `sftp.host`
+- `sftp.port` (optional, defaults to 22)
+- `sftp.username`
+- `sftp.password`
+- `sftp.target`
+
+SFTP (SSH File Transfer Protocol) is used for secure file transfers over SSH. Host keys are verified against your known hosts file for security. Ensure your server supports SFTP.
+
 ## Run migration
 
 - Open your terminal and navigate to the `./photohaul` directory

@@ -10,7 +10,6 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.function.Supplier;
 
 import static org.slf4j.LoggerFactory.getLogger;

@@ -9,6 +9,8 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.function.Supplier;
 
 import static org.slf4j.LoggerFactory.getLogger;
@@ -59,9 +61,10 @@ public class SftpMigrator implements Migrator {
                     LOG.trace("Upload {} to {}", photo.name(), targetPath);
                     try {
                         // Ensure target directory exists
-                        String targetDir = targetPath.substring(0, targetPath.lastIndexOf('/'));
-                        if (!targetDir.isEmpty()) {
-                            sftpClient.mkdirs(targetDir);
+                        Path targetPathObj = Paths.get(targetPath);
+                        Path targetDir = targetPathObj.getParent();
+                        if (targetDir != null) {
+                            sftpClient.mkdirs(targetDir.toString());
                         }
                         sftpClient.put(photo.path().toString(), targetPath);
                         successCount++;

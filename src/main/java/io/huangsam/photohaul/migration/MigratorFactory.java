@@ -14,6 +14,7 @@ import io.huangsam.photohaul.Settings;
 import io.huangsam.photohaul.resolution.PhotoResolver;
 import org.jetbrains.annotations.NotNull;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
+import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 
@@ -109,7 +110,7 @@ public class MigratorFactory {
         String bucket = settings.getValue("s3.bucket");
         AwsBasicCredentials credentials = AwsBasicCredentials.create(accessKey, secretKey);
         S3Client s3Client = S3Client.builder()
-                .credentialsProvider(() -> credentials)
+                .credentialsProvider(StaticCredentialsProvider.create(credentials))
                 .region(Region.of(region))
                 .build();
         return new S3Migrator(bucket, resolver, s3Client);

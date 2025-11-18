@@ -37,10 +37,12 @@ public record Settings(Properties properties) {
 
     /**
      * Constructs Settings by loading properties from a classpath resource name, with a filesystem fallback.
+     * The loading order is as follows:
      *
-     * Loading order:
-     * 1) Try classpath resource via ClassLoader#getResourceAsStream(name)
-     * 2) If not found, try reading from the filesystem path specified by {@code name}
+     * <ol>
+     *     <li>Try classpath resource via {@link java.lang.ClassLoader#getResourceAsStream(String)}</li>
+     *     <li>If not found, try reading from the filesystem path specified by {@code name}</li>
+     * </ol>
      *
      * @param name The classpath resource name or filesystem path.
      * @throws IllegalStateException if the settings file is not found in either location.

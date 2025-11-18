@@ -5,7 +5,6 @@ import io.huangsam.photohaul.resolution.PhotoResolver;
 import io.huangsam.photohaul.resolution.ResolutionException;
 import net.schmizz.sshj.SSHClient;
 import net.schmizz.sshj.sftp.SFTPClient;
-import net.schmizz.sshj.transport.verification.PromiscuousVerifier;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
@@ -50,7 +49,7 @@ public class SftpMigrator implements Migrator {
         LOG.debug("Start SFTP migration to {}@{}:{}", username, host, port);
         SSHClient sshClient = sshClientSupplier.get();
         try {
-            sshClient.addHostKeyVerifier(new PromiscuousVerifier());
+            sshClient.loadKnownHosts();
             sshClient.connect(host, port);
             sshClient.authPassword(username, password);
 

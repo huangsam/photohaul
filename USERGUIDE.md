@@ -75,7 +75,7 @@ Configure the following property fields:
 - `sftp.password`
 - `sftp.target`
 
-SFTP (SSH File Transfer Protocol) is used for secure file transfers over SSH. Ensure your server supports SFTP.
+SFTP (SSH File Transfer Protocol) is used for secure file transfers over SSH. Host keys are verified against your known hosts file for security. Ensure your server supports SFTP.
 
 ## Run migration
 

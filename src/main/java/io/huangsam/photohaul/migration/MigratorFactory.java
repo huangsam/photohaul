@@ -115,4 +115,3 @@ public class MigratorFactory {
         return new S3Migrator(bucket, resolver, s3Client);
     }
 }
-

@@ -71,19 +71,20 @@ public class MigratorFactory {
     private GoogleDriveMigrator makeGoogleDrive(@NotNull Settings settings, PhotoResolver resolver) {
         String fileName = settings.getValue("drive.credentialFile");
         String app = settings.getValue("drive.appName");
-        try (InputStream in = getClass().getClassLoader().getResourceAsStream(fileName)) {
+        try {
+            com.google.api.client.http.HttpTransport transport = GoogleNetHttpTransport.newTrustedTransport();
+            InputStream in = getClass().getClassLoader().getResourceAsStream(fileName);
             if (in == null) {
                 throw new FileNotFoundException("Cannot find " + fileName);
             }
             GoogleCredentials credentials = GoogleCredentials.fromStream(in).createScoped(SCOPES);
             HttpRequestInitializer requestInitializer = new HttpCredentialsAdapter(credentials);
 
-            Drive service = new Drive.Builder(
-                    GoogleNetHttpTransport.newTrustedTransport(), JSON_FACTORY, requestInitializer)
+            Drive service = new Drive.Builder(transport, JSON_FACTORY, requestInitializer)
                     .setApplicationName(app)
                     .build();
 
-            return new GoogleDriveMigrator(settings.getValue("drive.target"), resolver, service);
+            return new GoogleDriveMigrator(settings.getValue("drive.target"), resolver, service, transport);
         } catch (GeneralSecurityException | IOException e) {
             throw new MigrationException(e.getMessage(), MigratorMode.GOOGLE_DRIVE);
         }

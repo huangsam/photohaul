@@ -1,5 +1,6 @@
 package io.huangsam.photohaul.migration;
 
+import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.FileContent;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.FileList;
@@ -26,15 +27,17 @@ public class GoogleDriveMigrator implements Migrator {
     private final String targetRoot;
     private final PhotoResolver photoResolver;
     private final Drive driveService;
+    private final HttpTransport httpTransport;
 
     private long createdCount = 0L;
     private long existedCount = 0L;
     private long failureCount = 0L;
 
-    public GoogleDriveMigrator(String target, PhotoResolver resolver, Drive service) {
+    public GoogleDriveMigrator(String target, PhotoResolver resolver, Drive service, HttpTransport transport) {
         targetRoot = target;
         photoResolver = resolver;
         driveService = service;
+        httpTransport = transport;
     }
 
     @Override
@@ -64,6 +67,11 @@ public class GoogleDriveMigrator implements Migrator {
     @Override
     public long getFailureCount() {
         return failureCount;
+    }
+
+    @Override
+    public void close() throws Exception {
+        httpTransport.shutdown();
     }
 
     private String getTargetPath(Photo photo) {

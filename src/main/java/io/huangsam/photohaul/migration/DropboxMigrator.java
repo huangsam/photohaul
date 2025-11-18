@@ -68,6 +68,11 @@ public class DropboxMigrator implements Migrator {
         return failureCount;
     }
 
+    @Override
+    public void close() throws Exception {
+        // No-op: DbxClientV2 does not provide a close method
+    }
+
     @NotNull
     private String getTargetPath(Photo photo) {
         try {

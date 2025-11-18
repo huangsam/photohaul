@@ -58,6 +58,11 @@ public class S3Migrator implements Migrator {
         return failureCount;
     }
 
+    @Override
+    public void close() throws Exception {
+        s3Client.close();
+    }
+
     @NotNull
     private String getTargetKey(Photo photo) {
         try {

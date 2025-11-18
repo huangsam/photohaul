@@ -56,6 +56,11 @@ public class PathMigrator implements Migrator {
         return failureCount;
     }
 
+    @Override
+    public void close() throws Exception {
+        // No-op: no resources to close
+    }
+
     @NotNull
     private Path getTargetPath(Photo photo) {
         try {

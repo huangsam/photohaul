@@ -1,5 +1,6 @@
 package io.huangsam.photohaul.migration;
 
+import com.google.api.client.http.HttpTransport;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
@@ -28,6 +29,9 @@ public class TestGoogleDriveMigrator extends TestMigrationAbstract {
 
     @Mock
     Drive driveMock;
+
+    @Mock
+    HttpTransport httpTransportMock;
 
     @Mock
     Drive.Files filesMock;
@@ -72,7 +76,7 @@ public class TestGoogleDriveMigrator extends TestMigrationAbstract {
         when(driveCreatePhotoMock.setFields(anyString())).thenReturn(driveCreatePhotoMock);
         when(driveCreatePhotoMock.execute()).thenReturn(createdPhotoMock);
 
-        Migrator migrator = new GoogleDriveMigrator(TARGET_ROOT, PhotoResolver.getDefault(), driveMock);
+        Migrator migrator = new GoogleDriveMigrator(TARGET_ROOT, PhotoResolver.getDefault(), driveMock, httpTransportMock);
         run(migrator);
 
         verify(filesMock, times(4)).list();
@@ -93,7 +97,7 @@ public class TestGoogleDriveMigrator extends TestMigrationAbstract {
         when(fileListMock.getFiles()).thenReturn(List.of(listedFileMock));
         when(listedFileMock.getId()).thenReturn("existingId123");
 
-        Migrator migrator = new GoogleDriveMigrator(TARGET_ROOT, PhotoResolver.getDefault(), driveMock);
+        Migrator migrator = new GoogleDriveMigrator(TARGET_ROOT, PhotoResolver.getDefault(), driveMock, httpTransportMock);
         run(migrator);
 
         verify(listedFileMock, times(4)).getId();
@@ -118,7 +122,7 @@ public class TestGoogleDriveMigrator extends TestMigrationAbstract {
         when(driveCreateFolderMock.execute()).thenReturn(createdFolderMock);
         when(createdFolderMock.getId()).thenReturn(null);
 
-        Migrator migrator = new GoogleDriveMigrator(TARGET_ROOT, PhotoResolver.getDefault(), driveMock);
+        Migrator migrator = new GoogleDriveMigrator(TARGET_ROOT, PhotoResolver.getDefault(), driveMock, httpTransportMock);
         run(migrator);
 
         verify(filesMock, times(2)).list();

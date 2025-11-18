@@ -91,6 +91,11 @@ public class SftpMigrator implements Migrator {
         return failureCount;
     }
 
+    @Override
+    public void close() throws Exception {
+        // No-op: resources are closed within migratePhotos
+    }
+
     @NotNull
     private String getTargetPath(Photo photo) {
         try {

@@ -16,25 +16,11 @@ import java.util.Collection;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-public class Application {
+public record Application(Settings settings,
+                          PhotoCollector photoCollector, PathRuleSet pathRuleSet,
+                          PhotoDeduplicator deduplicator, PhotoResolver photoResolver,
+                          MigratorFactory migratorFactory) {
     private static final Logger LOG = getLogger(Application.class);
-
-    private final Settings settings;
-    private final PhotoCollector photoCollector;
-    private final PathRuleSet pathRuleSet;
-    private final PhotoDeduplicator deduplicator;
-    private final PhotoResolver photoResolver;
-    private final MigratorFactory migratorFactory;
-
-    public Application(Settings settings, PhotoCollector photoCollector, PathRuleSet pathRuleSet,
-                       PhotoDeduplicator deduplicator, PhotoResolver photoResolver, MigratorFactory migratorFactory) {
-        this.settings = settings;
-        this.photoCollector = photoCollector;
-        this.pathRuleSet = pathRuleSet;
-        this.deduplicator = deduplicator;
-        this.photoResolver = photoResolver;
-        this.migratorFactory = migratorFactory;
-    }
 
     public void run() {
         PathWalker pathWalker = new PathWalker(settings.getSourcePath(), pathRuleSet);

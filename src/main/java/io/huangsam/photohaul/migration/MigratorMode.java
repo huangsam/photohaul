@@ -19,5 +19,9 @@ public enum MigratorMode {
     GOOGLE_DRIVE,
 
     /** Migrate photos to an SFTP server. */
-    SFTP
+    SFTP,
+
+    /** Migrate photos to an Amazon S3 bucket. */
+    S3
 }
+

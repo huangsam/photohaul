@@ -13,6 +13,9 @@ import com.google.auth.oauth2.GoogleCredentials;
 import io.huangsam.photohaul.Settings;
 import io.huangsam.photohaul.resolution.PhotoResolver;
 import org.jetbrains.annotations.NotNull;
+import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.s3.S3Client;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -41,6 +44,7 @@ public class MigratorFactory {
             case DROPBOX -> makeDropbox(settings, resolver);
             case GOOGLE_DRIVE -> makeGoogleDrive(settings, resolver);
             case SFTP -> makeSftp(settings, resolver);
+            case S3 -> makeS3(settings, resolver);
         };
     }
 
@@ -94,4 +98,19 @@ public class MigratorFactory {
         String target = settings.getValue("sftp.target");
         return new SftpMigrator(host, port, username, password, target, resolver);
     }
+
+    @NotNull
+    private S3Migrator makeS3(@NotNull Settings settings, PhotoResolver resolver) {
+        String accessKey = settings.getValue("s3.accessKey");
+        String secretKey = settings.getValue("s3.secretKey");
+        String region = settings.getValue("s3.region", "us-east-1");
+        String bucket = settings.getValue("s3.bucket");
+        AwsBasicCredentials credentials = AwsBasicCredentials.create(accessKey, secretKey);
+        S3Client s3Client = S3Client.builder()
+                .credentialsProvider(() -> credentials)
+                .region(Region.of(region))
+                .build();
+        return new S3Migrator(bucket, resolver, s3Client);
+    }
 }
+

@@ -12,6 +12,7 @@ metadata-extractor = "2.19.0"
 mockito = "5.20.0"
 slf4j-api = "2.0.17"
 task-tree = "4.0.1"
+aws-sdk-s3 = "2.30.35"
 
 [libraries]
 sshj = { module = "com.hierynomus:sshj", version.ref = "sshj" }
@@ -29,6 +30,7 @@ metadata-extractor = { module = "com.drewnoakes:metadata-extractor", version.ref
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
 mockito-junit = { module = "org.mockito:mockito-junit-jupiter", version.ref = "mockito" }
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j-api" }
+aws-sdk-s3 = { module = "software.amazon.awssdk:s3", version.ref = "aws-sdk-s3" }
 
 [plugins]
 task-tree = { id = "com.dorongold.task-tree", version.ref = "task-tree" }
@@ -36,3 +38,4 @@ task-tree = { id = "com.dorongold.task-tree", version.ref = "task-tree" }
 [bundles]
 mockito-all = ["mockito-core", "mockito-junit"]
 google-all = ["google-api-client", "google-api-drive", "google-auth-library", "gson"]
+aws-all = ["aws-sdk-s3"]

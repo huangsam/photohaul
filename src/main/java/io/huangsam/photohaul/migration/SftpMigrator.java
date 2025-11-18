@@ -58,6 +58,11 @@ public class SftpMigrator implements Migrator {
                     String targetPath = getTargetPath(photo);
                     LOG.trace("Upload {} to {}", photo.name(), targetPath);
                     try {
+                        // Ensure target directory exists
+                        String targetDir = targetPath.substring(0, targetPath.lastIndexOf('/'));
+                        if (!targetDir.isEmpty()) {
+                            sftpClient.mkdirs(targetDir);
+                        }
                         sftpClient.put(photo.path().toString(), targetPath);
                         successCount++;
                     } catch (IOException e) {

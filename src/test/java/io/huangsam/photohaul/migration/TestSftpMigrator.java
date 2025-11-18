@@ -36,6 +36,8 @@ public class TestSftpMigrator extends TestMigrationAbstract {
         verify(sshClientMock).connect("host", 22);
         verify(sshClientMock).authPassword("user", "pass");
         verify(sshClientMock).newSFTPClient();
+        verify(sftpClientMock, times(2)).mkdirs("/target/"); // occurs due to mocking
+        verify(sftpClientMock, times(2)).put(anyString(), anyString());
         verify(sshClientMock).disconnect();
 
         assertEquals(2, migrator.getSuccessCount());
@@ -63,6 +65,9 @@ public class TestSftpMigrator extends TestMigrationAbstract {
 
         Migrator migrator = new SftpMigrator("host", 22, "user", "pass", "/target", new PhotoResolver(List.of()), () -> sshClientMock);
         run(migrator);
+
+        verify(sftpClientMock, times(2)).mkdirs("/target/");
+        verify(sftpClientMock, times(2)).put(anyString(), anyString());
 
         assertEquals(0, migrator.getSuccessCount());
         assertEquals(2, migrator.getFailureCount());

@@ -1,6 +1,5 @@
 package io.huangsam.photohaul.migration;
 
-import com.dropbox.core.DbxException;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.DbxUserFilesRequests;
 import com.dropbox.core.v2.files.ListFolderErrorException;

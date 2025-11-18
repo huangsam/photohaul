@@ -12,7 +12,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
-import java.io.IOException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

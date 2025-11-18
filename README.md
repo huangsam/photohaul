@@ -72,14 +72,14 @@ For detailed instructions: [link](USERGUIDE.md)
 
 ```text
 > Task :run
-01:13:05.865 [main] INFO io.huangsam.photohaul.Settings -- Use config file from photohaul.config: personal/path.properties
-01:13:05.867 [main] INFO io.huangsam.photohaul.Settings -- Loaded settings from classpath: personal/path.properties
-01:13:05.869 [main] DEBUG io.huangsam.photohaul.traversal.PathWalker -- Start traversal of /Users/samhuang/Pictures/Dummy PNG
-01:13:05.878 [main] INFO io.huangsam.photohaul.deduplication.PhotoDeduplicator -- Deduplication complete: 6 unique photos, 0 duplicates removed
-01:13:05.882 [main] DEBUG io.huangsam.photohaul.migration.PathMigrator -- Start path migration to /Users/samhuang/Pictures/Dummy FIN
-01:13:05.963 [main] INFO io.huangsam.photohaul.Main -- Finish with success=6 failure=0
+08:05:14.518 [main] INFO io.huangsam.photohaul.Settings -- Use config file from photohaul.config: personal/path.properties
+08:05:14.520 [main] INFO io.huangsam.photohaul.Settings -- Loaded settings from classpath: personal/path.properties
+08:05:14.526 [main] DEBUG io.huangsam.photohaul.traversal.PathWalker -- Start traversal of /Users/samhuang/Pictures/Dummy PNG
+08:05:14.536 [main] INFO io.huangsam.photohaul.deduplication.PhotoDeduplicator -- Deduplication complete: 6 unique photos, 0 duplicates removed
+08:05:14.536 [main] DEBUG io.huangsam.photohaul.migration.PathMigrator -- Start path migration to /Users/samhuang/Pictures/Dummy FIN
+08:05:14.627 [main] INFO io.huangsam.photohaul.Application -- Finish with success=6 failure=0
 
-BUILD SUCCESSFUL in 544ms
+BUILD SUCCESSFUL in 535ms
 3 actionable tasks: 1 executed, 2 up-to-date
 ```
 

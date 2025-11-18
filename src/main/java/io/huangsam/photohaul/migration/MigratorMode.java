@@ -24,4 +24,3 @@ public enum MigratorMode {
     /** Migrate photos to an Amazon S3 bucket. */
     S3
 }
-

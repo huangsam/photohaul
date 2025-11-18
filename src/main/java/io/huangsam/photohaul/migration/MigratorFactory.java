@@ -40,7 +40,7 @@ public class MigratorFactory {
             case PATH -> makePath(settings, resolver);
             case DROPBOX -> makeDropbox(settings, resolver);
             case GOOGLE_DRIVE -> makeGoogleDrive(settings, resolver);
-            case FTP -> makeFtp(settings, resolver);
+            case SFTP -> makeSftp(settings, resolver);
         };
     }
 
@@ -85,18 +85,13 @@ public class MigratorFactory {
         }
     }
 
-    @NotNull
-    private FtpMigrator makeFtp(@NotNull Settings settings, PhotoResolver resolver) {
-        String host = settings.getValue("ftp.host");
-        int port;
-        try {
-            port = Integer.parseInt(settings.getValue("ftp.port", "21"));
-        } catch (NumberFormatException e) {
-            throw new MigrationException("Invalid FTP port number", MigratorMode.FTP);
-        }
-        String username = settings.getValue("ftp.username");
-        String password = settings.getValue("ftp.password");
-        String target = settings.getValue("ftp.target");
-        return new FtpMigrator(host, port, username, password, target, resolver);
+        @NotNull
+    private SftpMigrator makeSftp(@NotNull Settings settings, PhotoResolver resolver) {
+        String host = settings.getValue("sftp.host");
+        int port = Integer.parseInt(settings.getValue("sftp.port", "22"));
+        String username = settings.getValue("sftp.username");
+        String password = settings.getValue("sftp.password");
+        String target = settings.getValue("sftp.target");
+        return new SftpMigrator(host, port, username, password, target, resolver);
     }
 }

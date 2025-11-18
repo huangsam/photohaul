@@ -63,19 +63,19 @@ Configure the following property fields:
 
 [Click here](https://developers.google.com/drive/api/quickstart/java#set-up-environment) to learn how to setup the `drive` fields.
 
-### FTP setup
+### SFTP setup
 
 Configure the following property fields:
 
 - `migrator.mode`
 - `path.source`
-- `ftp.host`
-- `ftp.port` (optional, defaults to 21)
-- `ftp.username`
-- `ftp.password`
-- `ftp.target`
+- `sftp.host`
+- `sftp.port` (optional, defaults to 22)
+- `sftp.username`
+- `sftp.password`
+- `sftp.target`
 
-Ensure your FTP server supports passive mode for reliable transfers. Use SFTP if available for secure connections.
+SFTP (SSH File Transfer Protocol) is used for secure file transfers over SSH. Ensure your server supports SFTP.
 
 ## Run migration
 

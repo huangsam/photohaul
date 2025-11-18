@@ -16,7 +16,7 @@ repositories {
 dependencies {
     compileOnly libs.jetbrains.annotations
     implementation libs.bundles.google.all
-    implementation libs.commons.net
+    implementation libs.sshj
     implementation libs.dropbox.sdk
     implementation libs.logback.classic
     implementation libs.metadata.extractor

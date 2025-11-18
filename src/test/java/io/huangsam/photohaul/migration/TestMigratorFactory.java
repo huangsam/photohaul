@@ -36,9 +36,9 @@ public class TestMigratorFactory {
     }
 
     @Test
-    void testMakeFtpMigratorSuccess() {
-        Settings settings = new Settings("ftp-example.properties");
-        Migrator migrator = FACTORY.make(MigratorMode.FTP, settings, RESOLVER);
-        assertSame(FtpMigrator.class, migrator.getClass());
+    void testMakeSftpMigratorSuccess() {
+        Settings settings = new Settings("sftp-example.properties");
+        Migrator migrator = FACTORY.make(MigratorMode.SFTP, settings, RESOLVER);
+        assertSame(SftpMigrator.class, migrator.getClass());
     }
 }

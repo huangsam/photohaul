@@ -8,7 +8,7 @@
 Effortless photo management.
 
 - Reorganize 10K+ photos (30 GB) in seconds!
-- Migrate photos locally and to the cloud (Dropbox, Google Drive, FTP)
+- Migrate photos locally and to the cloud (Dropbox, Google Drive, SFTP)
 - Customize folder structures based on date, camera, and more
 - Filter photos by file type, size, and other criteria
 - Detect photo duplicates using modern hash techniques
@@ -60,7 +60,7 @@ For detailed instructions: [link](USERGUIDE.md)
 **Configure settings:**
 
 - Set `PathRuleSet` to filter by extension, file size, etc.
-- Set `MigratorMode` to `PATH`, `DROPBOX`, `GOOGLE_DRIVE`, or `FTP`
+- Set `MigratorMode` to `PATH`, `DROPBOX`, `GOOGLE_DRIVE`, or `SFTP`
 - Set `PhotoResolver` to adjust folder structure
 - Fill config file. Refer to examples in [src/main/resources](src/main/resources)
 

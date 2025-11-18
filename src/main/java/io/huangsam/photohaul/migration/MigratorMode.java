@@ -18,6 +18,6 @@ public enum MigratorMode {
     /** Migrate photos to a Google Drive account. */
     GOOGLE_DRIVE,
 
-    /** Migrate photos to an FTP server. */
-    FTP
+    /** Migrate photos to an SFTP server. */
+    SFTP
 }

@@ -27,7 +27,7 @@ public class TestSftpMigrator extends TestMigrationAbstract {
     SFTPClient sftpClientMock;
 
     @Test
-    void testMigratePhotosSuccess() throws IOException {
+    void testMigratePhotosSuccess() throws Exception {
         when(sshClientMock.newSFTPClient()).thenReturn(sftpClientMock);
 
         Migrator migrator = new SftpMigrator("host", 22, "user", "pass", "/target", new PhotoResolver(List.of()), () -> sshClientMock);
@@ -42,10 +42,12 @@ public class TestSftpMigrator extends TestMigrationAbstract {
 
         assertEquals(2, migrator.getSuccessCount());
         assertEquals(0, migrator.getFailureCount());
+
+        migrator.close(); // No-op
     }
 
     @Test
-    void testMigratePhotosConnectionFailure() throws IOException {
+    void testMigratePhotosConnectionFailure() throws Exception {
         doThrow(new IOException("Connection failed")).when(sshClientMock).connect("host", 22);
 
         Migrator migrator = new SftpMigrator("host", 22, "user", "pass", "/target", new PhotoResolver(List.of()), () -> sshClientMock);
@@ -57,10 +59,12 @@ public class TestSftpMigrator extends TestMigrationAbstract {
 
         assertEquals(0, migrator.getSuccessCount());
         assertEquals(2, migrator.getFailureCount());
+
+        migrator.close(); // No-op
     }
 
     @Test
-    void testMigratePhotosUploadFailure() throws IOException {
+    void testMigratePhotosUploadFailure() throws Exception {
         when(sshClientMock.newSFTPClient()).thenReturn(sftpClientMock);
         doThrow(new IOException("Upload failed")).when(sftpClientMock).put(anyString(), anyString());
 
@@ -73,10 +77,12 @@ public class TestSftpMigrator extends TestMigrationAbstract {
 
         assertEquals(0, migrator.getSuccessCount());
         assertEquals(2, migrator.getFailureCount());
+
+        migrator.close(); // No-op
     }
 
     @Test
-    void testMigratePhotosCloseFailure() throws IOException {
+    void testMigratePhotosCloseFailure() throws Exception {
         when(sshClientMock.newSFTPClient()).thenReturn(sftpClientMock);
         doThrow(new IOException("Close failed")).when(sshClientMock).close();
 
@@ -92,5 +98,7 @@ public class TestSftpMigrator extends TestMigrationAbstract {
 
         assertEquals(2, migrator.getSuccessCount());
         assertEquals(0, migrator.getFailureCount());
+
+        migrator.close(); // No-op
     }
 }

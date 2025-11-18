@@ -58,7 +58,7 @@ public class TestGoogleDriveMigrator extends TestMigrationAbstract {
     File createdPhotoMock;
 
     @Test
-    void testMigratePhotosAllSuccess() throws IOException {
+    void testMigratePhotosAllSuccess() throws Exception {
         when(driveMock.files()).thenReturn(filesMock);
 
         when(filesMock.list()).thenReturn(driveListMock);
@@ -85,10 +85,13 @@ public class TestGoogleDriveMigrator extends TestMigrationAbstract {
 
         assertEquals(2, migrator.getSuccessCount());
         assertEquals(0, migrator.getFailureCount());
+
+        migrator.close();
+        verify(httpTransportMock).shutdown();
     }
 
     @Test
-    void testMigratePhotosAllExisting() throws IOException {
+    void testMigratePhotosAllExisting() throws Exception {
         when(driveMock.files()).thenReturn(filesMock);
 
         when(filesMock.list()).thenReturn(driveListMock);
@@ -106,10 +109,13 @@ public class TestGoogleDriveMigrator extends TestMigrationAbstract {
 
         assertEquals(2, migrator.getSuccessCount());
         assertEquals(0, migrator.getFailureCount());
+
+        migrator.close();
+        verify(httpTransportMock).shutdown();
     }
 
     @Test
-    void testMigratePhotosWithNullFolder() throws IOException {
+    void testMigratePhotosWithNullFolder() throws Exception {
         when(driveMock.files()).thenReturn(filesMock);
 
         when(filesMock.list()).thenReturn(driveListMock);
@@ -130,5 +136,8 @@ public class TestGoogleDriveMigrator extends TestMigrationAbstract {
 
         assertEquals(0, migrator.getSuccessCount());
         assertEquals(2, migrator.getFailureCount());
+
+        migrator.close();
+        verify(httpTransportMock).shutdown();
     }
 }

@@ -36,7 +36,7 @@ public class TestDropboxMigrator extends TestMigrationAbstract {
     UploadBuilder uploadBuilderMock;
 
     @Test
-    void testMigratePhotosNewFoldersSuccess() throws DbxException {
+    void testMigratePhotosNewFoldersSuccess() throws Exception {
         when(clientMock.files()).thenReturn(requestsMock);
         when(requestsMock.listFolder(anyString())).thenReturn(folderResultMock);
         when(requestsMock.uploadBuilder(anyString())).thenReturn(uploadBuilderMock);
@@ -49,10 +49,12 @@ public class TestDropboxMigrator extends TestMigrationAbstract {
 
         assertEquals(2, migrator.getSuccessCount());
         assertEquals(0, migrator.getFailureCount());
+
+        migrator.close(); // No-op, but ensures no exception
     }
 
     @Test
-    void testMigratePhotosOldFoldersSuccess() throws DbxException {
+    void testMigratePhotosOldFoldersSuccess() throws Exception {
         when(clientMock.files()).thenReturn(requestsMock);
         when(requestsMock.listFolder(anyString())).thenThrow(ListFolderErrorException.class);
         when(requestsMock.createFolderV2(anyString())).thenReturn(null);
@@ -66,6 +68,8 @@ public class TestDropboxMigrator extends TestMigrationAbstract {
 
         assertEquals(2, migrator.getSuccessCount());
         assertEquals(0, migrator.getFailureCount());
+
+        migrator.close(); // No-op, but ensures no exception
     }
 
     @Test

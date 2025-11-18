@@ -24,7 +24,7 @@ public class TestS3Migrator extends TestMigrationAbstract {
     S3Client s3ClientMock;
 
     @Test
-    void testMigratePhotosSuccess() {
+    void testMigratePhotosSuccess() throws Exception {
         Migrator migrator = new S3Migrator("test-bucket", new PhotoResolver(List.of()), s3ClientMock);
         run(migrator);
 
@@ -32,10 +32,13 @@ public class TestS3Migrator extends TestMigrationAbstract {
 
         assertEquals(2, migrator.getSuccessCount());
         assertEquals(0, migrator.getFailureCount());
+
+        migrator.close();
+        verify(s3ClientMock).close();
     }
 
     @Test
-    void testMigratePhotosUploadFailure() {
+    void testMigratePhotosUploadFailure() throws Exception {
         when(s3ClientMock.putObject(any(PutObjectRequest.class), any(Path.class))).thenThrow(new RuntimeException("Upload failed"));
 
         Migrator migrator = new S3Migrator("test-bucket", new PhotoResolver(List.of()), s3ClientMock);
@@ -45,5 +48,8 @@ public class TestS3Migrator extends TestMigrationAbstract {
 
         assertEquals(0, migrator.getSuccessCount());
         assertEquals(2, migrator.getFailureCount());
+
+        migrator.close();
+        verify(s3ClientMock).close();
     }
 }

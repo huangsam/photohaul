@@ -41,9 +41,6 @@ photographers to filter, organize, and migrate photos to local storage
 and cloud services. The folder structure for photos can be based on info
 such as year taken and camera make.
 
-**Duplicate Detection:** Automatically detects and skips duplicate photos
-using SHA-256 content hashing, ensuring only unique files are migrated.
-
 ## Getting started
 
 For detailed instructions: [link](USERGUIDE.md)

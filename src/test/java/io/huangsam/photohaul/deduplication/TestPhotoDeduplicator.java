@@ -112,7 +112,7 @@ public class TestPhotoDeduplicator {
         // Should only keep the first occurrence
         assertEquals(1, uniquePhotos.size());
         List<Photo> uniqueList = new ArrayList<>(uniquePhotos);
-        assertEquals("first.jpg", uniqueList.get(0).name());
+        assertEquals("first.jpg", uniqueList.getFirst().name());
     }
 
     @Test

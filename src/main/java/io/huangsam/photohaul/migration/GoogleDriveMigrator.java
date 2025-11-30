@@ -145,6 +145,6 @@ public class GoogleDriveMigrator implements Migrator {
         if (fileList.isEmpty()) {
             return null;
         }
-        return fileList.get(0).getId();
+        return fileList.getFirst().getId();
     }
 }

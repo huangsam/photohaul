@@ -11,8 +11,12 @@ import com.google.api.services.drive.DriveScopes;
 import com.google.auth.http.HttpCredentialsAdapter;
 import com.google.auth.oauth2.GoogleCredentials;
 import io.huangsam.photohaul.Settings;
+import io.huangsam.photohaul.migration.state.MigrationStateFile;
+import io.huangsam.photohaul.migration.state.PathStateStorage;
+import io.huangsam.photohaul.migration.state.StateFileStorage;
 import io.huangsam.photohaul.resolution.PhotoResolver;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
@@ -26,11 +30,15 @@ import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
 import java.util.List;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 /**
  * A factory class for creating {@link Migrator} instances based on the desired
  * migration strategy.
  */
 public class MigratorFactory {
+    private static final Logger LOG = getLogger(MigratorFactory.class);
+
     /**
      * Create instance for migrating photos.
      *
@@ -40,12 +48,51 @@ public class MigratorFactory {
      * @return migrator instance
      */
     public Migrator make(@NotNull MigratorMode mode, Settings settings, PhotoResolver resolver) {
-        return switch (mode) {
+        Migrator baseMigrator = switch (mode) {
             case PATH -> makePath(settings, resolver);
             case DROPBOX -> makeDropbox(settings, resolver);
             case GOOGLE_DRIVE -> makeGoogleDrive(settings, resolver);
             case SFTP -> makeSftp(settings, resolver);
             case S3 -> makeS3(settings, resolver);
+        };
+
+        // Wrap with DeltaMigrator if delta migration is enabled
+        if (settings.isDeltaEnabled()) {
+            StateFileStorage stateStorage = createStateStorage(mode, settings);
+            if (stateStorage != null) {
+                LOG.info("Delta migration enabled for mode {}", mode);
+                MigrationStateFile stateFile = new MigrationStateFile(stateStorage);
+                return new DeltaMigrator(baseMigrator, stateFile);
+            } else {
+                LOG.warn("Delta migration not supported for mode {}, proceeding without delta", mode);
+            }
+        }
+
+        return baseMigrator;
+    }
+
+    /**
+     * Create a StateFileStorage for the given migrator mode.
+     *
+     * @param mode     the migrator mode
+     * @param settings the settings
+     * @return the state storage, or null if not supported
+     */
+    private StateFileStorage createStateStorage(@NotNull MigratorMode mode, @NotNull Settings settings) {
+        return switch (mode) {
+            case PATH -> {
+                Path target = Paths.get(System.getProperty("user.home"))
+                        .resolve(settings.getValue("path.target"));
+                yield new PathStateStorage(target);
+            }
+            // Delta migration for cloud storage types requires additional implementation
+            // For now, they use local state storage as a fallback
+            case DROPBOX, GOOGLE_DRIVE, SFTP, S3 -> {
+                // Use source path for state storage as fallback for cloud destinations
+                Path sourcePath = settings.getSourcePath();
+                LOG.info("Using local state storage at {} for {} destination", sourcePath, mode);
+                yield new PathStateStorage(sourcePath);
+            }
         };
     }
 

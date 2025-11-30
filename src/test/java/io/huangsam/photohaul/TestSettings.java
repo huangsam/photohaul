@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -93,5 +94,27 @@ public class TestSettings {
                 System.setProperty("photohaul.config", original);
             }
         }
+    }
+
+    @Test
+    void testIsDeltaEnabledDefaultsFalse() {
+        Settings settings = new Settings("path-example.properties");
+        assertFalse(settings.isDeltaEnabled());
+    }
+
+    @Test
+    void testIsDeltaEnabledWhenTrue(@TempDir Path tmp) throws IOException {
+        Path props = tmp.resolve("delta.properties");
+        Files.writeString(props, "path.source=Dummy/Source\nmigrator.mode=PATH\ndelta.enabled=true\n");
+        Settings settings = new Settings(props.toString());
+        assertTrue(settings.isDeltaEnabled());
+    }
+
+    @Test
+    void testIsDeltaEnabledWhenExplicitlyFalse(@TempDir Path tmp) throws IOException {
+        Path props = tmp.resolve("nodelta.properties");
+        Files.writeString(props, "path.source=Dummy/Source\nmigrator.mode=PATH\ndelta.enabled=false\n");
+        Settings settings = new Settings(props.toString());
+        assertFalse(settings.isDeltaEnabled());
     }
 }

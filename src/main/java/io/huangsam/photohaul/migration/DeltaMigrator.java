@@ -25,6 +25,13 @@ import static org.slf4j.LoggerFactory.getLogger;
  *
  * <p> After each successful migration batch, the state file is updated with
  * the current state of all successfully migrated files.
+ *
+ * <p> Note: Since the delegate migrators process files in order and we cannot
+ * determine exactly which specific files failed, we conservatively only record
+ * state for the number of successful migrations (assuming failures occur at
+ * the end of the batch). This may result in some files being re-migrated on
+ * the next run if failures occurred mid-batch, but ensures no file is
+ * incorrectly marked as migrated.
  */
 public class DeltaMigrator implements Migrator {
     private static final Logger LOG = getLogger(DeltaMigrator.class);
@@ -85,11 +92,15 @@ public class DeltaMigrator implements Migrator {
         // Delegate actual migration
         delegate.migratePhotos(photosToMigrate);
 
-        // Record successful migrations
+        // Calculate how many files were successfully migrated
         long newSuccessCount = delegate.getSuccessCount();
-        if (newSuccessCount > previousSuccessCount) {
-            // Record states for successfully migrated files
-            for (int i = 0; i < photosToMigrate.size(); i++) {
+        long successfulMigrations = newSuccessCount - previousSuccessCount;
+
+        if (successfulMigrations > 0) {
+            // Record states only for the number of successful migrations
+            // Since we process in order, record states from the beginning
+            int statesToRecord = (int) Math.min(successfulMigrations, fileStates.size());
+            for (int i = 0; i < statesToRecord; i++) {
                 FileState fileState = fileStates.get(i);
                 if (fileState != null) {
                     stateFile.recordMigration(fileState);

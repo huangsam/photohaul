@@ -80,11 +80,7 @@ public class MigratorFactory {
      */
     private StateFileStorage createStateStorage(@NotNull MigratorMode mode, @NotNull Settings settings) {
         return switch (mode) {
-            case PATH -> {
-                Path target = Paths.get(System.getProperty("user.home"))
-                        .resolve(settings.getValue("path.target"));
-                yield new PathStateStorage(target);
-            }
+            case PATH -> new PathStateStorage(getPathTargetDirectory(settings));
             // Delta migration for cloud storage types requires additional implementation
             // For now, they use local state storage as a fallback
             case DROPBOX, GOOGLE_DRIVE, SFTP, S3 -> {
@@ -96,10 +92,21 @@ public class MigratorFactory {
         };
     }
 
+    /**
+     * Get the target directory path for PATH migrator mode.
+     *
+     * @param settings the settings
+     * @return the resolved target path
+     */
+    @NotNull
+    private Path getPathTargetDirectory(@NotNull Settings settings) {
+        return Paths.get(System.getProperty("user.home"))
+                .resolve(settings.getValue("path.target"));
+    }
+
     @NotNull
     private PathMigrator makePath(@NotNull Settings settings, PhotoResolver resolver) {
-        Path target = Paths.get(System.getProperty("user.home"));
-        target = target.resolve(settings.getValue("path.target"));
+        Path target = getPathTargetDirectory(settings);
         String actionValue = settings.getValue("path.action", "MOVE").toUpperCase();
         return new PathMigrator(target, resolver, PathMigrator.Action.valueOf(actionValue));
     }

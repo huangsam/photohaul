@@ -23,7 +23,6 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
 public class TestDeltaMigrator {
@@ -35,11 +34,10 @@ public class TestDeltaMigrator {
     StateFileStorage mockStorage;
 
     private DeltaMigrator deltaMigrator;
-    private MigrationStateFile stateFile;
 
     @BeforeEach
     void setUp() {
-        stateFile = new MigrationStateFile(mockStorage);
+        MigrationStateFile stateFile = new MigrationStateFile(mockStorage);
         deltaMigrator = new DeltaMigrator(mockDelegate, stateFile);
     }
 
@@ -155,7 +153,7 @@ public class TestDeltaMigrator {
         Photo photo = new Photo(testFile);
 
         when(mockStorage.readStateFile(any())).thenReturn(null);
-        when(mockDelegate.getSuccessCount()).thenReturn(1L);
+        when(mockDelegate.getSuccessCount()).thenReturn(0L, 1L);
 
         deltaMigrator.migratePhotos(List.of(photo));
 
@@ -172,7 +170,7 @@ public class TestDeltaMigrator {
         Photo photo = new Photo(testFile);
 
         when(mockStorage.readStateFile(any())).thenReturn(null);
-        when(mockDelegate.getSuccessCount()).thenReturn(1L);
+        when(mockDelegate.getSuccessCount()).thenReturn(0L, 1L);
         doThrow(new IOException("Save failed")).when(mockStorage).writeStateFile(anyString(), anyString());
 
         // Should not throw, just log error
@@ -194,7 +192,7 @@ public class TestDeltaMigrator {
 
         when(mockStorage.readStateFile(any())).thenReturn(null);
         // Simulate only 1 successful migration out of 2
-        when(mockDelegate.getSuccessCount()).thenReturn(1L);
+        when(mockDelegate.getSuccessCount()).thenReturn(0L, 1L);
 
         deltaMigrator.migratePhotos(List.of(photo1, photo2));
 

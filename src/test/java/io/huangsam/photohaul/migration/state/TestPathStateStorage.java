@@ -10,7 +10,7 @@ import java.nio.file.Path;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-class TestPathStateStorage {
+public class TestPathStateStorage {
 
     @Test
     void testReadStateFileReturnsNullWhenNotExists(@TempDir Path tempDir) throws IOException {

@@ -115,7 +115,7 @@ public class TestDeltaMigrator {
     }
 
     @Test
-    void testGetFailureCountDelegatesToWrapped(@TempDir Path tempDir) {
+    void testGetFailureCountDelegatesToWrapped() {
         when(mockDelegate.getFailureCount()).thenReturn(3L);
 
         assertEquals(3L, deltaMigrator.getFailureCount());

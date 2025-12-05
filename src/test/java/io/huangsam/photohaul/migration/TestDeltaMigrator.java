@@ -16,6 +16,8 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
 
+import org.mockito.ArgumentMatchers;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -83,7 +85,6 @@ public class TestDeltaMigrator {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     void testMigratePhotosMigratesModifiedFiles(@TempDir Path tempDir) throws IOException {
         // Create a test file
         Path testFile = tempDir.resolve("photo.jpg");
@@ -99,13 +100,13 @@ public class TestDeltaMigrator {
                 lastModified
         );
         when(mockStorage.readStateFile(any())).thenReturn(stateJson);
-        when(mockDelegate.getSuccessCount()).thenReturn(1L);
+        when(mockDelegate.getSuccessCount()).thenReturn(0L, 1L);
 
         Photo photo = new Photo(testFile);
         deltaMigrator.migratePhotos(List.of(photo));
 
         // Should call delegate since file is modified
-        verify(mockDelegate).migratePhotos((Collection<Photo>) any());
+        verify(mockDelegate).migratePhotos(ArgumentMatchers.<Collection<Photo>>any());
     }
 
     @Test
@@ -145,7 +146,6 @@ public class TestDeltaMigrator {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     void testMigratePhotosSavesStateAfterSuccessfulMigration(@TempDir Path tempDir) throws IOException {
         // Create a test file
         Path testFile = tempDir.resolve("photo.jpg");
@@ -162,7 +162,6 @@ public class TestDeltaMigrator {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     void testMigratePhotosHandlesStateSaveIOException(@TempDir Path tempDir) throws IOException {
         // Create a test file
         Path testFile = tempDir.resolve("photo.jpg");
@@ -176,11 +175,10 @@ public class TestDeltaMigrator {
         // Should not throw, just log error
         deltaMigrator.migratePhotos(List.of(photo));
 
-        verify(mockDelegate).migratePhotos((Collection<Photo>) any());
+        verify(mockDelegate).migratePhotos(ArgumentMatchers.<Collection<Photo>>any());
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     void testMigratePhotosRecordsOnlySuccessfulMigrations(@TempDir Path tempDir) throws IOException {
         // Create two test files
         Path testFile1 = tempDir.resolve("photo1.jpg");
@@ -197,13 +195,12 @@ public class TestDeltaMigrator {
         deltaMigrator.migratePhotos(List.of(photo1, photo2));
 
         // Should call delegate with both photos
-        verify(mockDelegate).migratePhotos((Collection<Photo>) any());
+        verify(mockDelegate).migratePhotos(ArgumentMatchers.<Collection<Photo>>any());
         // State should still be saved
         verify(mockStorage).writeStateFile(anyString(), anyString());
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     void testMigratePhotosMixedNewAndUnchangedFiles(@TempDir Path tempDir) throws IOException {
         // Create two test files
         Path unchangedFile = tempDir.resolve("unchanged.jpg");
@@ -222,14 +219,14 @@ public class TestDeltaMigrator {
                 unchangedModified
         );
         when(mockStorage.readStateFile(any())).thenReturn(stateJson);
-        when(mockDelegate.getSuccessCount()).thenReturn(1L);
+        when(mockDelegate.getSuccessCount()).thenReturn(0L, 1L);
 
         Photo photo1 = new Photo(unchangedFile);
         Photo photo2 = new Photo(newFile);
         deltaMigrator.migratePhotos(List.of(photo1, photo2));
 
         // Should call delegate for new file only
-        verify(mockDelegate).migratePhotos((Collection<Photo>) any());
+        verify(mockDelegate).migratePhotos(ArgumentMatchers.<Collection<Photo>>any());
         assertEquals(1, deltaMigrator.getSkippedCount());
     }
 
@@ -266,7 +263,6 @@ public class TestDeltaMigrator {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     void testMigratePhotosWithDifferentLastModifiedTime(@TempDir Path tempDir) throws IOException {
         // Create a test file
         Path testFile = tempDir.resolve("photo.jpg");
@@ -282,12 +278,12 @@ public class TestDeltaMigrator {
                 1000L // Different timestamp
         );
         when(mockStorage.readStateFile(any())).thenReturn(stateJson);
-        when(mockDelegate.getSuccessCount()).thenReturn(1L);
+        when(mockDelegate.getSuccessCount()).thenReturn(0L, 1L);
 
         Photo photo = new Photo(testFile);
         deltaMigrator.migratePhotos(List.of(photo));
 
         // Should call delegate since file has different timestamp
-        verify(mockDelegate).migratePhotos((Collection<Photo>) any());
+        verify(mockDelegate).migratePhotos(ArgumentMatchers.<Collection<Photo>>any());
     }
 }

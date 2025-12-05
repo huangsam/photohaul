@@ -2,6 +2,7 @@ package io.huangsam.photohaul.migration.state;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -60,7 +61,8 @@ public class MigrationStateFile {
     /**
      * Load state from the storage backend.
      *
-     * <p> If the state file doesn't exist or cannot be read, the state will be empty.
+     * <p> If the state file doesn't exist, cannot be read, or contains malformed JSON,
+     * the state will be empty and migration will proceed with all files.
      */
     public void load() {
         try {
@@ -75,6 +77,9 @@ public class MigrationStateFile {
             }
         } catch (IOException e) {
             LOG.warn("Could not load state file {}: {}", stateFileName, e.getMessage());
+        } catch (JsonSyntaxException e) {
+            LOG.warn("State file {} contains malformed JSON, proceeding with empty state: {}",
+                    stateFileName, e.getMessage());
         }
     }
 

@@ -59,6 +59,17 @@ public class TestMigrationStateFile {
     }
 
     @Test
+    void testLoadWithMalformedJson() throws IOException {
+        String malformedJson = "{ this is not valid json }";
+        when(mockStorage.readStateFile(anyString())).thenReturn(malformedJson);
+
+        // Should not throw, just log warning and proceed with empty state
+        stateFile.load();
+
+        assertEquals(0, stateFile.size());
+    }
+
+    @Test
     void testNeedsMigrationReturnsTrueForNewFile() {
         FileState newFile = new FileState("/path/new.jpg", 1024, 1700000000000L);
 

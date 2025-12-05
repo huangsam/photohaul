@@ -8,7 +8,7 @@ import java.util.Objects;
  * Represents the state of a migrated file.
  *
  * <p> This class captures the essential metadata used to determine if a file
- * has changed since its last migration: the relative path, file size in bytes,
+ * has changed since its last migration: the path, file size in bytes,
  * and last modified timestamp in milliseconds since epoch.
  */
 public record FileState(
@@ -19,7 +19,7 @@ public record FileState(
     /**
      * Constructs a FileState with validation.
      *
-     * @param path              relative path of the file
+     * @param path              path of the file
      * @param size              file size in bytes
      * @param lastModifiedMillis last modified timestamp in milliseconds since epoch
      * @throws IllegalArgumentException if path is blank, size is negative, or lastModifiedMillis is negative

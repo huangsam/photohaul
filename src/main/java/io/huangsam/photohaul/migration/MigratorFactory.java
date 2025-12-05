@@ -59,13 +59,9 @@ public class MigratorFactory {
         // Wrap with DeltaMigrator if delta migration is enabled
         if (settings.isDeltaEnabled()) {
             StateFileStorage stateStorage = createStateStorage(mode, settings);
-            if (stateStorage != null) {
-                LOG.info("Delta migration enabled for mode {}", mode);
-                MigrationStateFile stateFile = new MigrationStateFile(stateStorage);
-                return new DeltaMigrator(baseMigrator, stateFile);
-            } else {
-                LOG.warn("Delta migration not supported for mode {}, proceeding without delta", mode);
-            }
+            LOG.info("Delta migration enabled for mode {}", mode);
+            MigrationStateFile stateFile = new MigrationStateFile(stateStorage);
+            return new DeltaMigrator(baseMigrator, stateFile);
         }
 
         return baseMigrator;

@@ -9,6 +9,8 @@ import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestPathStateStorage {
 
@@ -61,5 +63,91 @@ public class TestPathStateStorage {
         String result = storage.readStateFile(".photohaul_state.json");
 
         assertEquals(content, result);
+    }
+
+    @Test
+    void testReadStateFileWithUTF8Content(@TempDir Path tempDir) throws IOException {
+        String content = "{\"path\":\"/photos/日本語.jpg\",\"size\":1024}";
+        Files.writeString(tempDir.resolve("state.json"), content);
+
+        PathStateStorage storage = new PathStateStorage(tempDir);
+        String result = storage.readStateFile("state.json");
+        assertEquals(content, result);
+    }
+
+    @Test
+    void testWriteStateFileWithUTF8Content(@TempDir Path tempDir) throws IOException {
+        PathStateStorage storage = new PathStateStorage(tempDir);
+        String content = "{\"path\":\"/photos/日本語.jpg\",\"size\":1024}";
+
+        storage.writeStateFile("state.json", content);
+
+        String result = Files.readString(tempDir.resolve("state.json"));
+        assertEquals(content, result);
+    }
+
+    @Test
+    void testWriteStateFileOverwritesExisting(@TempDir Path tempDir) throws IOException {
+        PathStateStorage storage = new PathStateStorage(tempDir);
+        String originalContent = "{\"original\": \"data\"}";
+        String newContent = "{\"new\": \"data\"}";
+
+        storage.writeStateFile("state.json", originalContent);
+        storage.writeStateFile("state.json", newContent);
+
+        String result = storage.readStateFile("state.json");
+        assertEquals(newContent, result);
+    }
+
+    @Test
+    void testReadStateFileWithEmptyFile(@TempDir Path tempDir) throws IOException {
+        Files.writeString(tempDir.resolve("empty.json"), "");
+
+        PathStateStorage storage = new PathStateStorage(tempDir);
+        String result = storage.readStateFile("empty.json");
+        assertEquals("", result);
+    }
+
+    @Test
+    void testWriteStateFileWithEmptyContent(@TempDir Path tempDir) throws IOException {
+        PathStateStorage storage = new PathStateStorage(tempDir);
+
+        storage.writeStateFile("empty.json", "");
+
+        String result = Files.readString(tempDir.resolve("empty.json"));
+        assertEquals("", result);
+    }
+
+    @Test
+    void testReadStateFileWithMultilineContent(@TempDir Path tempDir) throws IOException {
+        String content = "{\n  \"path\": \"/photo.jpg\",\n  \"size\": 1024\n}";
+        Files.writeString(tempDir.resolve("state.json"), content);
+
+        PathStateStorage storage = new PathStateStorage(tempDir);
+        String result = storage.readStateFile("state.json");
+        assertEquals(content, result);
+    }
+
+    @Test
+    void testWriteStateFileWithMultilineContent(@TempDir Path tempDir) throws IOException {
+        PathStateStorage storage = new PathStateStorage(tempDir);
+        String content = "{\n  \"path\": \"/photo.jpg\",\n  \"size\": 1024\n}";
+
+        storage.writeStateFile("state.json", content);
+
+        String result = Files.readString(tempDir.resolve("state.json"));
+        assertEquals(content, result);
+    }
+
+    @Test
+    void testWriteStateFileWithDeeplyNestedDirectories(@TempDir Path tempDir) throws IOException {
+        Path deepPath = tempDir.resolve("a/b/c/d/e/f");
+        PathStateStorage storage = new PathStateStorage(deepPath);
+        String content = "{\"test\": \"deep\"}";
+
+        storage.writeStateFile("state.json", content);
+
+        assertTrue(Files.exists(deepPath.resolve("state.json")));
+        assertEquals(content, Files.readString(deepPath.resolve("state.json")));
     }
 }

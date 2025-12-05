@@ -22,7 +22,7 @@ public record FileState(
      * @param path              relative path of the file
      * @param size              file size in bytes
      * @param lastModifiedMillis last modified timestamp in milliseconds since epoch
-     * @throws IllegalArgumentException if path is blank or size is negative
+     * @throws IllegalArgumentException if path is blank, size is negative, or lastModifiedMillis is negative
      */
     public FileState {
         Objects.requireNonNull(path, "Path cannot be null");

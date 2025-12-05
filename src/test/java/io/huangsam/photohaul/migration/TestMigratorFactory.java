@@ -5,7 +5,6 @@ import io.huangsam.photohaul.resolution.PhotoResolver;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -20,17 +19,19 @@ public class TestMigratorFactory {
     private static final PhotoResolver RESOLVER = new PhotoResolver(List.of());
 
     @Test
-    void testMakePathMigratorSuccess() throws MigrationException {
+    void testMakePathMigratorSuccess() throws Exception {
         Settings settings = new Settings("path-example.properties");
-        Migrator migrator = FACTORY.make(MigratorMode.PATH, settings, RESOLVER);
-        assertSame(PathMigrator.class, migrator.getClass());
+        try (Migrator migrator = FACTORY.make(MigratorMode.PATH, settings, RESOLVER)) {
+            assertSame(PathMigrator.class, migrator.getClass());
+        }
     }
 
     @Test
-    void testMakeDropboxMigratorSuccess() throws MigrationException {
+    void testMakeDropboxMigratorSuccess() throws Exception {
         Settings settings = new Settings("dbx-example.properties");
-        Migrator migrator = FACTORY.make(MigratorMode.DROPBOX, settings, RESOLVER);
-        assertSame(DropboxMigrator.class, migrator.getClass());
+        try (Migrator migrator = FACTORY.make(MigratorMode.DROPBOX, settings, RESOLVER)) {
+            assertSame(DropboxMigrator.class, migrator.getClass());
+        }
     }
 
     @Test
@@ -41,21 +42,23 @@ public class TestMigratorFactory {
     }
 
     @Test
-    void testMakeSftpMigratorSuccess() {
+    void testMakeSftpMigratorSuccess() throws Exception {
         Settings settings = new Settings("sftp-example.properties");
-        Migrator migrator = FACTORY.make(MigratorMode.SFTP, settings, RESOLVER);
-        assertSame(SftpMigrator.class, migrator.getClass());
+        try (Migrator migrator = FACTORY.make(MigratorMode.SFTP, settings, RESOLVER)) {
+            assertSame(SftpMigrator.class, migrator.getClass());
+        }
     }
 
     @Test
-    void testMakeS3MigratorSuccess() {
+    void testMakeS3MigratorSuccess() throws Exception {
         Settings settings = new Settings("s3-example.properties");
-        Migrator migrator = FACTORY.make(MigratorMode.S3, settings, RESOLVER);
-        assertSame(S3Migrator.class, migrator.getClass());
+        try (Migrator migrator = FACTORY.make(MigratorMode.S3, settings, RESOLVER)) {
+            assertSame(S3Migrator.class, migrator.getClass());
+        }
     }
 
     @Test
-    void testMakePathMigratorWithDeltaEnabled(@TempDir Path tempDir) throws IOException {
+    void testMakePathMigratorWithDeltaEnabled(@TempDir Path tempDir) throws Exception {
         // Create a temporary properties file with delta enabled
         Path propsFile = tempDir.resolve("delta-path.properties");
         String propsContent = String.format(
@@ -68,13 +71,13 @@ public class TestMigratorFactory {
         Files.writeString(propsFile, propsContent);
 
         Settings settings = new Settings(propsFile.toString());
-        Migrator migrator = FACTORY.make(MigratorMode.PATH, settings, RESOLVER);
-
-        assertInstanceOf(DeltaMigrator.class, migrator);
+        try (Migrator migrator = FACTORY.make(MigratorMode.PATH, settings, RESOLVER)) {
+            assertInstanceOf(DeltaMigrator.class, migrator);
+        }
     }
 
     @Test
-    void testMakeDropboxMigratorWithDeltaEnabled(@TempDir Path tempDir) throws IOException {
+    void testMakeDropboxMigratorWithDeltaEnabled(@TempDir Path tempDir) throws Exception {
         // Create a temporary properties file with delta enabled
         Path propsFile = tempDir.resolve("delta-dbx.properties");
         String propsContent = String.format(
@@ -88,13 +91,13 @@ public class TestMigratorFactory {
         Files.writeString(propsFile, propsContent);
 
         Settings settings = new Settings(propsFile.toString());
-        Migrator migrator = FACTORY.make(MigratorMode.DROPBOX, settings, RESOLVER);
-
-        assertInstanceOf(DeltaMigrator.class, migrator);
+        try (Migrator migrator = FACTORY.make(MigratorMode.DROPBOX, settings, RESOLVER)) {
+            assertInstanceOf(DeltaMigrator.class, migrator);
+        }
     }
 
     @Test
-    void testMakeSftpMigratorWithDeltaEnabled(@TempDir Path tempDir) throws IOException {
+    void testMakeSftpMigratorWithDeltaEnabled(@TempDir Path tempDir) throws Exception {
         // Create a temporary properties file with delta enabled
         Path propsFile = tempDir.resolve("delta-sftp.properties");
         String propsContent = String.format(
@@ -110,13 +113,13 @@ public class TestMigratorFactory {
         Files.writeString(propsFile, propsContent);
 
         Settings settings = new Settings(propsFile.toString());
-        Migrator migrator = FACTORY.make(MigratorMode.SFTP, settings, RESOLVER);
-
-        assertInstanceOf(DeltaMigrator.class, migrator);
+        try (Migrator migrator = FACTORY.make(MigratorMode.SFTP, settings, RESOLVER)) {
+            assertInstanceOf(DeltaMigrator.class, migrator);
+        }
     }
 
     @Test
-    void testMakeS3MigratorWithDeltaEnabled(@TempDir Path tempDir) throws IOException {
+    void testMakeS3MigratorWithDeltaEnabled(@TempDir Path tempDir) throws Exception {
         // Create a temporary properties file with delta enabled
         Path propsFile = tempDir.resolve("delta-s3.properties");
         String propsContent = String.format(
@@ -131,22 +134,22 @@ public class TestMigratorFactory {
         Files.writeString(propsFile, propsContent);
 
         Settings settings = new Settings(propsFile.toString());
-        Migrator migrator = FACTORY.make(MigratorMode.S3, settings, RESOLVER);
-
-        assertInstanceOf(DeltaMigrator.class, migrator);
+        try (Migrator migrator = FACTORY.make(MigratorMode.S3, settings, RESOLVER)) {
+            assertInstanceOf(DeltaMigrator.class, migrator);
+        }
     }
 
     @Test
-    void testMakePathMigratorWithDeltaDisabled() {
+    void testMakePathMigratorWithDeltaDisabled() throws Exception {
         Settings settings = new Settings("path-example.properties");
-        Migrator migrator = FACTORY.make(MigratorMode.PATH, settings, RESOLVER);
-
-        // Default is delta disabled, so should be PathMigrator
-        assertSame(PathMigrator.class, migrator.getClass());
+        try (Migrator migrator = FACTORY.make(MigratorMode.PATH, settings, RESOLVER)) {
+            // Default is delta disabled, so should be PathMigrator
+            assertSame(PathMigrator.class, migrator.getClass());
+        }
     }
 
     @Test
-    void testMakePathMigratorWithExplicitDeltaDisabled(@TempDir Path tempDir) throws IOException {
+    void testMakePathMigratorWithExplicitDeltaDisabled(@TempDir Path tempDir) throws Exception {
         // Create a temporary properties file with delta explicitly disabled
         Path propsFile = tempDir.resolve("nodelta-path.properties");
         String propsContent = String.format(
@@ -159,8 +162,8 @@ public class TestMigratorFactory {
         Files.writeString(propsFile, propsContent);
 
         Settings settings = new Settings(propsFile.toString());
-        Migrator migrator = FACTORY.make(MigratorMode.PATH, settings, RESOLVER);
-
-        assertSame(PathMigrator.class, migrator.getClass());
+        try (Migrator migrator = FACTORY.make(MigratorMode.PATH, settings, RESOLVER)) {
+            assertSame(PathMigrator.class, migrator.getClass());
+        }
     }
 }

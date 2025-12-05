@@ -108,7 +108,7 @@ class TestDeltaMigrator {
     }
 
     @Test
-    void testGetSuccessCountDelegatesToWrapped(@TempDir Path tempDir) {
+    void testGetSuccessCountDelegatesToWrapped() {
         when(mockDelegate.getSuccessCount()).thenReturn(5L);
 
         assertEquals(5L, deltaMigrator.getSuccessCount());

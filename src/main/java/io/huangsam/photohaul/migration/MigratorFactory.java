@@ -73,7 +73,7 @@ public class MigratorFactory {
      *
      * @param mode     the migrator mode
      * @param settings the settings
-     * @return the state storage, or null if not supported
+     * @return a non-null StateFileStorage instance for the given migrator mode
      */
     private StateFileStorage createStateStorage(@NotNull MigratorMode mode, @NotNull Settings settings) {
         return switch (mode) {

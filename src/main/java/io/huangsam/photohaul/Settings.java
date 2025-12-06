@@ -137,4 +137,17 @@ public record Settings(Properties properties) {
     public MigratorMode getMigratorMode() {
         return MigratorMode.valueOf(getValue("migrator.mode"));
     }
+
+    /**
+     * Check if delta migration is enabled.
+     *
+     * <p> When enabled, only new or modified files will be migrated based on
+     * comparing file metadata (size and last modified time) against a state file
+     * maintained at the destination.
+     *
+     * @return true if delta migration is enabled (delta.enabled=true), false by default
+     */
+    public boolean isDeltaEnabled() {
+        return Boolean.parseBoolean(getValue("delta.enabled", "false"));
+    }
 }

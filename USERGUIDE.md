@@ -90,6 +90,35 @@ Configure the following property fields:
 
 Amazon S3 (Simple Storage Service) is used for scalable cloud storage. You'll need AWS credentials with S3 permissions. [Click here](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/get-started.html) to learn how to obtain and configure AWS credentials.
 
+## Delta migration (optional)
+
+Delta migration is an optional feature that tracks which files have been migrated and skips unchanged files in subsequent runs. This significantly improves performance for large photo collections.
+
+**How it works:**
+- Photohaul maintains a `.photohaul_state.json` file that records the path, size, and last modified timestamp of successfully migrated files
+- On subsequent runs, only new or modified files are migrated
+- For PATH mode, the state file is stored in the target directory
+- For cloud destinations (Dropbox, Drive, SFTP, S3), the state file is stored locally at the source path
+
+**Enable delta migration:**
+
+Add the following property to your configuration file:
+
+```properties
+delta.enabled=true
+```
+
+Example for PATH mode:
+```properties
+migrator.mode=PATH
+path.source=Dummy/Source
+path.target=Dummy/Target
+path.action=COPY
+delta.enabled=true
+```
+
+**Note:** Delta migration is disabled by default to ensure backward compatibility.
+
 ## Run migration
 
 - Open your terminal and navigate to the `./photohaul` directory

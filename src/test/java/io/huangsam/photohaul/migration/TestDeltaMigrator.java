@@ -28,7 +28,6 @@ import static org.mockito.Mockito.doThrow;
 
 @ExtendWith(MockitoExtension.class)
 public class TestDeltaMigrator {
-
     @Mock
     Migrator mockDelegate;
 

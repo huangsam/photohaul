@@ -9,7 +9,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestFileState {
-
     @Test
     void testValidConstruction() {
         FileState state = new FileState("/path/to/file.jpg", 1024, 1700000000000L);

@@ -12,7 +12,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestPathStateStorage {
-
     @Test
     void testReadStateFileReturnsNullWhenNotExists(@TempDir Path tempDir) throws IOException {
         PathStateStorage storage = new PathStateStorage(tempDir);

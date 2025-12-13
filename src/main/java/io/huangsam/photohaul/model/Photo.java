@@ -7,6 +7,7 @@ import com.drew.metadata.Metadata;
 import com.drew.metadata.Tag;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -210,7 +211,7 @@ public class Photo {
      * @param photoPath the path to the photo file
      * @param metadata the map to store metadata in
      */
-    private static void extractMetadata(Path photoPath, Map<String, String> metadata) {
+    private static void extractMetadata(@NonNull Path photoPath, @NonNull Map<String, String> metadata) {
         try (InputStream input = Files.newInputStream(photoPath)) {
             Metadata imageMetadata = ImageMetadataReader.readMetadata(input);
             for (Directory directory : imageMetadata.getDirectories()) {
@@ -236,7 +237,7 @@ public class Photo {
     }
 
     @Override
-    public String toString() {
+    public @NonNull String toString() {
         return "Photo{path=" + path + "}";
     }
 }

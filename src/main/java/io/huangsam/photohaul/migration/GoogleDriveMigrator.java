@@ -9,6 +9,7 @@ import io.huangsam.photohaul.resolution.PhotoResolver;
 import io.huangsam.photohaul.resolution.ResolutionException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import com.google.api.services.drive.model.File;
 
@@ -71,7 +72,7 @@ public class GoogleDriveMigrator implements Migrator {
         httpTransport.shutdown();
     }
 
-    private String getTargetPath(Photo photo) {
+    private @NonNull String getTargetPath(Photo photo) {
         try {
             return photoResolver.resolveString(photo);
         } catch (ResolutionException e) {
@@ -79,7 +80,7 @@ public class GoogleDriveMigrator implements Migrator {
         }
     }
 
-    private String createDriveFolder(String targetPath) throws IOException {
+    private String createDriveFolder(@NonNull String targetPath) throws IOException {
         String existingId = getExistingId(targetRoot, targetPath);
         if (existingId != null) {
             return existingId;
@@ -104,7 +105,7 @@ public class GoogleDriveMigrator implements Migrator {
         return folderId;
     }
 
-    private void createDrivePhoto(String folderId, @NotNull Photo photo) throws IOException {
+    private void createDrivePhoto(@NonNull String folderId, @NotNull Photo photo) throws IOException {
         String existingId = getExistingId(folderId, photo.name());
         if (existingId != null) {
             existedCount++;

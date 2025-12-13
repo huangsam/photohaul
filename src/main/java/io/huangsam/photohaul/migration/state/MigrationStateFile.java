@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -33,9 +34,9 @@ public class MigrationStateFile {
 
     public static final String DEFAULT_STATE_FILE_NAME = ".photohaul_state.json";
 
-    private final StateFileStorage storage;
-    private final String stateFileName;
-    private final Map<String, FileState> state;
+    private final @NonNull StateFileStorage storage;
+    private final @NonNull String stateFileName;
+    private final @NonNull Map<String, FileState> state;
 
     /**
      * Creates a MigrationStateFile with the default state file name.

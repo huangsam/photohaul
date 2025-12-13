@@ -3,6 +3,7 @@ package io.huangsam.photohaul.migration;
 import io.huangsam.photohaul.migration.state.MigrationStateFile;
 import io.huangsam.photohaul.migration.state.StateFileStorage;
 import io.huangsam.photohaul.model.Photo;
+import org.jspecify.annotations.NonNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,7 +43,7 @@ public class TestDeltaMigrator {
     }
 
     @Test
-    void testMigratePhotosCallsDelegateForNewFiles(@TempDir Path tempDir) throws IOException {
+    void testMigratePhotosCallsDelegateForNewFiles(@TempDir @NonNull Path tempDir) throws IOException {
         // Create a test file
         Path testFile = tempDir.resolve("photo.jpg");
         Files.writeString(testFile, "test content");
@@ -57,7 +58,7 @@ public class TestDeltaMigrator {
     }
 
     @Test
-    void testMigratePhotosSkipsUnchangedFiles(@TempDir Path tempDir) throws IOException {
+    void testMigratePhotosSkipsUnchangedFiles(@TempDir @NonNull Path tempDir) throws IOException {
         // Create a test file
         Path testFile = tempDir.resolve("photo.jpg");
         Files.writeString(testFile, "test content");
@@ -83,7 +84,7 @@ public class TestDeltaMigrator {
     }
 
     @Test
-    void testMigratePhotosMigratesModifiedFiles(@TempDir Path tempDir) throws IOException {
+    void testMigratePhotosMigratesModifiedFiles(@TempDir @NonNull Path tempDir) throws IOException {
         // Create a test file
         Path testFile = tempDir.resolve("photo.jpg");
         Files.writeString(testFile, "test content");
@@ -144,7 +145,7 @@ public class TestDeltaMigrator {
     }
 
     @Test
-    void testMigratePhotosSavesStateAfterSuccessfulMigration(@TempDir Path tempDir) throws IOException {
+    void testMigratePhotosSavesStateAfterSuccessfulMigration(@TempDir @NonNull Path tempDir) throws IOException {
         // Create a test file
         Path testFile = tempDir.resolve("photo.jpg");
         Files.writeString(testFile, "test content");
@@ -160,7 +161,7 @@ public class TestDeltaMigrator {
     }
 
     @Test
-    void testMigratePhotosHandlesStateSaveIOException(@TempDir Path tempDir) throws IOException {
+    void testMigratePhotosHandlesStateSaveIOException(@TempDir @NonNull Path tempDir) throws IOException {
         // Create a test file
         Path testFile = tempDir.resolve("photo.jpg");
         Files.writeString(testFile, "test content");
@@ -177,7 +178,7 @@ public class TestDeltaMigrator {
     }
 
     @Test
-    void testMigratePhotosRecordsOnlySuccessfulMigrations(@TempDir Path tempDir) throws IOException {
+    void testMigratePhotosRecordsOnlySuccessfulMigrations(@TempDir @NonNull Path tempDir) throws IOException {
         // Create two test files
         Path testFile1 = tempDir.resolve("photo1.jpg");
         Path testFile2 = tempDir.resolve("photo2.jpg");
@@ -199,7 +200,7 @@ public class TestDeltaMigrator {
     }
 
     @Test
-    void testMigratePhotosMixedNewAndUnchangedFiles(@TempDir Path tempDir) throws IOException {
+    void testMigratePhotosMixedNewAndUnchangedFiles(@TempDir @NonNull Path tempDir) throws IOException {
         // Create two test files
         Path unchangedFile = tempDir.resolve("unchanged.jpg");
         Path newFile = tempDir.resolve("new.jpg");
@@ -229,7 +230,7 @@ public class TestDeltaMigrator {
     }
 
     @Test
-    void testMigratePhotosNoSuccessfulMigrations(@TempDir Path tempDir) throws IOException {
+    void testMigratePhotosNoSuccessfulMigrations(@TempDir @NonNull Path tempDir) throws IOException {
         // Create a test file
         Path testFile = tempDir.resolve("photo.jpg");
         Files.writeString(testFile, "test content");
@@ -246,7 +247,7 @@ public class TestDeltaMigrator {
     }
 
     @Test
-    void testMigratePhotosHandlesNonExistentFile(@TempDir Path tempDir) throws IOException {
+    void testMigratePhotosHandlesNonExistentFile(@TempDir @NonNull Path tempDir) throws IOException {
         // Create a path to non-existent file
         Path nonExistentFile = tempDir.resolve("nonexistent.jpg");
         Photo photo = new Photo(nonExistentFile);
@@ -261,7 +262,7 @@ public class TestDeltaMigrator {
     }
 
     @Test
-    void testMigratePhotosWithDifferentLastModifiedTime(@TempDir Path tempDir) throws IOException {
+    void testMigratePhotosWithDifferentLastModifiedTime(@TempDir @NonNull Path tempDir) throws IOException {
         // Create a test file
         Path testFile = tempDir.resolve("photo.jpg");
         Files.writeString(testFile, "test content");

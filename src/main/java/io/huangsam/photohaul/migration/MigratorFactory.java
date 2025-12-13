@@ -16,6 +16,7 @@ import io.huangsam.photohaul.migration.state.PathStateStorage;
 import io.huangsam.photohaul.migration.state.StateFileStorage;
 import io.huangsam.photohaul.resolution.PhotoResolver;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
@@ -47,7 +48,7 @@ public class MigratorFactory {
      * @param resolver photo resolver for target path
      * @return migrator instance
      */
-    public Migrator make(@NotNull MigratorMode mode, Settings settings, PhotoResolver resolver) {
+    public @NonNull Migrator make(@NotNull MigratorMode mode, @NonNull Settings settings, PhotoResolver resolver) {
         @SuppressWarnings("resource")
         Migrator baseMigrator = switch (mode) {
             case PATH -> makePath(settings, resolver);
@@ -75,7 +76,7 @@ public class MigratorFactory {
      * @param settings the settings
      * @return a non-null StateFileStorage instance for the given migrator mode
      */
-    private StateFileStorage createStateStorage(@NotNull MigratorMode mode, @NotNull Settings settings) {
+    private @NonNull StateFileStorage createStateStorage(@NotNull MigratorMode mode, @NotNull Settings settings) {
         return switch (mode) {
             case PATH -> new PathStateStorage(getPathTargetDirectory(settings));
             // Delta migration for cloud storage types requires additional implementation

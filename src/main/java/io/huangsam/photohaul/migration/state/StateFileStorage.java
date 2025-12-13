@@ -1,5 +1,7 @@
 package io.huangsam.photohaul.migration.state;
 
+import org.jspecify.annotations.Nullable;
+
 import java.io.IOException;
 
 /**
@@ -17,7 +19,7 @@ public interface StateFileStorage {
      * @return the content of the state file, or null if it doesn't exist
      * @throws IOException if an I/O error occurs during reading
      */
-    String readStateFile(String fileName) throws IOException;
+    @Nullable String readStateFile(String fileName) throws IOException;
 
     /**
      * Write content to the state file.

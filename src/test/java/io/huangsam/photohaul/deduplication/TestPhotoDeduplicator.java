@@ -1,6 +1,7 @@
 package io.huangsam.photohaul.deduplication;
 
 import io.huangsam.photohaul.model.Photo;
+import org.jspecify.annotations.NonNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -31,7 +32,7 @@ public class TestPhotoDeduplicator {
     }
 
     @Test
-    void testDeduplicateWithDuplicates(@TempDir Path tempDir) throws IOException {
+    void testDeduplicateWithDuplicates(@TempDir @NonNull Path tempDir) throws IOException {
         // Create duplicate files
         Path original = tempDir.resolve("original.jpg");
         Path duplicate1 = tempDir.resolve("duplicate1.jpg");
@@ -64,7 +65,7 @@ public class TestPhotoDeduplicator {
 
         // Verify the first occurrence is kept
         List<Photo> uniqueList = new ArrayList<>(uniquePhotos);
-        assertEquals("original.jpg", uniqueList.get(0).name());
+        assertEquals("original.jpg", uniqueList.getFirst().name());
         assertEquals("unique.jpg", uniqueList.get(1).name());
     }
 
@@ -89,7 +90,7 @@ public class TestPhotoDeduplicator {
     }
 
     @Test
-    void testDeduplicateKeepsFirstOccurrence(@TempDir Path tempDir) throws IOException {
+    void testDeduplicateKeepsFirstOccurrence(@TempDir @NonNull Path tempDir) throws IOException {
         // Create three files with same content but different names
         Path first = tempDir.resolve("first.jpg");
         Path second = tempDir.resolve("second.jpg");
@@ -116,7 +117,7 @@ public class TestPhotoDeduplicator {
     }
 
     @Test
-    void testDeduplicateWithNonExistentFile(@TempDir Path tempDir) {
+    void testDeduplicateWithNonExistentFile(@TempDir @NonNull Path tempDir) {
         // Create a photo with a path that doesn't exist
         Path nonExistent = tempDir.resolve("nonexistent.jpg");
 

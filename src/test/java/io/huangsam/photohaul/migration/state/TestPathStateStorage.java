@@ -1,5 +1,6 @@
 package io.huangsam.photohaul.migration.state;
 
+import org.jspecify.annotations.NonNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -13,14 +14,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestPathStateStorage {
     @Test
-    void testReadStateFileReturnsNullWhenNotExists(@TempDir Path tempDir) throws IOException {
+    void testReadStateFileReturnsNullWhenNotExists(@TempDir @NonNull Path tempDir) throws IOException {
         PathStateStorage storage = new PathStateStorage(tempDir);
         String result = storage.readStateFile("nonexistent.json");
         assertNull(result);
     }
 
     @Test
-    void testReadStateFileReturnsContent(@TempDir Path tempDir) throws IOException {
+    void testReadStateFileReturnsContent(@TempDir @NonNull Path tempDir) throws IOException {
         String content = "{\"test\": \"data\"}";
         Files.writeString(tempDir.resolve("state.json"), content);
 
@@ -30,7 +31,7 @@ public class TestPathStateStorage {
     }
 
     @Test
-    void testWriteStateFileCreatesFile(@TempDir Path tempDir) throws IOException {
+    void testWriteStateFileCreatesFile(@TempDir @NonNull Path tempDir) throws IOException {
         PathStateStorage storage = new PathStateStorage(tempDir);
         String content = "{\"test\": \"data\"}";
 
@@ -41,7 +42,7 @@ public class TestPathStateStorage {
     }
 
     @Test
-    void testWriteStateFileCreatesDirectories(@TempDir Path tempDir) throws IOException {
+    void testWriteStateFileCreatesDirectories(@TempDir @NonNull Path tempDir) throws IOException {
         Path nestedDir = tempDir.resolve("nested/dir");
         PathStateStorage storage = new PathStateStorage(nestedDir);
         String content = "{\"test\": \"data\"}";
@@ -53,7 +54,7 @@ public class TestPathStateStorage {
     }
 
     @Test
-    void testWriteAndReadRoundTrip(@TempDir Path tempDir) throws IOException {
+    void testWriteAndReadRoundTrip(@TempDir @NonNull Path tempDir) throws IOException {
         PathStateStorage storage = new PathStateStorage(tempDir);
         String content = "{\"path\":\"/photo.jpg\",\"size\":1024,\"lastModifiedMillis\":1700000000000}";
 
@@ -64,7 +65,7 @@ public class TestPathStateStorage {
     }
 
     @Test
-    void testReadStateFileWithUTF8Content(@TempDir Path tempDir) throws IOException {
+    void testReadStateFileWithUTF8Content(@TempDir @NonNull Path tempDir) throws IOException {
         String content = "{\"path\":\"/photos/日本語.jpg\",\"size\":1024}";
         Files.writeString(tempDir.resolve("state.json"), content);
 
@@ -74,7 +75,7 @@ public class TestPathStateStorage {
     }
 
     @Test
-    void testWriteStateFileWithUTF8Content(@TempDir Path tempDir) throws IOException {
+    void testWriteStateFileWithUTF8Content(@TempDir @NonNull Path tempDir) throws IOException {
         PathStateStorage storage = new PathStateStorage(tempDir);
         String content = "{\"path\":\"/photos/日本語.jpg\",\"size\":1024}";
 
@@ -85,7 +86,7 @@ public class TestPathStateStorage {
     }
 
     @Test
-    void testWriteStateFileOverwritesExisting(@TempDir Path tempDir) throws IOException {
+    void testWriteStateFileOverwritesExisting(@TempDir @NonNull Path tempDir) throws IOException {
         PathStateStorage storage = new PathStateStorage(tempDir);
         String originalContent = "{\"original\": \"data\"}";
         String newContent = "{\"new\": \"data\"}";
@@ -98,7 +99,7 @@ public class TestPathStateStorage {
     }
 
     @Test
-    void testReadStateFileWithEmptyFile(@TempDir Path tempDir) throws IOException {
+    void testReadStateFileWithEmptyFile(@TempDir @NonNull Path tempDir) throws IOException {
         Files.writeString(tempDir.resolve("empty.json"), "");
 
         PathStateStorage storage = new PathStateStorage(tempDir);
@@ -107,7 +108,7 @@ public class TestPathStateStorage {
     }
 
     @Test
-    void testWriteStateFileWithEmptyContent(@TempDir Path tempDir) throws IOException {
+    void testWriteStateFileWithEmptyContent(@TempDir @NonNull Path tempDir) throws IOException {
         PathStateStorage storage = new PathStateStorage(tempDir);
 
         storage.writeStateFile("empty.json", "");
@@ -117,7 +118,7 @@ public class TestPathStateStorage {
     }
 
     @Test
-    void testReadStateFileWithMultilineContent(@TempDir Path tempDir) throws IOException {
+    void testReadStateFileWithMultilineContent(@TempDir @NonNull Path tempDir) throws IOException {
         String content = "{\n  \"path\": \"/photo.jpg\",\n  \"size\": 1024\n}";
         Files.writeString(tempDir.resolve("state.json"), content);
 
@@ -127,7 +128,7 @@ public class TestPathStateStorage {
     }
 
     @Test
-    void testWriteStateFileWithMultilineContent(@TempDir Path tempDir) throws IOException {
+    void testWriteStateFileWithMultilineContent(@TempDir @NonNull Path tempDir) throws IOException {
         PathStateStorage storage = new PathStateStorage(tempDir);
         String content = "{\n  \"path\": \"/photo.jpg\",\n  \"size\": 1024\n}";
 
@@ -138,7 +139,7 @@ public class TestPathStateStorage {
     }
 
     @Test
-    void testWriteStateFileWithDeeplyNestedDirectories(@TempDir Path tempDir) throws IOException {
+    void testWriteStateFileWithDeeplyNestedDirectories(@TempDir @NonNull Path tempDir) throws IOException {
         Path deepPath = tempDir.resolve("a/b/c/d/e/f");
         PathStateStorage storage = new PathStateStorage(deepPath);
         String content = "{\"test\": \"deep\"}";

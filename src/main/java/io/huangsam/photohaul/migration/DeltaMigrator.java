@@ -4,6 +4,7 @@ import io.huangsam.photohaul.migration.state.FileState;
 import io.huangsam.photohaul.migration.state.MigrationStateFile;
 import io.huangsam.photohaul.model.Photo;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -36,8 +37,8 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class DeltaMigrator implements Migrator {
     private static final Logger LOG = getLogger(DeltaMigrator.class);
 
-    private final Migrator delegate;
-    private final MigrationStateFile stateFile;
+    private final @NonNull Migrator delegate;
+    private final @NonNull MigrationStateFile stateFile;
 
     private long skippedCount = 0L;
 

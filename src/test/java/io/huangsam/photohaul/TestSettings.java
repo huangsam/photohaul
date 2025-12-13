@@ -1,5 +1,6 @@
 package io.huangsam.photohaul;
 
+import org.jspecify.annotations.NonNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -60,7 +61,7 @@ public class TestSettings {
     }
 
     @Test
-    void testLoadFromFilesystem(@TempDir Path tmp) throws IOException {
+    void testLoadFromFilesystem(@TempDir @NonNull Path tmp) throws IOException {
         // Arrange: create a temp properties file
         Path props = tmp.resolve("custom.properties");
         Files.writeString(props, "hello=filesystem\n");
@@ -78,7 +79,7 @@ public class TestSettings {
     }
 
     @Test
-    void testSystemPropertyOverrideFilesystem(@TempDir Path tmp) throws IOException {
+    void testSystemPropertyOverrideFilesystem(@TempDir @NonNull Path tmp) throws IOException {
         Path props = tmp.resolve("override.properties");
         Files.writeString(props, "migrator.mode=PATH\nfoo.bar=baz\n");
         String original = System.getProperty("photohaul.config");
@@ -103,7 +104,7 @@ public class TestSettings {
     }
 
     @Test
-    void testIsDeltaEnabledWhenTrue(@TempDir Path tmp) throws IOException {
+    void testIsDeltaEnabledWhenTrue(@TempDir @NonNull Path tmp) throws IOException {
         Path props = tmp.resolve("delta.properties");
         Files.writeString(props, "path.source=Dummy/Source\nmigrator.mode=PATH\ndelta.enabled=true\n");
         Settings settings = new Settings(props.toString());
@@ -111,7 +112,7 @@ public class TestSettings {
     }
 
     @Test
-    void testIsDeltaEnabledWhenExplicitlyFalse(@TempDir Path tmp) throws IOException {
+    void testIsDeltaEnabledWhenExplicitlyFalse(@TempDir @NonNull Path tmp) throws IOException {
         Path props = tmp.resolve("nodelta.properties");
         Files.writeString(props, "path.source=Dummy/Source\nmigrator.mode=PATH\ndelta.enabled=false\n");
         Settings settings = new Settings(props.toString());

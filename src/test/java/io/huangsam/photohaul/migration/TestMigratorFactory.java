@@ -2,6 +2,7 @@ package io.huangsam.photohaul.migration;
 
 import io.huangsam.photohaul.Settings;
 import io.huangsam.photohaul.resolution.PhotoResolver;
+import org.jspecify.annotations.NonNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -58,7 +59,7 @@ public class TestMigratorFactory {
     }
 
     @Test
-    void testMakePathMigratorWithDeltaEnabled(@TempDir Path tempDir) throws Exception {
+    void testMakePathMigratorWithDeltaEnabled(@TempDir @NonNull Path tempDir) throws Exception {
         // Create a temporary properties file with delta enabled
         Path propsFile = tempDir.resolve("delta-path.properties");
         String propsContent = String.format(
@@ -77,7 +78,7 @@ public class TestMigratorFactory {
     }
 
     @Test
-    void testMakeDropboxMigratorWithDeltaEnabled(@TempDir Path tempDir) throws Exception {
+    void testMakeDropboxMigratorWithDeltaEnabled(@TempDir @NonNull Path tempDir) throws Exception {
         // Create a temporary properties file with delta enabled
         Path propsFile = tempDir.resolve("delta-dbx.properties");
         String propsContent = String.format(
@@ -97,7 +98,7 @@ public class TestMigratorFactory {
     }
 
     @Test
-    void testMakeSftpMigratorWithDeltaEnabled(@TempDir Path tempDir) throws Exception {
+    void testMakeSftpMigratorWithDeltaEnabled(@TempDir @NonNull Path tempDir) throws Exception {
         // Create a temporary properties file with delta enabled
         Path propsFile = tempDir.resolve("delta-sftp.properties");
         String propsContent = String.format(
@@ -119,7 +120,7 @@ public class TestMigratorFactory {
     }
 
     @Test
-    void testMakeS3MigratorWithDeltaEnabled(@TempDir Path tempDir) throws Exception {
+    void testMakeS3MigratorWithDeltaEnabled(@TempDir @NonNull Path tempDir) throws Exception {
         // Create a temporary properties file with delta enabled
         Path propsFile = tempDir.resolve("delta-s3.properties");
         String propsContent = String.format(
@@ -149,7 +150,7 @@ public class TestMigratorFactory {
     }
 
     @Test
-    void testMakePathMigratorWithExplicitDeltaDisabled(@TempDir Path tempDir) throws Exception {
+    void testMakePathMigratorWithExplicitDeltaDisabled(@TempDir @NonNull Path tempDir) throws Exception {
         // Create a temporary properties file with delta explicitly disabled
         Path propsFile = tempDir.resolve("nodelta-path.properties");
         String propsContent = String.format(

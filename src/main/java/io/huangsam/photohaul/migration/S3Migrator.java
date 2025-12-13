@@ -4,6 +4,7 @@ import io.huangsam.photohaul.model.Photo;
 import io.huangsam.photohaul.resolution.PhotoResolver;
 import io.huangsam.photohaul.resolution.ResolutionException;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
@@ -15,7 +16,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class S3Migrator implements Migrator {
     private static final Logger LOG = getLogger(S3Migrator.class);
 
-    private final String bucketName;
+    private final @NonNull String bucketName;
     private final PhotoResolver photoResolver;
     private final S3Client s3Client;
 
@@ -64,7 +65,7 @@ public class S3Migrator implements Migrator {
     }
 
     @NotNull
-    private String getTargetKey(Photo photo) {
+    private String getTargetKey(@NonNull Photo photo) {
         try {
             return photoResolver.resolveString(photo) + "/" + photo.name();
         } catch (ResolutionException e) {

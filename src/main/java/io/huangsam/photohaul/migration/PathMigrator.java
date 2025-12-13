@@ -4,6 +4,7 @@ import io.huangsam.photohaul.model.Photo;
 import io.huangsam.photohaul.resolution.PhotoResolver;
 import io.huangsam.photohaul.resolution.ResolutionException;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -70,7 +71,7 @@ public class PathMigrator implements Migrator {
         }
     }
 
-    private void migratePhoto(Path target, Photo photo) throws IOException {
+    private void migratePhoto(@NonNull Path target, @NonNull Photo photo) throws IOException {
         Path photoLocation = target.resolve(photo.name());
         if (migratorAction == Action.DRY_RUN) {
             LOG.info("Dry-run {} to {}", photo.path(), photoLocation);

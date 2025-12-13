@@ -1,6 +1,8 @@
 package io.huangsam.photohaul.migration.state;
 
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -13,7 +15,7 @@ import java.nio.file.Path;
  * <p> Stores the state file at the specified root path on the local filesystem.
  */
 public class PathStateStorage implements StateFileStorage {
-    private final Path rootPath;
+    private final @NonNull Path rootPath;
 
     /**
      * Creates a PathStateStorage for the given root path.
@@ -25,7 +27,7 @@ public class PathStateStorage implements StateFileStorage {
     }
 
     @Override
-    public String readStateFile(String fileName) throws IOException {
+    public @Nullable String readStateFile(@NonNull String fileName) throws IOException {
         Path statePath = rootPath.resolve(fileName);
         if (!Files.exists(statePath)) {
             return null;
@@ -34,7 +36,7 @@ public class PathStateStorage implements StateFileStorage {
     }
 
     @Override
-    public void writeStateFile(String fileName, String content) throws IOException {
+    public void writeStateFile(@NonNull String fileName, @NonNull String content) throws IOException {
         Files.createDirectories(rootPath);
         Path statePath = rootPath.resolve(fileName);
         Files.writeString(statePath, content, StandardCharsets.UTF_8);

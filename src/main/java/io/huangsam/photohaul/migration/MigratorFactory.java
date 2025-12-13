@@ -49,7 +49,6 @@ public class MigratorFactory {
      * @return migrator instance
      */
     public @NonNull Migrator make(@NotNull MigratorMode mode, @NonNull Settings settings, PhotoResolver resolver) {
-        @SuppressWarnings("resource")
         Migrator baseMigrator = switch (mode) {
             case PATH -> makePath(settings, resolver);
             case DROPBOX -> makeDropbox(settings, resolver);

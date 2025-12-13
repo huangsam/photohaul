@@ -132,7 +132,7 @@ public class MigrationStateFile {
      *
      * @return the state file name
      */
-    public String getStateFileName() {
+    public @NonNull String getStateFileName() {
         return stateFileName;
     }
 }

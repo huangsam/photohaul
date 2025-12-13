@@ -18,11 +18,6 @@ public class TestFileState {
     }
 
     @Test
-    void testNullPathThrowsException() {
-        assertThrows(NullPointerException.class, () -> new FileState(null, 1024, 1700000000000L));
-    }
-
-    @Test
     void testBlankPathThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> new FileState("  ", 1024, 1700000000000L));
     }

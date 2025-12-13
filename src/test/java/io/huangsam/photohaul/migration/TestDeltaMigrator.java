@@ -13,7 +13,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Collection;
 import java.util.List;
 
 import org.mockito.ArgumentMatchers;
@@ -105,7 +104,7 @@ public class TestDeltaMigrator {
         deltaMigrator.migratePhotos(List.of(photo));
 
         // Should call delegate since file is modified
-        verify(mockDelegate).migratePhotos(ArgumentMatchers.<Collection<Photo>>any());
+        verify(mockDelegate).migratePhotos(ArgumentMatchers.any());
     }
 
     @Test
@@ -174,7 +173,7 @@ public class TestDeltaMigrator {
         // Should not throw, just log error
         deltaMigrator.migratePhotos(List.of(photo));
 
-        verify(mockDelegate).migratePhotos(ArgumentMatchers.<Collection<Photo>>any());
+        verify(mockDelegate).migratePhotos(ArgumentMatchers.any());
     }
 
     @Test
@@ -194,7 +193,7 @@ public class TestDeltaMigrator {
         deltaMigrator.migratePhotos(List.of(photo1, photo2));
 
         // Should call delegate with both photos
-        verify(mockDelegate).migratePhotos(ArgumentMatchers.<Collection<Photo>>any());
+        verify(mockDelegate).migratePhotos(ArgumentMatchers.any());
         // State should still be saved
         verify(mockStorage).writeStateFile(anyString(), anyString());
     }
@@ -225,7 +224,7 @@ public class TestDeltaMigrator {
         deltaMigrator.migratePhotos(List.of(photo1, photo2));
 
         // Should call delegate for new file only
-        verify(mockDelegate).migratePhotos(ArgumentMatchers.<Collection<Photo>>any());
+        verify(mockDelegate).migratePhotos(ArgumentMatchers.any());
         assertEquals(1, deltaMigrator.getSkippedCount());
     }
 
@@ -283,6 +282,6 @@ public class TestDeltaMigrator {
         deltaMigrator.migratePhotos(List.of(photo));
 
         // Should call delegate since file has different timestamp
-        verify(mockDelegate).migratePhotos(ArgumentMatchers.<Collection<Photo>>any());
+        verify(mockDelegate).migratePhotos(ArgumentMatchers.any());
     }
 }

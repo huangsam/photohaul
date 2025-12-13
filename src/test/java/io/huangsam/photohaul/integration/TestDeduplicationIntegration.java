@@ -28,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 public class TestDeduplicationIntegration {
     @Test
+    @SuppressWarnings("resource")
     void testFullWorkflowWithDuplicates(@TempDir @NonNull Path tempDir) throws IOException {
         // Setup: Create source and target directories
         Path sourceDir = tempDir.resolve("source");
@@ -86,6 +87,7 @@ public class TestDeduplicationIntegration {
     }
 
     @Test
+    @SuppressWarnings("resource")
     void testFullWorkflowWithNoDuplicates(@TempDir @NonNull Path tempDir) throws IOException {
         // Setup: Create source and target directories
         Path sourceDir = tempDir.resolve("source");

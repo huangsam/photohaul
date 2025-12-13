@@ -36,6 +36,7 @@ public class TestMigratorFactory {
     }
 
     @Test
+    @SuppressWarnings("resource")
     void testMakeGoogleDriveMigratorFailure() {
         Settings settings = new Settings("drive-example.properties");
         MigrationException exception = assertThrows(MigrationException.class, () -> FACTORY.make(MigratorMode.GOOGLE_DRIVE, settings, RESOLVER));

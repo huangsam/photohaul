@@ -8,6 +8,7 @@ import io.huangsam.photohaul.model.Photo;
 import io.huangsam.photohaul.resolution.PhotoResolver;
 import io.huangsam.photohaul.resolution.ResolutionException;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -20,7 +21,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class DropboxMigrator implements Migrator {
     private static final Logger LOG = getLogger(DropboxMigrator.class);
 
-    private final String targetRoot;
+    private final @NonNull String targetRoot;
     private final PhotoResolver photoResolver;
     private final DbxClientV2 dropboxClient;
 

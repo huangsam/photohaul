@@ -11,8 +11,13 @@ import com.google.api.services.drive.DriveScopes;
 import com.google.auth.http.HttpCredentialsAdapter;
 import com.google.auth.oauth2.GoogleCredentials;
 import io.huangsam.photohaul.Settings;
+import io.huangsam.photohaul.migration.state.MigrationStateFile;
+import io.huangsam.photohaul.migration.state.PathStateStorage;
+import io.huangsam.photohaul.migration.state.StateFileStorage;
 import io.huangsam.photohaul.resolution.PhotoResolver;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
+import org.slf4j.Logger;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
@@ -26,11 +31,15 @@ import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
 import java.util.List;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 /**
  * A factory class for creating {@link Migrator} instances based on the desired
  * migration strategy.
  */
 public class MigratorFactory {
+    private static final Logger LOG = getLogger(MigratorFactory.class);
+
     /**
      * Create instance for migrating photos.
      *
@@ -39,20 +48,62 @@ public class MigratorFactory {
      * @param resolver photo resolver for target path
      * @return migrator instance
      */
-    public Migrator make(@NotNull MigratorMode mode, Settings settings, PhotoResolver resolver) {
-        return switch (mode) {
+    public @NonNull Migrator make(@NotNull MigratorMode mode, @NonNull Settings settings, PhotoResolver resolver) {
+        Migrator baseMigrator = switch (mode) {
             case PATH -> makePath(settings, resolver);
             case DROPBOX -> makeDropbox(settings, resolver);
             case GOOGLE_DRIVE -> makeGoogleDrive(settings, resolver);
             case SFTP -> makeSftp(settings, resolver);
             case S3 -> makeS3(settings, resolver);
         };
+
+        // Wrap with DeltaMigrator if delta migration is enabled
+        if (settings.isDeltaEnabled()) {
+            StateFileStorage stateStorage = createStateStorage(mode, settings);
+            LOG.info("Delta migration enabled for mode {}", mode);
+            MigrationStateFile stateFile = new MigrationStateFile(stateStorage);
+            return new DeltaMigrator(baseMigrator, stateFile);
+        }
+
+        return baseMigrator;
+    }
+
+    /**
+     * Create a StateFileStorage for the given migrator mode.
+     *
+     * @param mode     the migrator mode
+     * @param settings the settings
+     * @return a non-null StateFileStorage instance for the given migrator mode
+     */
+    private @NonNull StateFileStorage createStateStorage(@NotNull MigratorMode mode, @NotNull Settings settings) {
+        return switch (mode) {
+            case PATH -> new PathStateStorage(getPathTargetDirectory(settings));
+            // Delta migration for cloud storage types requires additional implementation
+            // For now, they use local state storage as a fallback
+            case DROPBOX, GOOGLE_DRIVE, SFTP, S3 -> {
+                // Use source path for state storage as fallback for cloud destinations
+                Path sourcePath = settings.getSourcePath();
+                LOG.info("Using local state storage at {} for {} destination", sourcePath, mode);
+                yield new PathStateStorage(sourcePath);
+            }
+        };
+    }
+
+    /**
+     * Get the target directory path for PATH migrator mode.
+     *
+     * @param settings the settings
+     * @return the resolved target path
+     */
+    @NotNull
+    private Path getPathTargetDirectory(@NotNull Settings settings) {
+        return Paths.get(System.getProperty("user.home"))
+                .resolve(settings.getValue("path.target"));
     }
 
     @NotNull
     private PathMigrator makePath(@NotNull Settings settings, PhotoResolver resolver) {
-        Path target = Paths.get(System.getProperty("user.home"));
-        target = target.resolve(settings.getValue("path.target"));
+        Path target = getPathTargetDirectory(settings);
         String actionValue = settings.getValue("path.action", "MOVE").toUpperCase();
         return new PathMigrator(target, resolver, PathMigrator.Action.valueOf(actionValue));
     }

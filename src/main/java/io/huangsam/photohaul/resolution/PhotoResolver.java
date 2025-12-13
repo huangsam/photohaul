@@ -2,6 +2,7 @@ package io.huangsam.photohaul.resolution;
 
 import io.huangsam.photohaul.model.Photo;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ public record PhotoResolver(List<Function<Photo, String>> photoFunctions) {
         return new PhotoResolver(List.of(PhotoFunction.yearTaken()));
     }
 
-    public List<String> resolveList(Photo photo) {
+    public @NonNull List<String> resolveList(@NonNull Photo photo) {
         List<String> list = new ArrayList<>();
         for (Function<Photo, String> fn : photoFunctions) {
             String out = fn.apply(photo);
@@ -25,11 +26,11 @@ public record PhotoResolver(List<Function<Photo, String>> photoFunctions) {
         return list;
     }
 
-    public String resolveString(Photo photo, String delimiter) {
+    public @NonNull String resolveString(@NonNull Photo photo, @NonNull String delimiter) {
         return String.join(delimiter, resolveList(photo));
     }
 
-    public String resolveString(Photo photo) {
+    public @NonNull String resolveString(@NonNull Photo photo) {
         return resolveString(photo, "/");
     }
 

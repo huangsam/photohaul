@@ -9,6 +9,7 @@ import io.huangsam.photohaul.resolution.PhotoResolver;
 import io.huangsam.photohaul.resolution.ResolutionException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import com.google.api.services.drive.model.File;
 
@@ -49,11 +50,8 @@ public class GoogleDriveMigrator implements Migrator {
             try {
                 String folderId = createDriveFolder(targetPath);
                 createDrivePhoto(folderId, photo);
-            } catch (IOException e) {
+            } catch (IOException | NullPointerException e) {
                 LOG.error("Cannot move {}: {}", photo.name(), e.getMessage());
-                failureCount++;
-            } catch (NullPointerException e) {
-                LOG.error("Unexpected null for {}", photo.name());
                 failureCount++;
             }
         });
@@ -74,7 +72,7 @@ public class GoogleDriveMigrator implements Migrator {
         httpTransport.shutdown();
     }
 
-    private String getTargetPath(Photo photo) {
+    private @NonNull String getTargetPath(Photo photo) {
         try {
             return photoResolver.resolveString(photo);
         } catch (ResolutionException e) {
@@ -82,7 +80,7 @@ public class GoogleDriveMigrator implements Migrator {
         }
     }
 
-    private String createDriveFolder(String targetPath) throws IOException {
+    private String createDriveFolder(@NonNull String targetPath) throws IOException {
         String existingId = getExistingId(targetRoot, targetPath);
         if (existingId != null) {
             return existingId;
@@ -107,7 +105,7 @@ public class GoogleDriveMigrator implements Migrator {
         return folderId;
     }
 
-    private void createDrivePhoto(String folderId, @NotNull Photo photo) throws IOException {
+    private void createDrivePhoto(@NonNull String folderId, @NotNull Photo photo) throws IOException {
         String existingId = getExistingId(folderId, photo.name());
         if (existingId != null) {
             existedCount++;
@@ -116,8 +114,7 @@ public class GoogleDriveMigrator implements Migrator {
 
         String contentType = Files.probeContentType(photo.path());
         if (contentType == null) {
-            failureCount++;
-            return;
+            throw new IOException("Missing MIME type: " + photo.path());
         }
 
         File photoMetadata = new File();

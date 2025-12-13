@@ -2,6 +2,7 @@ package io.huangsam.photohaul;
 
 import io.huangsam.photohaul.migration.MigratorMode;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -48,7 +49,7 @@ public record Settings(Properties properties) {
      * @throws IllegalStateException if the settings file is not found in either location.
      * @throws RuntimeException      if the settings file cannot be parsed.
      */
-    public Settings(String name) {
+    public Settings(@NonNull String name) {
         this(new Properties());
         boolean fromClasspath = true;
         Path fsPath = null;
@@ -95,7 +96,7 @@ public record Settings(Properties properties) {
      * @return The string value associated with the key.
      * @throws NullPointerException if the key is not found.
      */
-    public String getValue(String key) {
+    public @NonNull String getValue(String key) {
         String value = properties.getProperty(key);
         if (value == null) {
             LOG.error("Mandatory settings key '{}' not found.", key);
@@ -123,7 +124,7 @@ public record Settings(Properties properties) {
      * @return The resolved source path.
      * @throws IllegalArgumentException if "path.source" is missing.
      */
-    public Path getSourcePath() {
+    public @NonNull Path getSourcePath() {
         String relativeSourcePath = getValue("path.source");
         return Paths.get(System.getProperty("user.home")).resolve(relativeSourcePath);
     }
@@ -134,7 +135,20 @@ public record Settings(Properties properties) {
      * @return The MigratorMode enum value.
      * @throws IllegalArgumentException if "migrator.mode" is missing or invalid.
      */
-    public MigratorMode getMigratorMode() {
+    public @NonNull MigratorMode getMigratorMode() {
         return MigratorMode.valueOf(getValue("migrator.mode"));
+    }
+
+    /**
+     * Check if delta migration is enabled.
+     *
+     * <p> When enabled, only new or modified files will be migrated based on
+     * comparing file metadata (size and last modified time) against a state file
+     * maintained at the destination.
+     *
+     * @return true if delta migration is enabled (delta.enabled=true), false by default
+     */
+    public boolean isDeltaEnabled() {
+        return Boolean.parseBoolean(getValue("delta.enabled", "false"));
     }
 }

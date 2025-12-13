@@ -80,6 +80,7 @@ public class TestDropboxMigrator extends TestMigrationAbstract {
     }
 
     @Test
+    @SuppressWarnings("resource")
     void testDropboxSetupNotWorking() {
         assertThrows(IllegalArgumentException.class, () ->
                 new DropboxMigrator("NoSlashAtStart", photoResolverMock, clientMock));

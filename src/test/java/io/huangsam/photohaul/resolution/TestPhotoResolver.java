@@ -13,7 +13,7 @@ public class TestPhotoResolver extends TestResolutionAbstract {
     void testResolveListOnMakeYear() {
         List<String> resolvedList = getPhotoResolver().resolveList(getBauerPhoto());
         assertEquals(2, resolvedList.size());
-        assertEquals("Canon", resolvedList.get(0));
+        assertEquals("Canon", resolvedList.getFirst());
         assertEquals("2023", resolvedList.get(1));
     }
 

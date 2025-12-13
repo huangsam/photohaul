@@ -7,6 +7,7 @@ import io.huangsam.photohaul.resolution.PhotoResolver;
 import io.huangsam.photohaul.traversal.PathRuleSet;
 import io.huangsam.photohaul.traversal.PathWalker;
 import io.huangsam.photohaul.traversal.PhotoCollector;
+import org.jspecify.annotations.NonNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -27,7 +28,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 public class TestDeduplicationIntegration {
     @Test
-    void testFullWorkflowWithDuplicates(@TempDir Path tempDir) throws IOException {
+    @SuppressWarnings("resource")
+    void testFullWorkflowWithDuplicates(@TempDir @NonNull Path tempDir) throws IOException {
         // Setup: Create source and target directories
         Path sourceDir = tempDir.resolve("source");
         Path targetDir = tempDir.resolve("target");
@@ -85,7 +87,8 @@ public class TestDeduplicationIntegration {
     }
 
     @Test
-    void testFullWorkflowWithNoDuplicates(@TempDir Path tempDir) throws IOException {
+    @SuppressWarnings("resource")
+    void testFullWorkflowWithNoDuplicates(@TempDir @NonNull Path tempDir) throws IOException {
         // Setup: Create source and target directories
         Path sourceDir = tempDir.resolve("source");
         Path targetDir = tempDir.resolve("target");

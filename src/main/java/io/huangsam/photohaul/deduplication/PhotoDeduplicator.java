@@ -2,6 +2,7 @@ package io.huangsam.photohaul.deduplication;
 
 import io.huangsam.photohaul.model.Photo;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -59,7 +60,7 @@ public class PhotoDeduplicator {
     /**
      * Group photos by a key function, preserving order.
      */
-    private <K> Map<K, List<Photo>> groupBy(Collection<Photo> photos, java.util.function.Function<Photo, K> keyFunction) {
+    private <K> @NonNull Map<K, List<Photo>> groupBy(@NonNull Collection<Photo> photos, java.util.function.@NonNull Function<Photo, K> keyFunction) {
         return photos.stream()
             .collect(Collectors.groupingBy(keyFunction, LinkedHashMap::new, Collectors.toList()));
     }
@@ -67,7 +68,7 @@ public class PhotoDeduplicator {
     /**
      * Safely get file size, returning -1 on error.
      */
-    private Long safeGetFileSize(Photo photo) {
+    private @NonNull Long safeGetFileSize(@NonNull Photo photo) {
         try {
             return getFileSize(photo);
         } catch (IOException e) {
@@ -78,19 +79,19 @@ public class PhotoDeduplicator {
     /**
      * Process a group of photos with the same size.
      */
-    private int processSizeGroup(List<Photo> sizeGroup, Map<String, Photo> uniquePhotos) {
+    private int processSizeGroup(@NonNull List<Photo> sizeGroup, @NonNull Map<String, Photo> uniquePhotos) {
         return sizeGroup.size() == 1
-            ? addUniquePhotoBySize(sizeGroup.get(0), uniquePhotos)
+            ? addUniquePhotoBySize(sizeGroup.getFirst(), uniquePhotos)
             : deduplicateByPartialHash(sizeGroup, uniquePhotos);
     }
 
     /**
      * Add a photo that is unique by size.
      */
-    private int addUniquePhotoBySize(Photo photo, Map<String, Photo> uniquePhotos) {
+    private int addUniquePhotoBySize(@NonNull Photo photo, @NonNull Map<String, Photo> uniquePhotos) {
         try {
             long size = getFileSize(photo);
-            String key = "size_" + size + "_" + photo.path().toString();
+            String key = "size_" + size + "_" + photo.path();
             uniquePhotos.put(key, photo);
             LOG.trace("Added unique photo by size: {} (size: {})", photo.name(), size);
         } catch (IOException e) {
@@ -177,30 +178,30 @@ public class PhotoDeduplicator {
     /**
      * Safely calculate partial hash, returning error key on failure.
      */
-    private String safeCalculatePartialHash(Photo photo) {
+    private @NonNull String safeCalculatePartialHash(@NonNull Photo photo) {
         try {
             return calculatePartialHash(photo);
         } catch (IOException | NoSuchAlgorithmException e) {
-            return "error_" + java.util.UUID.randomUUID().toString();
+            return "error_" + java.util.UUID.randomUUID();
         }
     }
 
     /**
      * Process a group of photos with the same partial hash.
      */
-    private int processPartialHashGroup(List<Photo> partialGroup, Map<String, Photo> uniquePhotos) {
+    private int processPartialHashGroup(@NonNull List<Photo> partialGroup, @NonNull Map<String, Photo> uniquePhotos) {
         return partialGroup.size() == 1
-            ? addUniquePhotoByPartialHash(partialGroup.get(0), uniquePhotos)
+            ? addUniquePhotoByPartialHash(partialGroup.getFirst(), uniquePhotos)
             : deduplicateByFullHash(partialGroup, uniquePhotos);
     }
 
     /**
      * Add a photo that is unique by partial hash.
      */
-    private int addUniquePhotoByPartialHash(Photo photo, Map<String, Photo> uniquePhotos) {
+    private int addUniquePhotoByPartialHash(@NonNull Photo photo, @NonNull Map<String, Photo> uniquePhotos) {
         try {
             String partialHash = calculatePartialHash(photo);
-            String key = "partial_" + partialHash + "_" + photo.path().toString();
+            String key = "partial_" + partialHash + "_" + photo.path();
             uniquePhotos.put(key, photo);
             LOG.trace("Added unique photo by partial hash: {}", photo.name());
         } catch (IOException | NoSuchAlgorithmException e) {
@@ -225,7 +226,7 @@ public class PhotoDeduplicator {
     /**
      * Process a single photo for full hash deduplication.
      */
-    private int processPhotoForFullHash(Photo photo, Map<String, Photo> uniquePhotos) {
+    private int processPhotoForFullHash(@NonNull Photo photo, @NonNull Map<String, Photo> uniquePhotos) {
         try {
             String hash = calculateHash(photo);
             if (!uniquePhotos.containsKey(hash)) {
@@ -253,7 +254,7 @@ public class PhotoDeduplicator {
      * @return hex-encoded string
      */
     @NotNull
-    private String bytesToHex(byte[] bytes) {
+    private String bytesToHex(byte @NonNull [] bytes) {
         StringBuilder hexString = new StringBuilder();
         for (byte b : bytes) {
             String hex = Integer.toHexString(0xff & b);

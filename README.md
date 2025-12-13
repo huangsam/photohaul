@@ -12,6 +12,7 @@ Effortless photo management.
 - Customize folder structures based on date, camera, and more
 - Filter photos by file type, size, and other criteria
 - Detect photo duplicates using modern hash techniques
+- Delta migration: Skip unchanged files for faster subsequent runs
 
 Say goodbye to photo clutter - 👋 + 🚀
 

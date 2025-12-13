@@ -6,6 +6,7 @@ import io.huangsam.photohaul.resolution.ResolutionException;
 import net.schmizz.sshj.SSHClient;
 import net.schmizz.sshj.sftp.SFTPClient;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -18,11 +19,11 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class SftpMigrator implements Migrator {
     private static final Logger LOG = getLogger(SftpMigrator.class);
 
-    private final String host;
+    private final @NonNull String host;
     private final int port;
-    private final String username;
-    private final String password;
-    private final String targetRoot;
+    private final @NonNull String username;
+    private final @NonNull String password;
+    private final @NonNull String targetRoot;
     private final PhotoResolver photoResolver;
     private final Supplier<SSHClient> sshClientSupplier;
 
@@ -97,7 +98,7 @@ public class SftpMigrator implements Migrator {
     }
 
     @NotNull
-    private String getTargetPath(Photo photo) {
+    private String getTargetPath(@NonNull Photo photo) {
         try {
             return targetRoot + "/" + photoResolver.resolveString(photo) + "/" + photo.name();
         } catch (ResolutionException e) {

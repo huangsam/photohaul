@@ -2,7 +2,7 @@
 
 ## Project Description
 
-Photohaul is a Java-based CLI application for migrating photo collections to various destinations (local paths, Dropbox, Google Drive) with built-in deduplication to avoid uploading duplicates. It uses SHA-256 hashing for accurate duplicate detection and supports lazy metadata extraction for performance.
+Photohaul is a Java-based CLI application for migrating photo collections to various destinations (local paths, Dropbox, Google Drive, SFTP, S3) with built-in deduplication to avoid uploading duplicates. It uses SHA-256 hashing for accurate duplicate detection and supports lazy metadata extraction for performance.
 
 Main Class: `io.huangsam.photohaul.Main`
 
@@ -31,8 +31,15 @@ Build Tool: Gradle (with application plugin for CLI execution)
 ### Package `io.huangsam.photohaul.migration`
 
 - Provides migration strategies and implementations.
-- Supports transferring photos to local paths, Dropbox, Google Drive, and SFTP servers.
+- Supports transferring photos to local paths, Dropbox, Google Drive, SFTP, and S3 servers.
 - Includes factory patterns for configurability.
+- Features delta migration to track and skip unchanged files in subsequent runs.
+
+### Package `io.huangsam.photohaul.migration.state`
+
+- Manages state files for delta migration.
+- Tracks migrated files' paths, sizes, and timestamps.
+- Supports local and cloud-based state storage.
 
 ### Package `io.huangsam.photohaul.resolution`
 
@@ -55,7 +62,7 @@ Build Tool: Gradle (with application plugin for CLI execution)
 
 - Unit tests for all major classes.
 - Integration tests for end-to-end flows.
-- Uses JUnit 5, Mockito for mocking.
+- Uses JUnit 6, Mockito for mocking.
 
 ## Build Configuration (`build.gradle`)
 
@@ -70,9 +77,9 @@ Build Tool: Gradle (with application plugin for CLI execution)
 ### Dependencies (via `gradle/libs.versions.toml`)
 
 - **Core**: JetBrains Annotations, SLF4J/Logback for logging.
-- **APIs**: Google Drive API, Dropbox SDK, SSHJ for SFTP.
+- **APIs**: Google Drive API, Dropbox SDK, SSHJ for SFTP, AWS SDK for S3.
 - **Metadata**: Drew Noakes' metadata-extractor for EXIF data.
-- **Testing**: JUnit 5, Mockito.
+- **Testing**: JUnit 6, Mockito.
 
 ### Application Block
 
@@ -88,11 +95,11 @@ Build Tool: Gradle (with application plugin for CLI execution)
 
 ### Key Notes for Agents
 
-- **Performance Focus**: Recent optimizations include lazy metadata loading and multi-level deduplication to reduce I/O.
+- **Performance Focus**: Recent optimizations include lazy metadata, multi-level deduplication, and delta migration.
 - **Thread Safety**: Photo metadata uses synchronized lazy loading; deduplication is stream-based and parallel-friendly.
 - **Config-Driven**: Behavior changes via properties files (e.g., migration type, API credentials).
-- **Error Handling**: Robust logging with SLF4J; exceptions in metadata/migration are caught and logged without failing the whole process.
-- **Testing**: High coverage; mocks external APIs (Dropbox, Drive) for reliable tests.
+- **Error Handling**: Robust logging with SLF4J; exceptions in metadata/migration are caught and logged.
+- **Testing**: High coverage; mocks external APIs (Dropbox, Drive, S3) for reliable tests.
 
 For contributions or modifications, ensure tests pass and coverage stays above 70%.
 

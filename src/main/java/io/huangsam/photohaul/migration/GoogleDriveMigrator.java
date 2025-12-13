@@ -116,8 +116,7 @@ public class GoogleDriveMigrator implements Migrator {
 
         String contentType = Files.probeContentType(photo.path());
         if (contentType == null) {
-            failureCount++;
-            return;
+            throw new IOException("Missing MIME type: " + photo.path());
         }
 
         File photoMetadata = new File();

@@ -1,8 +1,9 @@
 package io.huangsam.photohaul.migration;
 
-import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.FileContent;
+import com.google.api.client.http.HttpTransport;
 import com.google.api.services.drive.Drive;
+import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
 import io.huangsam.photohaul.model.Photo;
 import io.huangsam.photohaul.resolution.PhotoResolver;
@@ -11,7 +12,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
-import com.google.api.services.drive.model.File;
 
 import java.io.IOException;
 import java.nio.file.Files;

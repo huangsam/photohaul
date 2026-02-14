@@ -14,17 +14,39 @@
     </module>
 
     <module name="TreeWalker">
-        <module name="AvoidStarImport"/>
+        <!-- Naming conventions -->
         <module name="ConstantName"/>
-        <module name="EmptyBlock"/>
-        <module name="OneStatementPerLine"/>
-        <module name="UnusedImports"/>
+        <module name="MemberName"/>
+        <module name="MethodName"/>
+        <module name="PackageName"/>
+        <module name="ParameterName"/>
+        <module name="TypeName"/>
+        <module name="LocalVariableName"/>
+        <module name="InterfaceTypeParameterName"/>
+        <module name="MethodTypeParameterName"/>
 
+        <!-- Import conventions -->
+        <module name="AvoidStarImport"/>
+        <module name="UnusedImports"/>
         <module name="ImportOrder">
             <property name="groups" value="*,javax,java"/>
             <property name="separated" value="true"/>
             <property name="option" value="bottom" />
             <property name="sortStaticImportsAlphabetically" value="true" />
         </module>
+
+        <!-- Code style -->
+        <module name="EmptyBlock"/>
+        <module name="OneStatementPerLine"/>
+
+        <!-- Code smells -->
+        <module name="CyclomaticComplexity"/>
+        <module name="ParameterNumber"/>
+        <module name="ExecutableStatementCount">
+            <property name="max" value="60"/>
+        </module>
+        <module name="MutableException"/>
+        <module name="EqualsHashCode"/>
+        <module name="EqualsAvoidNull"/>
     </module>
 </module>

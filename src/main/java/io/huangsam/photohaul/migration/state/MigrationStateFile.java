@@ -30,7 +30,8 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class MigrationStateFile {
     private static final Logger LOG = getLogger(MigrationStateFile.class);
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    private static final Type STATE_MAP_TYPE = new TypeToken<Map<String, FileState>>() {}.getType();
+    private static final Type STATE_MAP_TYPE = new TypeToken<Map<String, FileState>>() {
+    }.getType();
 
     public static final String DEFAULT_STATE_FILE_NAME = ".photohaul_state.json";
 

@@ -163,7 +163,7 @@ public class Photo {
     @Nullable
     public LocalDateTime takenAt() {
         String taken = taken();
-        if (taken == null) return null;
+        if (taken == null) { return null; }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss");
         try {
             return LocalDateTime.parse(taken, formatter);
@@ -226,8 +226,8 @@ public class Photo {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof Photo other)) return false;
+        if (this == obj) { return true; }
+        if (!(obj instanceof Photo other)) { return false; }
         return path.equals(other.path);
     }
 

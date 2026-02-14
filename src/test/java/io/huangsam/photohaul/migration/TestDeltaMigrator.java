@@ -1,5 +1,6 @@
 package io.huangsam.photohaul.migration;
 
+import io.huangsam.photohaul.migration.delta.DeltaMigrator;
 import io.huangsam.photohaul.migration.state.MigrationStateFile;
 import io.huangsam.photohaul.migration.state.StateFileStorage;
 import io.huangsam.photohaul.model.Photo;

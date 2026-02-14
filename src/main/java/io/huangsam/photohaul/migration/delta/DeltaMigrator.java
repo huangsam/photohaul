@@ -1,5 +1,6 @@
-package io.huangsam.photohaul.migration;
+package io.huangsam.photohaul.migration.delta;
 
+import io.huangsam.photohaul.migration.Migrator;
 import io.huangsam.photohaul.migration.state.FileState;
 import io.huangsam.photohaul.migration.state.MigrationStateFile;
 import io.huangsam.photohaul.model.Photo;
@@ -58,7 +59,16 @@ public class DeltaMigrator implements Migrator {
         // Load existing state
         stateFile.load();
 
-        // Filter to only photos that need migration
+        MigrationBatch batch = filterPhotosNeedingMigration(photos);
+
+        if (batch.photosToMigrate().isEmpty()) {
+            return;
+        }
+
+        performMigrationAndUpdateState(batch);
+    }
+
+    private MigrationBatch filterPhotosNeedingMigration(@NotNull Collection<Photo> photos) {
         List<Photo> photosToMigrate = new ArrayList<>();
         List<FileState> fileStates = new ArrayList<>();
 
@@ -83,37 +93,38 @@ public class DeltaMigrator implements Migrator {
         LOG.info("Delta migration: {} files to migrate, {} files skipped (unchanged)",
                 photosToMigrate.size(), skippedCount);
 
-        if (photosToMigrate.isEmpty()) {
-            return;
-        }
+        return new MigrationBatch(photosToMigrate, fileStates);
+    }
 
-        // Get the delegate's success count before migration
+    private void performMigrationAndUpdateState(@NotNull MigrationBatch batch) {
         long previousSuccessCount = delegate.getSuccessCount();
 
         // Delegate actual migration
-        delegate.migratePhotos(photosToMigrate);
+        delegate.migratePhotos(batch.photosToMigrate());
 
-        // Calculate how many files were successfully migrated
-        long newSuccessCount = delegate.getSuccessCount();
-        long successfulMigrations = newSuccessCount - previousSuccessCount;
+        long successfulMigrations = delegate.getSuccessCount() - previousSuccessCount;
 
         if (successfulMigrations > 0) {
-            // Record states only for the number of successful migrations
-            // Since we process in order, record states from the beginning
-            int statesToRecord = (int) Math.min(successfulMigrations, fileStates.size());
-            for (int i = 0; i < statesToRecord; i++) {
-                FileState fileState = fileStates.get(i);
-                if (fileState != null) {
-                    stateFile.recordMigration(fileState);
-                }
-            }
+            recordSuccessfulMigrations(batch.fileStates(), successfulMigrations);
+        }
+    }
 
-            // Save updated state
-            try {
-                stateFile.save();
-            } catch (IOException e) {
-                LOG.error("Failed to save migration state: {}", e.getMessage());
+    private void recordSuccessfulMigrations(@NotNull List<FileState> fileStates, long successfulMigrations) {
+        // Record states only for the number of successful migrations
+        // Since we process in order, record states from the beginning
+        int statesToRecord = (int) Math.min(successfulMigrations, fileStates.size());
+        for (int i = 0; i < statesToRecord; i++) {
+            FileState fileState = fileStates.get(i);
+            if (fileState != null) {
+                stateFile.recordMigration(fileState);
             }
+        }
+
+        // Save updated state
+        try {
+            stateFile.save();
+        } catch (IOException e) {
+            LOG.error("Failed to save migration state: {}", e.getMessage());
         }
     }
 

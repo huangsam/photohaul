@@ -1,6 +1,8 @@
 package io.huangsam.photohaul.migration;
 
 import io.huangsam.photohaul.Settings;
+import io.huangsam.photohaul.migration.delta.DeltaMigrator;
+import io.huangsam.photohaul.migration.factory.MigratorFactory;
 import io.huangsam.photohaul.resolution.PhotoResolver;
 import org.jspecify.annotations.NonNull;
 import org.junit.jupiter.api.Test;

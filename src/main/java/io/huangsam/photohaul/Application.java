@@ -2,7 +2,7 @@ package io.huangsam.photohaul;
 
 import io.huangsam.photohaul.deduplication.PhotoDeduplicator;
 import io.huangsam.photohaul.migration.MigrationException;
-import io.huangsam.photohaul.migration.MigratorFactory;
+import io.huangsam.photohaul.migration.factory.MigratorFactory;
 import io.huangsam.photohaul.migration.MigratorMode;
 import io.huangsam.photohaul.model.Photo;
 import io.huangsam.photohaul.resolution.PhotoResolver;

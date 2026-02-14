@@ -38,6 +38,15 @@
         <!-- Code style -->
         <module name="EmptyBlock"/>
         <module name="OneStatementPerLine"/>
+        <module name="UpperEll"/>
+        <module name="ArrayTypeStyle"/>
+        <module name="GenericWhitespace"/>
+        <module name="WhitespaceAfter"/>
+        <module name="WhitespaceAround"/>
+        <module name="NoWhitespaceAfter"/>
+        <module name="ParenPad"/>
+        <module name="TypecastParenPad"/>
+        <module name="NeedBraces"/>
 
         <!-- Code smells -->
         <module name="CyclomaticComplexity"/>

@@ -24,7 +24,7 @@ Build Tool: Gradle (with application plugin for CLI execution)
 
 ### Package `io.huangsam.photohaul.deduplication`
 
-- Implements multi-level photo deduplication logic.
+- Implements multi-level photo deduplication logic using strategy pattern.
 - Uses size, partial hash, and full SHA-256 hashing for efficient duplicate detection.
 - Processes photos in streams for parallel-friendly operations.
 
@@ -32,8 +32,18 @@ Build Tool: Gradle (with application plugin for CLI execution)
 
 - Provides migration strategies and implementations.
 - Supports transferring photos to local paths, Dropbox, Google Drive, SFTP, and S3 servers.
-- Includes factory patterns for configurability.
+- Includes factory patterns for configurability using strategy pattern.
 - Features delta migration to track and skip unchanged files in subsequent runs.
+
+### Package `io.huangsam.photohaul.migration.delta`
+
+- Contains delta migration implementation.
+- Tracks migrated files to avoid re-uploading unchanged files.
+
+### Package `io.huangsam.photohaul.migration.factory`
+
+- Factory classes for creating migrator instances using strategy pattern.
+- Configurable via properties files to select migration type and provider.
 
 ### Package `io.huangsam.photohaul.migration.state`
 

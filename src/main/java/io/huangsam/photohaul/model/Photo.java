@@ -185,30 +185,24 @@ public class Photo {
     }
 
     private void ensureMetadataLoaded() {
-        if (!metadataLoaded) {
-            synchronized (this) {
-                if (!metadataLoaded) {
-                    loadMetadata();
-                    metadataLoaded = true;
-                }
-            }
+        if (metadataLoaded) {
+            return;
         }
-    }
-
-    private void loadMetadata() {
-        extractMetadata(path, metadata);
-    }
-
-    private static void extractMetadata(@NonNull Path photoPath, @NonNull Map<String, String> metadata) {
-        try (InputStream input = Files.newInputStream(photoPath)) {
-            Metadata imageMetadata = ImageMetadataReader.readMetadata(input);
-            for (Directory directory : imageMetadata.getDirectories()) {
-                for (Tag tag : directory.getTags()) {
-                    metadata.put(tag.getTagName(), tag.getDescription());
-                }
+        synchronized (this) {
+            if (metadataLoaded) {
+                return;
             }
-        } catch (IOException | ImageProcessingException e) {
-            // Metadata extraction failed, metadata map remains empty
+            try (InputStream input = Files.newInputStream(path)) {
+                Metadata imageMetadata = ImageMetadataReader.readMetadata(input);
+                for (Directory directory : imageMetadata.getDirectories()) {
+                    for (Tag tag : directory.getTags()) {
+                        metadata.put(tag.getTagName(), tag.getDescription());
+                    }
+                }
+            } catch (IOException | ImageProcessingException e) {
+                // Metadata extraction failed, metadata map remains empty
+            }
+            metadataLoaded = true;
         }
     }
 

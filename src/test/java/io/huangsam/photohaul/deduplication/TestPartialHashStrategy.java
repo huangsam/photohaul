@@ -24,7 +24,7 @@ public class TestPartialHashStrategy {
         List<Photo> photos = List.of(photo);
         Map<String, Photo> uniquePhotos = new LinkedHashMap<>();
 
-        int duplicatesRemoved = strategy.deduplicate(photos, uniquePhotos);
+        int duplicatesRemoved = strategy.processPhotos(photos, uniquePhotos);
 
         assertEquals(0, duplicatesRemoved);
         assertEquals(1, uniquePhotos.size());
@@ -59,7 +59,7 @@ public class TestPartialHashStrategy {
         Map<String, Photo> uniquePhotos = new LinkedHashMap<>();
 
         // Should delegate to FullHashStrategy and keep both since full content differs
-        int duplicatesRemoved = strategy.deduplicate(photos, uniquePhotos);
+        int duplicatesRemoved = strategy.processPhotos(photos, uniquePhotos);
 
         assertEquals(0, duplicatesRemoved);
         assertEquals(2, uniquePhotos.size());
@@ -79,7 +79,7 @@ public class TestPartialHashStrategy {
         Map<String, Photo> uniquePhotos = new LinkedHashMap<>();
 
         // Should deduplicate since they're identical
-        int duplicatesRemoved = strategy.deduplicate(photos, uniquePhotos);
+        int duplicatesRemoved = strategy.processPhotos(photos, uniquePhotos);
 
         assertEquals(1, duplicatesRemoved);
         assertEquals(1, uniquePhotos.size());
@@ -98,7 +98,7 @@ public class TestPartialHashStrategy {
         Map<String, Photo> uniquePhotos = new LinkedHashMap<>();
 
         // Should keep both since they're different
-        int duplicatesRemoved = strategy.deduplicate(photos, uniquePhotos);
+        int duplicatesRemoved = strategy.processPhotos(photos, uniquePhotos);
 
         assertEquals(0, duplicatesRemoved);
         assertEquals(2, uniquePhotos.size());

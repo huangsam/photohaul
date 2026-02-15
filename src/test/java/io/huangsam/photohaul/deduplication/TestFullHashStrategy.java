@@ -25,7 +25,7 @@ public class TestFullHashStrategy {
         List<Photo> photos = List.of(photo);
         Map<String, Photo> uniquePhotos = new LinkedHashMap<>();
 
-        int duplicatesRemoved = strategy.deduplicate(photos, uniquePhotos);
+        int duplicatesRemoved = strategy.processPhotos(photos, uniquePhotos);
 
         assertEquals(0, duplicatesRemoved);
         assertEquals(1, uniquePhotos.size());
@@ -46,7 +46,7 @@ public class TestFullHashStrategy {
         List<Photo> photos = List.of(new Photo(file1), new Photo(file2));
         Map<String, Photo> uniquePhotos = new LinkedHashMap<>();
 
-        int duplicatesRemoved = strategy.deduplicate(photos, uniquePhotos);
+        int duplicatesRemoved = strategy.processPhotos(photos, uniquePhotos);
 
         assertEquals(1, duplicatesRemoved);
         assertEquals(1, uniquePhotos.size());
@@ -64,7 +64,7 @@ public class TestFullHashStrategy {
         List<Photo> photos = List.of(new Photo(file1), new Photo(file2));
         Map<String, Photo> uniquePhotos = new LinkedHashMap<>();
 
-        int duplicatesRemoved = strategy.deduplicate(photos, uniquePhotos);
+        int duplicatesRemoved = strategy.processPhotos(photos, uniquePhotos);
 
         assertEquals(0, duplicatesRemoved);
         assertEquals(2, uniquePhotos.size());
@@ -89,7 +89,7 @@ public class TestFullHashStrategy {
         List<Photo> photos = List.of(new Photo(file1), new Photo(file2), new Photo(file3), new Photo(unique));
         Map<String, Photo> uniquePhotos = new LinkedHashMap<>();
 
-        int duplicatesRemoved = strategy.deduplicate(photos, uniquePhotos);
+        int duplicatesRemoved = strategy.processPhotos(photos, uniquePhotos);
 
         assertEquals(2, duplicatesRemoved); // 2 duplicates removed from 3 identical files
         assertEquals(2, uniquePhotos.size()); // 1 from duplicates + 1 unique
@@ -103,7 +103,7 @@ public class TestFullHashStrategy {
         List<Photo> photos = List.of(photo);
         Map<String, Photo> uniquePhotos = new LinkedHashMap<>();
 
-        int duplicatesRemoved = strategy.deduplicate(photos, uniquePhotos);
+        int duplicatesRemoved = strategy.processPhotos(photos, uniquePhotos);
 
         assertEquals(0, duplicatesRemoved);
         assertEquals(1, uniquePhotos.size());

@@ -22,7 +22,7 @@ class FullHashStrategy implements DeduplicationStrategy {
     private static final String HASH_ALGORITHM = "SHA-256";
 
     @Override
-    public int deduplicate(@NotNull List<Photo> photos, @NotNull Map<String, Photo> uniquePhotos) {
+    public int processPhotos(@NotNull List<Photo> photos, @NotNull Map<String, Photo> uniquePhotos) {
         return photos.stream()
             .mapToInt(photo -> processPhoto(photo, uniquePhotos))
             .sum();

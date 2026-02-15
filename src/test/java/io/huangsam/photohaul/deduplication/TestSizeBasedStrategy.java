@@ -27,7 +27,7 @@ public class TestSizeBasedStrategy {
         List<Photo> photos = List.of(photo);
         Map<String, Photo> uniquePhotos = new LinkedHashMap<>();
 
-        int duplicatesRemoved = strategy.deduplicate(photos, uniquePhotos);
+        int duplicatesRemoved = strategy.processPhotos(photos, uniquePhotos);
 
         assertEquals(0, duplicatesRemoved);
         assertEquals(1, uniquePhotos.size());
@@ -48,7 +48,7 @@ public class TestSizeBasedStrategy {
         List<Photo> photos = List.of(new Photo(smallFile), new Photo(largeFile));
         Map<String, Photo> uniquePhotos = new LinkedHashMap<>();
 
-        int duplicatesRemoved = strategy.deduplicate(photos, uniquePhotos);
+        int duplicatesRemoved = strategy.processPhotos(photos, uniquePhotos);
 
         assertEquals(0, duplicatesRemoved);
         assertEquals(2, uniquePhotos.size());
@@ -68,7 +68,7 @@ public class TestSizeBasedStrategy {
 
         // This should delegate to PartialHashStrategy, which should delegate to FullHashStrategy
         // Since content is different, both should be kept
-        int duplicatesRemoved = strategy.deduplicate(photos, uniquePhotos);
+        int duplicatesRemoved = strategy.processPhotos(photos, uniquePhotos);
 
         assertEquals(0, duplicatesRemoved);
         assertEquals(2, uniquePhotos.size());
@@ -88,7 +88,7 @@ public class TestSizeBasedStrategy {
         Map<String, Photo> uniquePhotos = new LinkedHashMap<>();
 
         // Should deduplicate the duplicate
-        int duplicatesRemoved = strategy.deduplicate(photos, uniquePhotos);
+        int duplicatesRemoved = strategy.processPhotos(photos, uniquePhotos);
 
         assertEquals(1, duplicatesRemoved);
         assertEquals(1, uniquePhotos.size());

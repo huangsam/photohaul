@@ -19,14 +19,14 @@ class SizeBasedStrategy implements DeduplicationStrategy {
     private static final Logger LOG = getLogger(SizeBasedStrategy.class);
 
     @Override
-    public int deduplicate(@NotNull List<Photo> photos, @NotNull Map<String, Photo> uniquePhotos) {
+    public int processPhotos(@NotNull List<Photo> photos, @NotNull Map<String, Photo> uniquePhotos) {
         if (photos.size() == 1) {
             return addUniquePhoto(photos.getFirst(), uniquePhotos);
         }
 
         // Group by partial hash for same-size photos
         DeduplicationStrategy nextStrategy = new PartialHashStrategy();
-        return nextStrategy.deduplicate(photos, uniquePhotos);
+        return nextStrategy.processPhotos(photos, uniquePhotos);
     }
 
     private int addUniquePhoto(@NotNull Photo photo, @NotNull Map<String, Photo> uniquePhotos) {

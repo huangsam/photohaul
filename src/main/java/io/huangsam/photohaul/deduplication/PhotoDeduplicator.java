@@ -48,7 +48,7 @@ public class PhotoDeduplicator {
         DeduplicationStrategy strategy = new SizeBasedStrategy();
 
         int duplicateCount = photosBySize.values().stream()
-            .mapToInt(sizeGroup -> strategy.deduplicate(sizeGroup, uniquePhotos))
+            .mapToInt(sizeGroup -> strategy.processPhotos(sizeGroup, uniquePhotos))
             .sum();
 
         LOG.info("Deduplication complete: {} unique photos, {} duplicates removed",

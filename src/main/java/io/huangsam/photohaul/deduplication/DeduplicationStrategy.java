@@ -17,5 +17,5 @@ interface DeduplicationStrategy {
      * @param uniquePhotos the map to add unique photos to
      * @return the number of duplicates found
      */
-    int deduplicate(@NotNull List<Photo> photos, @NotNull Map<String, Photo> uniquePhotos);
+    int processPhotos(@NotNull List<Photo> photos, @NotNull Map<String, Photo> uniquePhotos);
 }

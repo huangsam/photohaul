@@ -24,7 +24,7 @@ class PartialHashStrategy implements DeduplicationStrategy {
     private static final String HASH_ALGORITHM = "SHA-256";
 
     @Override
-    public int deduplicate(@NotNull List<Photo> photos, @NotNull Map<String, Photo> uniquePhotos) {
+    public int processPhotos(@NotNull List<Photo> photos, @NotNull Map<String, Photo> uniquePhotos) {
         Map<String, List<Photo>> photosByPartialHash = groupByPartialHash(photos);
 
         return photosByPartialHash.values().stream()
@@ -45,7 +45,7 @@ class PartialHashStrategy implements DeduplicationStrategy {
 
         // Use full hash strategy for groups with same partial hash
         DeduplicationStrategy nextStrategy = new FullHashStrategy();
-        return nextStrategy.deduplicate(group, uniquePhotos);
+        return nextStrategy.processPhotos(group, uniquePhotos);
     }
 
     private int addUniquePhotoByPartialHash(@NotNull Photo photo, @NotNull Map<String, Photo> uniquePhotos) {

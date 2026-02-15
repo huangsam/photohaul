@@ -47,6 +47,17 @@
         <module name="ParenPad"/>
         <module name="TypecastParenPad"/>
         <module name="NeedBraces"/>
+        <module name="OperatorWrap">
+            <property name="option" value="nl"/>
+        </module>
+        <module name="SeparatorWrap">
+            <property name="tokens" value="COMMA"/>
+            <property name="option" value="eol"/>
+        </module>
+        <module name="SeparatorWrap">
+            <property name="tokens" value="DOT"/>
+            <property name="option" value="nl"/>
+        </module>
 
         <!-- Code smells -->
         <module name="CyclomaticComplexity"/>

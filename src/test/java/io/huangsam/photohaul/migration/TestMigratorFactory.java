@@ -66,11 +66,11 @@ public class TestMigratorFactory {
         // Create a temporary properties file with delta enabled
         Path propsFile = tempDir.resolve("delta-path.properties");
         String propsContent = String.format(
-                "migrator.mode=PATH%n" +
-                "path.source=Dummy/Source%n" +
-                "path.target=Dummy/Target%n" +
-                "path.action=DRY_RUN%n" +
-                "delta.enabled=true%n"
+                "migrator.mode=PATH%n"
+                + "path.source=Dummy/Source%n"
+                + "path.target=Dummy/Target%n"
+                + "path.action=DRY_RUN%n"
+                + "delta.enabled=true%n"
         );
         Files.writeString(propsFile, propsContent);
 
@@ -85,12 +85,12 @@ public class TestMigratorFactory {
         // Create a temporary properties file with delta enabled
         Path propsFile = tempDir.resolve("delta-dbx.properties");
         String propsContent = String.format(
-                "migrator.mode=DROPBOX%n" +
-                "path.source=Dummy/Source%n" +
-                "dbx.target=/Demo/Target%n" +
-                "dbx.clientId=TestClient%n" +
-                "dbx.accessToken=TestToken%n" +
-                "delta.enabled=true%n"
+                "migrator.mode=DROPBOX%n"
+                + "path.source=Dummy/Source%n"
+                + "dbx.target=/Demo/Target%n"
+                + "dbx.clientId=TestClient%n"
+                + "dbx.accessToken=TestToken%n"
+                + "delta.enabled=true%n"
         );
         Files.writeString(propsFile, propsContent);
 
@@ -105,14 +105,14 @@ public class TestMigratorFactory {
         // Create a temporary properties file with delta enabled
         Path propsFile = tempDir.resolve("delta-sftp.properties");
         String propsContent = String.format(
-                "migrator.mode=SFTP%n" +
-                "path.source=Dummy/Source%n" +
-                "sftp.host=localhost%n" +
-                "sftp.port=22%n" +
-                "sftp.username=user%n" +
-                "sftp.password=pass%n" +
-                "sftp.target=/photos%n" +
-                "delta.enabled=true%n"
+                "migrator.mode=SFTP%n"
+                + "path.source=Dummy/Source%n"
+                + "sftp.host=localhost%n"
+                + "sftp.port=22%n"
+                + "sftp.username=user%n"
+                + "sftp.password=pass%n"
+                + "sftp.target=/photos%n"
+                + "delta.enabled=true%n"
         );
         Files.writeString(propsFile, propsContent);
 
@@ -127,13 +127,13 @@ public class TestMigratorFactory {
         // Create a temporary properties file with delta enabled
         Path propsFile = tempDir.resolve("delta-s3.properties");
         String propsContent = String.format(
-                "migrator.mode=S3%n" +
-                "path.source=Dummy/Source%n" +
-                "s3.bucket=test-bucket%n" +
-                "s3.accessKey=accessKey%n" +
-                "s3.secretKey=secretKey%n" +
-                "s3.region=us-east-1%n" +
-                "delta.enabled=true%n"
+                "migrator.mode=S3%n"
+                + "path.source=Dummy/Source%n"
+                + "s3.bucket=test-bucket%n"
+                + "s3.accessKey=accessKey%n"
+                + "s3.secretKey=secretKey%n"
+                + "s3.region=us-east-1%n"
+                + "delta.enabled=true%n"
         );
         Files.writeString(propsFile, propsContent);
 
@@ -157,11 +157,11 @@ public class TestMigratorFactory {
         // Create a temporary properties file with delta explicitly disabled
         Path propsFile = tempDir.resolve("nodelta-path.properties");
         String propsContent = String.format(
-                "migrator.mode=PATH%n" +
-                "path.source=Dummy/Source%n" +
-                "path.target=Dummy/Target%n" +
-                "path.action=DRY_RUN%n" +
-                "delta.enabled=false%n"
+                "migrator.mode=PATH%n"
+                + "path.source=Dummy/Source%n"
+                + "path.target=Dummy/Target%n"
+                + "path.action=DRY_RUN%n"
+                + "delta.enabled=false%n"
         );
         Files.writeString(propsFile, propsContent);
 

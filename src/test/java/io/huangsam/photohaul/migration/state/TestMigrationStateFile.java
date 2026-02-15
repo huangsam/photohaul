@@ -150,8 +150,8 @@ public class TestMigrationStateFile {
 
     @Test
     void testLoadWithMultipleFiles() throws IOException {
-        String json = "{\"/path/photo1.jpg\":{\"path\":\"/path/photo1.jpg\",\"size\":1024,\"lastModifiedMillis\":1700000000000}," +
-                "\"/path/photo2.jpg\":{\"path\":\"/path/photo2.jpg\",\"size\":2048,\"lastModifiedMillis\":1700000001000}}";
+        String json = "{\"/path/photo1.jpg\":{\"path\":\"/path/photo1.jpg\",\"size\":1024,\"lastModifiedMillis\":1700000000000},"
+                + "\"/path/photo2.jpg\":{\"path\":\"/path/photo2.jpg\",\"size\":2048,\"lastModifiedMillis\":1700000001000}}";
         when(mockStorage.readStateFile(anyString())).thenReturn(json);
 
         stateFile.load();

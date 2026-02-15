@@ -184,9 +184,6 @@ public class Photo {
         return metadata.get(key);
     }
 
-    /**
-     * Ensure metadata is loaded before accessing.
-     */
     private void ensureMetadataLoaded() {
         if (!metadataLoaded) {
             synchronized (this) {
@@ -198,19 +195,10 @@ public class Photo {
         }
     }
 
-    /**
-     * Load metadata from the photo file.
-     */
     private void loadMetadata() {
         extractMetadata(path, metadata);
     }
 
-    /**
-     * Extract metadata from a photo file into the provided map.
-     *
-     * @param photoPath the path to the photo file
-     * @param metadata the map to store metadata in
-     */
     private static void extractMetadata(@NonNull Path photoPath, @NonNull Map<String, String> metadata) {
         try (InputStream input = Files.newInputStream(photoPath)) {
             Metadata imageMetadata = ImageMetadataReader.readMetadata(input);

@@ -56,17 +56,11 @@ public class PhotoDeduplicator {
         return uniquePhotos.values();
     }
 
-    /**
-     * Group photos by file size, preserving order.
-     */
     private @NonNull Map<Long, List<Photo>> groupBySize(@NonNull Collection<Photo> photos) {
         return photos.stream()
             .collect(Collectors.groupingBy(this::safeGetFileSize, LinkedHashMap::new, Collectors.toList()));
     }
 
-    /**
-     * Safely get file size, returning -1 on error.
-     */
     private @NonNull Long safeGetFileSize(@NonNull Photo photo) {
         try {
             return getFileSize(photo);
@@ -75,13 +69,6 @@ public class PhotoDeduplicator {
         }
     }
 
-    /**
-     * Get the file size of a photo.
-     *
-     * @param photo the photo
-     * @return file size in bytes
-     * @throws IOException if file cannot be accessed
-     */
     private long getFileSize(@NotNull Photo photo) throws IOException {
         return Files.size(photo.path());
     }

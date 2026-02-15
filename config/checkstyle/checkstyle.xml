@@ -68,5 +68,10 @@
         <module name="MutableException"/>
         <module name="EqualsHashCode"/>
         <module name="EqualsAvoidNull"/>
+
+        <!-- Documentation -->
+        <module name="JavadocMethod">
+            <property name="accessModifiers" value="public"/>
+        </module>
     </module>
 </module>

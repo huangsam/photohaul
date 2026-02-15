@@ -22,6 +22,12 @@ public record Application(Settings settings,
                           MigratorFactory migratorFactory) {
     private static final Logger LOG = getLogger(Application.class);
 
+    /**
+     * Run the photo migration process.
+     *
+     * <p>Collects photos from the source path, deduplicates them, and migrates
+     * them to the configured destination using the specified migrator.
+     */
     public void run() {
         PathWalker pathWalker = new PathWalker(settings.getSourcePath(), pathRuleSet);
         pathWalker.traverse(photoCollector);

@@ -1,5 +1,5 @@
 [versions]
-sshj = "0.40.0"
+aws-sdk-s3 = "2.41.29"
 dropbox-sdk = "7.0.0"
 google-api-client = "2.8.1"
 google-api-drive = "v3-rev20251210-2.0.0"
@@ -11,11 +11,11 @@ logback-classic = "1.5.31"
 metadata-extractor = "2.19.0"
 mockito = "5.21.0"
 slf4j-api = "2.0.17"
+sshj = "0.40.0"
 task-tree = "4.0.1"
-aws-sdk-s3 = "2.41.29"
 
 [libraries]
-sshj = { module = "com.hierynomus:sshj", version.ref = "sshj" }
+aws-sdk-s3 = { module = "software.amazon.awssdk:s3", version.ref = "aws-sdk-s3" }
 dropbox-sdk = { module = "com.dropbox.core:dropbox-core-sdk", version.ref = "dropbox-sdk" }
 google-api-client = { module = "com.google.api-client:google-api-client", version.ref = "google-api-client" }
 google-api-drive = { module = "com.google.apis:google-api-services-drive", version.ref = "google-api-drive" }
@@ -30,12 +30,12 @@ metadata-extractor = { module = "com.drewnoakes:metadata-extractor", version.ref
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
 mockito-junit = { module = "org.mockito:mockito-junit-jupiter", version.ref = "mockito" }
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j-api" }
-aws-sdk-s3 = { module = "software.amazon.awssdk:s3", version.ref = "aws-sdk-s3" }
+sshj = { module = "com.hierynomus:sshj", version.ref = "sshj" }
 
 [plugins]
 task-tree = { id = "com.dorongold.task-tree", version.ref = "task-tree" }
 
 [bundles]
-mockito-all = ["mockito-core", "mockito-junit"]
-google-all = ["google-api-client", "google-api-drive", "google-auth-library", "gson"]
 aws-all = ["aws-sdk-s3"]
+google-all = ["google-api-client", "google-api-drive", "google-auth-library", "gson"]
+mockito-all = ["mockito-core", "mockito-junit"]

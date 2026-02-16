@@ -15,17 +15,17 @@ repositories {
 
 dependencies {
     compileOnly libs.jetbrains.annotations
-    implementation libs.bundles.google.all
     implementation libs.bundles.aws.all
-    implementation libs.sshj
+    implementation libs.bundles.google.all
     implementation libs.dropbox.sdk
     implementation libs.logback.classic
     implementation libs.metadata.extractor
     implementation libs.slf4j.api
+    implementation libs.sshj
     testCompileOnly libs.jetbrains.annotations
     testImplementation libs.bundles.mockito.all
-    testImplementation platform(libs.junit.bom)
     testImplementation libs.junit.jupiter
+    testImplementation platform(libs.junit.bom)
     testRuntimeOnly libs.junit.launcher
 }
 

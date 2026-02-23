@@ -1,5 +1,5 @@
 [versions]
-aws-sdk-s3 = "2.41.29"
+aws-sdk-s3 = "2.41.34"
 dropbox-sdk = "7.0.0"
 google-api-client = "2.8.1"
 google-api-drive = "v3-rev20251210-2.0.0"

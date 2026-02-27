@@ -18,12 +18,12 @@ import static org.slf4j.LoggerFactory.getLogger;
 /**
  * Manages the migration state file for delta migration.
  *
- * <p> The state file is a JSON file (e.g., .photohaul_state.json) stored at the
+ * <p>The state file is a JSON file (e.g., .photohaul_state.json) stored at the
  * migration destination. It records the path, size, and last modified timestamp
  * of every successfully processed file, enabling efficient delta migrations by
  * skipping unchanged files.
  *
- * <p> This class provides an abstraction over the state file operations using
+ * <p>This class provides an abstraction over the state file operations using
  * the {@link StateFileStorage} interface, allowing different storage backends
  * (local filesystem, S3, Dropbox, etc.) to be used.
  */
@@ -63,7 +63,7 @@ public class MigrationStateFile {
     /**
      * Load state from the storage backend.
      *
-     * <p> If the state file doesn't exist, cannot be read, or contains malformed JSON,
+     * <p>If the state file doesn't exist, cannot be read, or contains malformed JSON,
      * the state will be empty and migration will proceed with all files.
      */
     public void load() {

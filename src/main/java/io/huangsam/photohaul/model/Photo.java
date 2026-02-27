@@ -22,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Represents a photo with its metadata.
  *
- * <p> Note that this metadata is not guaranteed for all photos. This metadata
+ * <p>Note that this metadata is not guaranteed for all photos. This metadata
  * exists on the following assets:
  *
  * <ul>
@@ -30,7 +30,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *     <li>JPG/JPEG files which were generated from Adobe Lightroom</li>
  * </ul>
  *
- * <p> Metadata is extracted lazily on first access to improve performance
+ * <p>Metadata is extracted lazily on first access to improve performance
  * during photo collection.
  */
 public class Photo {

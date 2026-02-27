@@ -142,7 +142,7 @@ public record Settings(Properties properties) {
     /**
      * Check if delta migration is enabled.
      *
-     * <p> When enabled, only new or modified files will be migrated based on
+     * <p>When enabled, only new or modified files will be migrated based on
      * comparing file metadata (size and last modified time) against a state file
      * maintained at the destination.
      *

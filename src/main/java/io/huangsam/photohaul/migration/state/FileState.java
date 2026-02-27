@@ -7,7 +7,7 @@ import java.util.Objects;
 /**
  * Represents the state of a migrated file.
  *
- * <p> This class captures the essential metadata used to determine if a file
+ * <p>This class captures the essential metadata used to determine if a file
  * has changed since its last migration: the path, file size in bytes,
  * and last modified timestamp in milliseconds since epoch.
  */

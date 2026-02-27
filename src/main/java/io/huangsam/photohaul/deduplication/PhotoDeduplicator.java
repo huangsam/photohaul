@@ -18,7 +18,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 /**
  * Handles deduplication of photos using SHA-256 hashing.
  *
- * <p> This class identifies duplicate photos by computing their SHA-256 hash
+ * <p>This class identifies duplicate photos by computing their SHA-256 hash
  * and keeps only the first occurrence of each unique file.
  */
 public class PhotoDeduplicator {
@@ -28,11 +28,11 @@ public class PhotoDeduplicator {
     /**
      * Deduplicate a collection of photos based on their SHA-256 hash.
      *
-     * <p> For each photo, calculate its SHA-256 hash. If multiple photos have
+     * <p>For each photo, calculate its SHA-256 hash. If multiple photos have
      * the same hash, only the first occurrence is kept. The order of photos
      * in the input collection determines which photo is kept.
      *
-     * <p> Optimization: Uses multi-level deduplication:
+     * <p>Optimization: Uses multi-level deduplication:
      * 1. File size filtering (different sizes cannot be duplicates)
      * 2. Partial hashing (first 1KB) for same-size files
      * 3. Full SHA-256 hashing only when partial hashes match

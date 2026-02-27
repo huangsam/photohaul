@@ -12,7 +12,7 @@ import java.nio.file.Path;
 /**
  * StateFileStorage implementation for local filesystem.
  *
- * <p> Stores the state file at the specified root path on the local filesystem.
+ * <p>Stores the state file at the specified root path on the local filesystem.
  */
 public class PathStateStorage implements StateFileStorage {
     private final @NonNull Path rootPath;

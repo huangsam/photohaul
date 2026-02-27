@@ -20,15 +20,15 @@ import static org.slf4j.LoggerFactory.getLogger;
 /**
  * A decorator that adds delta migration functionality to any Migrator.
  *
- * <p> This migrator wraps an existing migrator and uses a state file to track
+ * <p>This migrator wraps an existing migrator and uses a state file to track
  * previously migrated files. Before migration, it compares each file's current
  * metadata (size and last modified time) against the recorded state, and only
  * migrates files that are new or modified since the last run.
  *
- * <p> After each successful migration batch, the state file is updated with
+ * <p>After each successful migration batch, the state file is updated with
  * the current state of all successfully migrated files.
  *
- * <p> Note: Since the delegate migrators process files in order and we cannot
+ * <p>Note: Since the delegate migrators process files in order and we cannot
  * determine exactly which specific files failed, we conservatively only record
  * state for the number of successful migrations (assuming failures occur at
  * the end of the batch). This may result in some files being re-migrated on

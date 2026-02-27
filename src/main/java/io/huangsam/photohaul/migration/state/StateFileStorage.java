@@ -7,7 +7,7 @@ import java.io.IOException;
 /**
  * Interface for reading and writing migration state files.
  *
- * <p> Implementations of this interface provide storage-specific operations
+ * <p>Implementations of this interface provide storage-specific operations
  * for managing the migration state file at different destinations
  * (local filesystem, S3, Dropbox, Google Drive, SFTP).
  */

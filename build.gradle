@@ -29,6 +29,7 @@ dependencies {
     testRuntimeOnly libs.junit.launcher
 }
 
+// Enable deprecation warnings to catch usage of deprecated APIs during development
 tasks.withType(JavaCompile).configureEach {
     options.compilerArgs << "-Xlint:deprecation"
 }
@@ -68,6 +69,8 @@ jacocoTestReport {
         xml.required = true
     }
     afterEvaluate {
+        // Exclude Main.class from coverage reports since it only contains the main method
+        // and is not directly unit tested
         classDirectories.setFrom(files(classDirectories.files.collect {
             fileTree(dir: it, exclude: 'io/huangsam/**/Main.class')
         }))
@@ -76,6 +79,7 @@ jacocoTestReport {
 
 jacocoTestCoverageVerification {
     dependsOn jacocoTestReport
+    // Set a minimum coverage threshold of 70% to ensure good test coverage
     violationRules {
         rule {
             limit {

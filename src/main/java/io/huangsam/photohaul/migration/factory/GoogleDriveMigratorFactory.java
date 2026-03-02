@@ -1,7 +1,7 @@
 package io.huangsam.photohaul.migration.factory;
 
-import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.HttpRequestInitializer;
+import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.drive.Drive;
@@ -19,7 +19,6 @@ import org.jetbrains.annotations.NotNull;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.security.GeneralSecurityException;
 import java.util.List;
 
 /**
@@ -34,7 +33,7 @@ class GoogleDriveMigratorFactory implements MigratorFactoryStrategy {
         String fileName = settings.getValue("drive.credentialFile");
         String app = settings.getValue("drive.appName");
         try {
-            com.google.api.client.http.HttpTransport transport = GoogleNetHttpTransport.newTrustedTransport();
+            com.google.api.client.http.HttpTransport transport = new NetHttpTransport();
             try (InputStream in = getClass().getClassLoader().getResourceAsStream(fileName)) {
                 if (in == null) {
                     throw new FileNotFoundException("Cannot find " + fileName);
@@ -48,7 +47,7 @@ class GoogleDriveMigratorFactory implements MigratorFactoryStrategy {
 
                 return new GoogleDriveMigrator(settings.getValue("drive.target"), resolver, service, transport);
             }
-        } catch (GeneralSecurityException | IOException e) {
+        } catch (IOException e) {
             throw new MigrationException(e.getMessage(), MigratorMode.GOOGLE_DRIVE);
         }
     }

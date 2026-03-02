@@ -29,6 +29,10 @@ dependencies {
     testRuntimeOnly libs.junit.launcher
 }
 
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs << "-Xlint:deprecation"
+}
+
 application {
     mainClass = 'io.huangsam.photohaul.Main'
     // JVM performance tuning for photo processing workloads

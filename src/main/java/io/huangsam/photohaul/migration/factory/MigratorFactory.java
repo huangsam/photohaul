@@ -13,7 +13,6 @@ import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 
 import java.nio.file.Path;
-import java.util.Map;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -23,14 +22,6 @@ import static org.slf4j.LoggerFactory.getLogger;
  */
 public class MigratorFactory {
     private static final Logger LOG = getLogger(MigratorFactory.class);
-
-    private final Map<MigratorMode, MigratorFactoryStrategy> factoryStrategies = Map.of(
-            MigratorMode.PATH, new PathMigratorFactory(),
-            MigratorMode.DROPBOX, new DropboxMigratorFactory(),
-            MigratorMode.GOOGLE_DRIVE, new GoogleDriveMigratorFactory(),
-            MigratorMode.SFTP, new SftpMigratorFactory(),
-            MigratorMode.S3, new S3MigratorFactory()
-    );
 
     /**
      * Create instance for migrating photos.
@@ -52,11 +43,13 @@ public class MigratorFactory {
     }
 
     private @NotNull Migrator createBaseMigrator(@NotNull MigratorMode mode, @NotNull Settings settings, @NotNull PhotoResolver resolver) {
-        MigratorFactoryStrategy strategy = factoryStrategies.get(mode);
-        if (strategy == null) {
-            throw new IllegalArgumentException("Unsupported migrator mode: " + mode);
-        }
-        return strategy.create(settings, resolver);
+        return switch (mode) {
+            case PATH -> new PathMigratorFactory().create(settings, resolver);
+            case DROPBOX -> new DropboxMigratorFactory().create(settings, resolver);
+            case GOOGLE_DRIVE -> new GoogleDriveMigratorFactory().create(settings, resolver);
+            case SFTP -> new SftpMigratorFactory().create(settings, resolver);
+            case S3 -> new S3MigratorFactory().create(settings, resolver);
+        };
     }
 
     private @NotNull Migrator wrapWithDeltaMigrator(@NotNull Migrator baseMigrator, @NotNull MigratorMode mode, @NotNull Settings settings) {

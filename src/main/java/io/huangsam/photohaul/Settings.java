@@ -52,16 +52,16 @@ public record Settings(Properties properties) {
     public Settings(@NonNull String name) {
         this(new Properties());
         boolean fromClasspath = true;
-        Path fsPath = null;
 
         // Resolve input stream from classpath first, then filesystem fallback
         InputStream resolved = getClass().getClassLoader().getResourceAsStream(name);
         if (resolved == null) {
             fromClasspath = false;
-            fsPath = Paths.get(name);
+            Path fsPath = Paths.get(name);
             try {
                 if (Files.exists(fsPath)) {
                     resolved = Files.newInputStream(fsPath);
+                    LOG.info("Loaded settings from filesystem: {}", fsPath.toAbsolutePath());
                 }
             } catch (IOException e) {
                 LOG.error("Error opening settings file from filesystem '{}': {}", name, e.getMessage());
@@ -80,8 +80,6 @@ public record Settings(Properties properties) {
 
             if (fromClasspath) {
                 LOG.info("Loaded settings from classpath: {}", name);
-            } else {
-                LOG.info("Loaded settings from filesystem: {}", fsPath.toAbsolutePath());
             }
         } catch (IOException e) {
             LOG.error("Error reading settings file '{}': {}", name, e.getMessage());

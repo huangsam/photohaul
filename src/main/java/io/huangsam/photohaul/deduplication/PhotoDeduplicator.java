@@ -23,7 +23,6 @@ import static org.slf4j.LoggerFactory.getLogger;
  */
 public class PhotoDeduplicator {
     private static final Logger LOG = getLogger(PhotoDeduplicator.class);
-    private static final String HASH_ALGORITHM = "SHA-256";
 
     /**
      * Deduplicate a collection of photos based on their SHA-256 hash.

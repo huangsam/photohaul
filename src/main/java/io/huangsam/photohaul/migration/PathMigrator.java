@@ -81,6 +81,7 @@ public class PathMigrator implements Migrator {
         switch (migratorAction) {
             case MOVE -> Files.move(photo.path(), photoLocation, StandardCopyOption.REPLACE_EXISTING);
             case COPY -> Files.copy(photo.path(), photoLocation, StandardCopyOption.REPLACE_EXISTING);
+            case DRY_RUN -> { return; }
         }
     }
 

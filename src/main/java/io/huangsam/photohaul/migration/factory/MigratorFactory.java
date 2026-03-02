@@ -32,7 +32,13 @@ public class MigratorFactory {
      * @return migrator instance
      */
     public @NonNull Migrator make(@NotNull MigratorMode mode, @NonNull Settings settings, PhotoResolver resolver) {
-        Migrator baseMigrator = createBaseMigrator(mode, settings, resolver);
+        Migrator baseMigrator = switch (mode) {
+            case PATH -> new PathMigratorFactory().create(settings, resolver);
+            case DROPBOX -> new DropboxMigratorFactory().create(settings, resolver);
+            case GOOGLE_DRIVE -> new GoogleDriveMigratorFactory().create(settings, resolver);
+            case SFTP -> new SftpMigratorFactory().create(settings, resolver);
+            case S3 -> new S3MigratorFactory().create(settings, resolver);
+        };
 
         // Wrap with DeltaMigrator if delta migration is enabled
         if (settings.isDeltaEnabled()) {
@@ -42,32 +48,8 @@ public class MigratorFactory {
         return baseMigrator;
     }
 
-    private @NotNull Migrator createBaseMigrator(@NotNull MigratorMode mode, @NotNull Settings settings, @NotNull PhotoResolver resolver) {
-        return switch (mode) {
-            case PATH -> new PathMigratorFactory().create(settings, resolver);
-            case DROPBOX -> new DropboxMigratorFactory().create(settings, resolver);
-            case GOOGLE_DRIVE -> new GoogleDriveMigratorFactory().create(settings, resolver);
-            case SFTP -> new SftpMigratorFactory().create(settings, resolver);
-            case S3 -> new S3MigratorFactory().create(settings, resolver);
-        };
-    }
-
     private @NotNull Migrator wrapWithDeltaMigrator(@NotNull Migrator baseMigrator, @NotNull MigratorMode mode, @NotNull Settings settings) {
-        StateFileStorage stateStorage = createStateStorage(mode, settings);
-        LOG.info("Delta migration enabled for mode {}", mode);
-        MigrationStateFile stateFile = new MigrationStateFile(stateStorage);
-        return new DeltaMigrator(baseMigrator, stateFile);
-    }
-
-    /**
-     * Create a StateFileStorage for the given migrator mode.
-     *
-     * @param mode     the migrator mode
-     * @param settings the settings
-     * @return a non-null StateFileStorage instance for the given migrator mode
-     */
-    private @NonNull StateFileStorage createStateStorage(@NotNull MigratorMode mode, @NotNull Settings settings) {
-        return switch (mode) {
+        StateFileStorage stateStorage = switch (mode) {
             case PATH -> new PathStateStorage(getPathTargetDirectory(settings));
             // Delta migration for cloud storage types requires additional implementation
             // For now, they use local state storage as a fallback
@@ -78,14 +60,11 @@ public class MigratorFactory {
                 yield new PathStateStorage(sourcePath);
             }
         };
+        LOG.info("Delta migration enabled for mode {}", mode);
+        MigrationStateFile stateFile = new MigrationStateFile(stateStorage);
+        return new DeltaMigrator(baseMigrator, stateFile);
     }
 
-    /**
-     * Get the target directory path for PATH migrator mode.
-     *
-     * @param settings the settings
-     * @return the resolved target path
-     */
     @NotNull
     private Path getPathTargetDirectory(@NotNull Settings settings) {
         return java.nio.file.Paths.get(System.getProperty("user.home"))

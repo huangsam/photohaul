@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Factory interface for creating specific migrator instances.
  */
-interface MigratorFactoryStrategy {
+public interface MigratorFactoryStrategy {
     /**
      * Create a migrator instance for this strategy.
      *

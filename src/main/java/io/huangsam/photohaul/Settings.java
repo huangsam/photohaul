@@ -7,6 +7,8 @@ import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -14,13 +16,14 @@ import java.util.Properties;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-public record Settings(Properties properties) {
+public record Settings(Properties properties, FileSystem fileSystem) {
     private static final Logger LOG = getLogger(Settings.class);
     private static final String CONFIG_FILE_SYSTEM_PROPERTY = "photohaul.config";
     private static final String CONFIG_FILE_DEFAULT = "config.properties";
 
     /**
-     * Provides the default Settings instance, attempting to load from a system property
+     * Provides the default Settings instance, attempting to load from a system
+     * property
      * or falling back to a default file name.
      *
      * @return A Settings instance.
@@ -37,20 +40,24 @@ public record Settings(Properties properties) {
     }
 
     /**
-     * Constructs Settings by loading properties from a classpath resource name, with a filesystem fallback.
+     * Constructs Settings by loading properties from a classpath resource name,
+     * with a filesystem fallback.
      * The loading order is as follows:
      *
      * <ol>
-     *     <li>Try classpath resource via {@link java.lang.ClassLoader#getResourceAsStream(String)}</li>
-     *     <li>If not found, try reading from the filesystem path specified by {@code name}</li>
+     * <li>Try classpath resource via
+     * {@link java.lang.ClassLoader#getResourceAsStream(String)}</li>
+     * <li>If not found, try reading from the filesystem path specified by
+     * {@code name}</li>
      * </ol>
      *
      * @param name The classpath resource name or filesystem path.
-     * @throws IllegalStateException if the settings file is not found in either location.
+     * @throws IllegalStateException if the settings file is not found in either
+     *                               location.
      * @throws RuntimeException      if the settings file cannot be parsed.
      */
     public Settings(@NonNull String name) {
-        this(new Properties());
+        this(new Properties(), FileSystems.getDefault());
         boolean fromClasspath = true;
 
         // Resolve input stream from classpath first, then filesystem fallback
@@ -88,7 +95,8 @@ public record Settings(Properties properties) {
     }
 
     /**
-     * Retrieves a mandatory string value from settings. Throws NullPointerException if key is not found.
+     * Retrieves a mandatory string value from settings. Throws NullPointerException
+     * if key is not found.
      *
      * @param key The key to look up.
      * @return The string value associated with the key.
@@ -116,7 +124,8 @@ public record Settings(Properties properties) {
     }
 
     /**
-     * Constructs the full source path by resolving a path from the "path.source" property
+     * Constructs the full source path by resolving a path from the "path.source"
+     * property
      * against the user's home directory.
      *
      * @return The resolved source path.
@@ -124,7 +133,7 @@ public record Settings(Properties properties) {
      */
     public @NonNull Path getSourcePath() {
         String relativeSourcePath = getValue("path.source");
-        return Paths.get(System.getProperty("user.home")).resolve(relativeSourcePath);
+        return fileSystem.getPath(System.getProperty("user.home")).resolve(relativeSourcePath);
     }
 
     /**
@@ -140,11 +149,13 @@ public record Settings(Properties properties) {
     /**
      * Check if delta migration is enabled.
      *
-     * <p>When enabled, only new or modified files will be migrated based on
+     * <p>
+     * When enabled, only new or modified files will be migrated based on
      * comparing file metadata (size and last modified time) against a state file
      * maintained at the destination.
      *
-     * @return true if delta migration is enabled (delta.enabled=true), false by default
+     * @return true if delta migration is enabled (delta.enabled=true), false by
+     *         default
      */
     public boolean isDeltaEnabled() {
         return Boolean.parseBoolean(getValue("delta.enabled", "false"));

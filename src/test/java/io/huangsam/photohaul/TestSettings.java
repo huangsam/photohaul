@@ -45,7 +45,7 @@ public class TestSettings {
     void testSettingsFromProperties() {
         Properties properties = new Properties();
         properties.setProperty("hello.message", "world");
-        Settings settings = new Settings(properties);
+        Settings settings = new Settings(properties, java.nio.file.FileSystems.getDefault());
         assertEquals("world", settings.getValue("hello.message"));
     }
 

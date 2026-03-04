@@ -7,7 +7,6 @@ import io.huangsam.photohaul.resolution.PhotoResolver;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 /**
  * Factory for creating PathMigrator instances.
@@ -21,7 +20,7 @@ public class PathMigratorFactory implements MigratorFactoryStrategy {
     }
 
     private @NotNull Path getPathTargetDirectory(@NotNull Settings settings) {
-        return Paths.get(System.getProperty("user.home"))
+        return settings.fileSystem().getPath(System.getProperty("user.home"))
                 .resolve(settings.getValue("path.target"));
     }
 }

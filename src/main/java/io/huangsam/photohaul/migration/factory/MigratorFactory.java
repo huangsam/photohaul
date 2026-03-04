@@ -80,7 +80,7 @@ public class MigratorFactory {
 
     @NotNull
     private Path getPathTargetDirectory(@NotNull Settings settings) {
-        return java.nio.file.Paths.get(System.getProperty("user.home"))
+        return settings.fileSystem().getPath(System.getProperty("user.home"))
                 .resolve(settings.getValue("path.target"));
     }
 }

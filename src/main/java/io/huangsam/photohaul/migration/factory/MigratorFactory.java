@@ -13,6 +13,8 @@ import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 
 import java.nio.file.Path;
+import java.util.EnumMap;
+import java.util.Map;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -23,22 +25,32 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class MigratorFactory {
     private static final Logger LOG = getLogger(MigratorFactory.class);
 
+    private final Map<MigratorMode, MigratorFactoryStrategy> registry = new EnumMap<>(MigratorMode.class);
+
+    /**
+     * Registers a migrator factory strategy for a given mode.
+     *
+     * @param mode    the migrator mode
+     * @param factory the factory strategy to register
+     */
+    public void register(@NotNull MigratorMode mode, @NotNull MigratorFactoryStrategy factory) {
+        registry.put(mode, factory);
+    }
+
     /**
      * Create instance for migrating photos.
      *
-     * @param mode migrator mode
+     * @param mode     migrator mode
      * @param settings settings for migration process
      * @param resolver photo resolver for target path
      * @return migrator instance
      */
     public @NonNull Migrator make(@NotNull MigratorMode mode, @NonNull Settings settings, PhotoResolver resolver) {
-        Migrator baseMigrator = switch (mode) {
-            case PATH -> new PathMigratorFactory().create(settings, resolver);
-            case DROPBOX -> new DropboxMigratorFactory().create(settings, resolver);
-            case GOOGLE_DRIVE -> new GoogleDriveMigratorFactory().create(settings, resolver);
-            case SFTP -> new SftpMigratorFactory().create(settings, resolver);
-            case S3 -> new S3MigratorFactory().create(settings, resolver);
-        };
+        MigratorFactoryStrategy strategy = registry.get(mode);
+        if (strategy == null) {
+            throw new IllegalArgumentException("Unsupported migrator mode: " + mode);
+        }
+        Migrator baseMigrator = strategy.create(settings, resolver);
 
         // Wrap with DeltaMigrator if delta migration is enabled
         if (settings.isDeltaEnabled()) {
@@ -48,7 +60,8 @@ public class MigratorFactory {
         return baseMigrator;
     }
 
-    private @NotNull Migrator wrapWithDeltaMigrator(@NotNull Migrator baseMigrator, @NotNull MigratorMode mode, @NotNull Settings settings) {
+    private @NotNull Migrator wrapWithDeltaMigrator(@NotNull Migrator baseMigrator, @NotNull MigratorMode mode,
+            @NotNull Settings settings) {
         StateFileStorage stateStorage = switch (mode) {
             case PATH -> new PathStateStorage(getPathTargetDirectory(settings));
             // Delta migration for cloud storage types requires additional implementation

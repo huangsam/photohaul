@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Factory for creating DropboxMigrator instances.
  */
-class DropboxMigratorFactory implements MigratorFactoryStrategy {
+public class DropboxMigratorFactory implements MigratorFactoryStrategy {
     @Override
     public @NotNull Migrator create(@NotNull Settings settings, @NotNull PhotoResolver resolver) {
         String target = settings.getValue("dbx.target");

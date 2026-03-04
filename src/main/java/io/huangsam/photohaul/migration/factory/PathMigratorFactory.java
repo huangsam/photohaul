@@ -12,7 +12,7 @@ import java.nio.file.Paths;
 /**
  * Factory for creating PathMigrator instances.
  */
-class PathMigratorFactory implements MigratorFactoryStrategy {
+public class PathMigratorFactory implements MigratorFactoryStrategy {
     @Override
     public @NotNull Migrator create(@NotNull Settings settings, @NotNull PhotoResolver resolver) {
         Path target = getPathTargetDirectory(settings);

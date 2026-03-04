@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Factory for creating SftpMigrator instances.
  */
-class SftpMigratorFactory implements MigratorFactoryStrategy {
+public class SftpMigratorFactory implements MigratorFactoryStrategy {
     @Override
     public @NotNull Migrator create(@NotNull Settings settings, @NotNull PhotoResolver resolver) {
         String host = settings.getValue("sftp.host");

@@ -13,7 +13,7 @@ import software.amazon.awssdk.services.s3.S3Client;
 /**
  * Factory for creating S3Migrator instances.
  */
-class S3MigratorFactory implements MigratorFactoryStrategy {
+public class S3MigratorFactory implements MigratorFactoryStrategy {
     @Override
     public @NotNull Migrator create(@NotNull Settings settings, @NotNull PhotoResolver resolver) {
         String accessKey = settings.getValue("s3.accessKey");

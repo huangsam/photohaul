@@ -2,7 +2,12 @@ package io.huangsam.photohaul.migration;
 
 import io.huangsam.photohaul.Settings;
 import io.huangsam.photohaul.migration.delta.DeltaMigrator;
+import io.huangsam.photohaul.migration.factory.DropboxMigratorFactory;
+import io.huangsam.photohaul.migration.factory.GoogleDriveMigratorFactory;
 import io.huangsam.photohaul.migration.factory.MigratorFactory;
+import io.huangsam.photohaul.migration.factory.PathMigratorFactory;
+import io.huangsam.photohaul.migration.factory.S3MigratorFactory;
+import io.huangsam.photohaul.migration.factory.SftpMigratorFactory;
 import io.huangsam.photohaul.resolution.PhotoResolver;
 import org.jspecify.annotations.NonNull;
 import org.junit.jupiter.api.Test;
@@ -18,8 +23,17 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class TestMigratorFactory {
-    private static final MigratorFactory FACTORY = new MigratorFactory();
+    private static final MigratorFactory FACTORY;
     private static final PhotoResolver RESOLVER = new PhotoResolver(List.of());
+
+    static {
+        FACTORY = new MigratorFactory();
+        FACTORY.register(MigratorMode.PATH, new PathMigratorFactory());
+        FACTORY.register(MigratorMode.DROPBOX, new DropboxMigratorFactory());
+        FACTORY.register(MigratorMode.GOOGLE_DRIVE, new GoogleDriveMigratorFactory());
+        FACTORY.register(MigratorMode.SFTP, new SftpMigratorFactory());
+        FACTORY.register(MigratorMode.S3, new S3MigratorFactory());
+    }
 
     @Test
     void testMakePathMigratorSuccess() throws Exception {
@@ -41,7 +55,8 @@ public class TestMigratorFactory {
     @SuppressWarnings("resource")
     void testMakeGoogleDriveMigratorFailure() {
         Settings settings = new Settings("drive-example.properties");
-        MigrationException exception = assertThrows(MigrationException.class, () -> FACTORY.make(MigratorMode.GOOGLE_DRIVE, settings, RESOLVER));
+        MigrationException exception = assertThrows(MigrationException.class,
+                () -> FACTORY.make(MigratorMode.GOOGLE_DRIVE, settings, RESOLVER));
         assertEquals(MigratorMode.GOOGLE_DRIVE, exception.getMode());
     }
 
@@ -67,11 +82,10 @@ public class TestMigratorFactory {
         Path propsFile = tempDir.resolve("delta-path.properties");
         String propsContent = String.format(
                 "migrator.mode=PATH%n"
-                + "path.source=Dummy/Source%n"
-                + "path.target=Dummy/Target%n"
-                + "path.action=DRY_RUN%n"
-                + "delta.enabled=true%n"
-        );
+                        + "path.source=Dummy/Source%n"
+                        + "path.target=Dummy/Target%n"
+                        + "path.action=DRY_RUN%n"
+                        + "delta.enabled=true%n");
         Files.writeString(propsFile, propsContent);
 
         Settings settings = new Settings(propsFile.toString());
@@ -86,12 +100,11 @@ public class TestMigratorFactory {
         Path propsFile = tempDir.resolve("delta-dbx.properties");
         String propsContent = String.format(
                 "migrator.mode=DROPBOX%n"
-                + "path.source=Dummy/Source%n"
-                + "dbx.target=/Demo/Target%n"
-                + "dbx.clientId=TestClient%n"
-                + "dbx.accessToken=TestToken%n"
-                + "delta.enabled=true%n"
-        );
+                        + "path.source=Dummy/Source%n"
+                        + "dbx.target=/Demo/Target%n"
+                        + "dbx.clientId=TestClient%n"
+                        + "dbx.accessToken=TestToken%n"
+                        + "delta.enabled=true%n");
         Files.writeString(propsFile, propsContent);
 
         Settings settings = new Settings(propsFile.toString());
@@ -106,14 +119,13 @@ public class TestMigratorFactory {
         Path propsFile = tempDir.resolve("delta-sftp.properties");
         String propsContent = String.format(
                 "migrator.mode=SFTP%n"
-                + "path.source=Dummy/Source%n"
-                + "sftp.host=localhost%n"
-                + "sftp.port=22%n"
-                + "sftp.username=user%n"
-                + "sftp.password=pass%n"
-                + "sftp.target=/photos%n"
-                + "delta.enabled=true%n"
-        );
+                        + "path.source=Dummy/Source%n"
+                        + "sftp.host=localhost%n"
+                        + "sftp.port=22%n"
+                        + "sftp.username=user%n"
+                        + "sftp.password=pass%n"
+                        + "sftp.target=/photos%n"
+                        + "delta.enabled=true%n");
         Files.writeString(propsFile, propsContent);
 
         Settings settings = new Settings(propsFile.toString());
@@ -128,13 +140,12 @@ public class TestMigratorFactory {
         Path propsFile = tempDir.resolve("delta-s3.properties");
         String propsContent = String.format(
                 "migrator.mode=S3%n"
-                + "path.source=Dummy/Source%n"
-                + "s3.bucket=test-bucket%n"
-                + "s3.accessKey=accessKey%n"
-                + "s3.secretKey=secretKey%n"
-                + "s3.region=us-east-1%n"
-                + "delta.enabled=true%n"
-        );
+                        + "path.source=Dummy/Source%n"
+                        + "s3.bucket=test-bucket%n"
+                        + "s3.accessKey=accessKey%n"
+                        + "s3.secretKey=secretKey%n"
+                        + "s3.region=us-east-1%n"
+                        + "delta.enabled=true%n");
         Files.writeString(propsFile, propsContent);
 
         Settings settings = new Settings(propsFile.toString());
@@ -158,11 +169,10 @@ public class TestMigratorFactory {
         Path propsFile = tempDir.resolve("nodelta-path.properties");
         String propsContent = String.format(
                 "migrator.mode=PATH%n"
-                + "path.source=Dummy/Source%n"
-                + "path.target=Dummy/Target%n"
-                + "path.action=DRY_RUN%n"
-                + "delta.enabled=false%n"
-        );
+                        + "path.source=Dummy/Source%n"
+                        + "path.target=Dummy/Target%n"
+                        + "path.action=DRY_RUN%n"
+                        + "delta.enabled=false%n");
         Files.writeString(propsFile, propsContent);
 
         Settings settings = new Settings(propsFile.toString());

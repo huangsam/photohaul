@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * Factory for creating GoogleDriveMigrator instances.
  */
-class GoogleDriveMigratorFactory implements MigratorFactoryStrategy {
+public class GoogleDriveMigratorFactory implements MigratorFactoryStrategy {
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
     private static final List<String> SCOPES = List.of(DriveScopes.DRIVE);
 

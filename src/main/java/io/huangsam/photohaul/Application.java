@@ -17,15 +17,16 @@ import java.util.Collection;
 import static org.slf4j.LoggerFactory.getLogger;
 
 public record Application(Settings settings,
-                          PhotoCollector photoCollector, PathRuleSet pathRuleSet,
-                          PhotoDeduplicator deduplicator, PhotoResolver photoResolver,
-                          MigratorFactory migratorFactory) {
+        PhotoCollector photoCollector, PathRuleSet pathRuleSet,
+        PhotoDeduplicator deduplicator, PhotoResolver photoResolver,
+        MigratorFactory migratorFactory) {
     private static final Logger LOG = getLogger(Application.class);
 
     /**
      * Run the photo migration process.
      *
-     * <p>Collects photos from the source path, deduplicates them, and migrates
+     * <p>
+     * Collects photos from the source path, deduplicates them, and migrates
      * them to the configured destination using the specified migrator.
      */
     public void run() {
@@ -41,8 +42,10 @@ public record Application(Settings settings,
             LOG.info("Finish with success={} failure={}", migrator.getSuccessCount(), migrator.getFailureCount());
         } catch (MigrationException e) {
             LOG.error("Cannot migrate with mode {}: {}", e.getMode(), e.getMessage());
+            System.exit(1);
         } catch (Exception e) {
             LOG.error("Error during migration or closing migrator: {}", e.getMessage());
+            System.exit(1);
         }
     }
 }

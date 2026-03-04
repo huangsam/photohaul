@@ -25,8 +25,7 @@ public record Application(Settings settings,
     /**
      * Run the photo migration process.
      *
-     * <p>
-     * Collects photos from the source path, deduplicates them, and migrates
+     * <p>Collects photos from the source path, deduplicates them, and migrates
      * them to the configured destination using the specified migrator.
      */
     public void run() {

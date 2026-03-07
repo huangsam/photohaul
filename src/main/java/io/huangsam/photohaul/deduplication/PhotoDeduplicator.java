@@ -32,9 +32,12 @@ public class PhotoDeduplicator {
      * in the input collection determines which photo is kept.
      *
      * <p>Optimization: Uses multi-level deduplication:
-     * 1. File size filtering (different sizes cannot be duplicates)
-     * 2. Partial hashing (first 1KB) for same-size files
-     * 3. Full SHA-256 hashing only when partial hashes match
+     *
+     * <ol>
+     *     <li>File size filtering (different sizes cannot be duplicates)</li>
+     *     <li>Partial hashing (first 1KB) for same-size files</li>
+     *     <li>Full SHA-256 hashing only when partial hashes match</li>
+     * </ol>
      *
      * @param photos collection of photos to deduplicate
      * @return collection of unique photos (first occurrence of each hash)

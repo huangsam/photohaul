@@ -20,27 +20,15 @@ Say goodbye to photo clutter - 👋 + 🚀
 
 ## Motivation
 
-As an avid photographer, I use Adobe Lightroom to organize my edited SLR
-photos with custom file names and folder structures. This has worked well
-for me since 2015, when I started getting serious about photography.
+As an avid photographer, I use Adobe Lightroom to organize my edited SLR photos with custom file names and folder structures. This has worked well for me since 2015, when I started getting serious about photography.
 
-I want to apply those same patterns to old photos, so that it is easier
-for me to access my precious memories. However, I struggle to apply the
-same organization to my vast collection of older photos. I cannot apply
-Lightroom settings to previously exported images and writing custom
-scripts seems daunting.
+I want to apply those same patterns to old photos, so that it is easier for me to access my precious memories. However, I struggle to apply the same organization to my vast collection of older photos. I cannot apply Lightroom settings to previously exported images and writing custom scripts seems daunting.
 
-I also want to migrate my photos over to a NAS or a cloud provider like
-Google Drive, but it involves endless rounds of manual drag-and-drop
-operations. I keep thinking to myself - is there a solution out there
-that "just works" for my workflow?
+I also want to migrate my photos over to a NAS or a cloud provider like Google Drive, but it involves endless rounds of manual drag-and-drop operations. I keep thinking to myself - is there a solution out there that "just works" for my workflow?
 
 ## Value
 
-Photohaul addresses the pain points above by providing a central hub for
-photographers to filter, organize, and migrate photos to local storage
-and cloud services. The folder structure for photos can be based on info
-such as year taken and camera make.
+Photohaul addresses the pain points above by providing a central hub for photographers to filter, organize, and migrate photos to local storage and cloud services. The folder structure for photos can be based on info such as year taken and camera make.
 
 ## Getting started
 
@@ -57,16 +45,15 @@ For detailed instructions: [link](USERGUIDE.md)
 
 **Configure settings:**
 
-- Set `PathRuleSet` to filter by extension, file size, etc.
-- Set `MigratorMode` to `PATH` / `DROPBOX` / `GOOGLE_DRIVE` / `SFTP` / `S3`
-- Set `PhotoResolver` to adjust folder structure
+- Set your **Filtering rules** to filter by extension, file size, etc.
+- Set the **Migration mode** (e.g., Local Path, Dropbox, Google Drive, SFTP, S3)
+- Set your **Folder structure** preferences to adjust how photos are organized
 - Fill config file. Refer to examples in [src/main/resources](src/main/resources)
 
 **Run application:**
 
 - Run `./gradlew run` in your terminal
- - Optional: override with `-Dphotohaul.config=personal/path.properties` (classpath) or an absolute/relative filesystem path
-	 (e.g., `-Dphotohaul.config=./src/main/resources/personal/path.properties`).
+    - Optional: override with `-Dphotohaul.config=personal/path.properties` (classpath) or an absolute/relative filesystem path (e.g., `-Dphotohaul.config=./src/main/resources/personal/path.properties`).
 
 ```text
 > Task :run

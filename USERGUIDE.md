@@ -32,48 +32,49 @@ Notes:
 
 Configure the following property fields:
 
-- `migrator.mode`
-- `path.source`
-- `path.target`
-- `path.action`
-
-Refer to `PathMigrator` to learn more about the `path.action` values.
+- `migrator.mode`: Set to `PATH`
+- `path.source`: Directory containing your photos
+- `path.target`: Destination directory
+- `path.action`: Choose one of the following:
+    - `COPY`: Copy photos to target (original files remain)
+    - `MOVE`: Move photos to target (original files removed)
+    - `DRY_RUN`: Log what would happen without modifying any files
 
 ### Dropbox setup
 
 Configure the following property fields:
 
-- `migrator.mode`
-- `path.source`
-- `dbx.target`
-- `dbx.clientId`
-- `dbx.accessToken`
+- `migrator.mode`: Set to `DROPBOX`
+- `path.source`: Local directory containing photos
+- `dbx.target`: Destination folder in Dropbox
+- `dbx.clientId`: Your Dropbox app client ID
+- `dbx.accessToken`: Your Dropbox access token
 
-[Click here](https://github.com/dropbox/dropbox-sdk-java?tab=readme-ov-file#dropbox-for-java-tutorial) to learn how to setup the `dbx` fields.
+Refer to the [Dropbox for Java tutorial](https://github.com/dropbox/dropbox-sdk-java?tab=readme-ov-file#dropbox-for-java-tutorial) to learn how to setup the `dbx` fields.
 
 ### Google Drive setup
 
 Configure the following property fields:
 
-- `migrator.mode`
-- `path.source`
-- `drive.target`
-- `drive.credentialFile`
-- `drive.appName`
+- `migrator.mode`: Set to `GOOGLE_DRIVE`
+- `path.source`: Local directory containing photos
+- `drive.target`: Destination folder in Google Drive
+- `drive.credentialFile`: Path to your Google Drive credentials JSON
+- `drive.appName`: Your application name
 
-[Click here](https://developers.google.com/drive/api/quickstart/java#set-up-environment) to learn how to setup the `drive` fields.
+Refer to the [Google Drive API Java Quickstart](https://developers.google.com/drive/api/quickstart/java#set-up-environment) to learn how to setup the `drive` fields.
 
 ### SFTP setup
 
 Configure the following property fields:
 
-- `migrator.mode`
-- `path.source`
-- `sftp.host`
-- `sftp.port` (optional, defaults to 22)
-- `sftp.username`
-- `sftp.password`
-- `sftp.target`
+- `migrator.mode`: Set to `SFTP`
+- `path.source`: Local directory containing photos
+- `sftp.host`: SFTP server hostname
+- `sftp.port`: SFTP server port (optional, defaults to 22)
+- `sftp.username`: Your SFTP username
+- `sftp.password`: Your SFTP password
+- `sftp.target`: Destination directory on the SFTP server
 
 SFTP (SSH File Transfer Protocol) is used for secure file transfers over SSH. Host keys are verified against your known hosts file for security. Ensure your server supports SFTP.
 
@@ -81,14 +82,14 @@ SFTP (SSH File Transfer Protocol) is used for secure file transfers over SSH. Ho
 
 Configure the following property fields:
 
-- `migrator.mode`
-- `path.source`
-- `s3.bucket`
-- `s3.accessKey`
-- `s3.secretKey`
-- `s3.region` (optional, defaults to us-east-1)
+- `migrator.mode`: Set to `S3`
+- `path.source`: Local directory containing photos
+- `s3.bucket`: Target AWS S3 bucket name
+- `s3.accessKey`: Your AWS access key
+- `s3.secretKey`: Your AWS secret key
+- `s3.region`: AWS region (optional, defaults to us-east-1)
 
-Amazon S3 (Simple Storage Service) is used for scalable cloud storage. You'll need AWS credentials with S3 permissions. [Click here](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/get-started.html) to learn how to obtain and configure AWS credentials.
+Amazon S3 (Simple Storage Service) is used for scalable cloud storage. You'll need AWS credentials with S3 permissions. Refer to the [AWS SDK for Java documentation](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/get-started.html) to learn how to obtain and configure AWS credentials.
 
 ## Delta migration (optional)
 

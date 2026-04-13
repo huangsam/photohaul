@@ -30,6 +30,6 @@ jobs:
       - name: Build source with Gradle
         run: gradle build
       - name: Upload coverage data to Codecov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

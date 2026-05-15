@@ -62,8 +62,7 @@ public class Photo {
      */
     @Nullable
     public String taken() {
-        LocalDateTime taken = takenAt();
-        return (taken == null) ? null : taken.format(java.time.format.DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss"));
+        return metadata().formatTakenAt();
     }
 
     /**
@@ -124,6 +123,16 @@ public class Photo {
     @Nullable
     public String flash() {
         return metadata().flash();
+    }
+
+    /**
+     * Get ISO metadata.
+     *
+     * @return ISO string or null
+     */
+    @Nullable
+    public String iso() {
+        return metadata().iso();
     }
 
     /**

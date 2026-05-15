@@ -20,13 +20,17 @@ import java.util.Map;
  * Extracts metadata using the metadata-extractor library.
  */
 public class ExifMetadataExtractor implements MetadataExtractor {
-    private static final String TAKEN_KEY = "Date/Time Original";
+    private static final String TAKEN_KEY_ORIGINAL = "Date/Time Original";
+    private static final String TAKEN_KEY_DIGITIZED = "Date/Time Digitized";
+    private static final String TAKEN_KEY_BASE = "Date/Time";
+
     private static final String MAKE_KEY = "Make";
     private static final String MODEL_KEY = "Model";
     private static final String FOCAL_LENGTH_KEY = "Focal Length";
     private static final String SHUTTER_SPEED_KEY = "Shutter Speed Value";
     private static final String APERTURE_KEY = "Aperture Value";
     private static final String FLASH_KEY = "Flash";
+    private static final String ISO_KEY = "ISO Speed Ratings";
 
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss");
 
@@ -44,14 +48,23 @@ public class ExifMetadataExtractor implements MetadataExtractor {
             return PhotoMetadata.EMPTY;
         }
 
+        String takenAtStr = tags.get(TAKEN_KEY_ORIGINAL);
+        if (takenAtStr == null) {
+            takenAtStr = tags.get(TAKEN_KEY_DIGITIZED);
+        }
+        if (takenAtStr == null) {
+            takenAtStr = tags.get(TAKEN_KEY_BASE);
+        }
+
         return new PhotoMetadata(
-            parseDateTime(tags.get(TAKEN_KEY)),
+            parseDateTime(takenAtStr),
             tags.get(MAKE_KEY),
             tags.get(MODEL_KEY),
             tags.get(FOCAL_LENGTH_KEY),
             tags.get(SHUTTER_SPEED_KEY),
             tags.get(APERTURE_KEY),
-            tags.get(FLASH_KEY)
+            tags.get(FLASH_KEY),
+            tags.get(ISO_KEY)
         );
     }
 

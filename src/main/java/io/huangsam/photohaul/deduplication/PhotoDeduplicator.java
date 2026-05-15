@@ -31,16 +31,14 @@ public class PhotoDeduplicator {
      * the same hash, only the first occurrence is kept. The order of photos
      * in the input collection determines which photo is kept.
      *
-     * <p>Optimization: Uses multi-level deduplication:
+     * <p><b>Architecture:</b>
+     * This uses a nested Chain of Responsibility pattern. Photos are initially grouped by size.
+     * Each size group is passed through a chain of strategies: Size -> Partial Hash -> Full Hash.
+     * The nested lambdas act as callbacks, allowing a strategy to cleanly delegate sub-groups
+     * of potential duplicates to the next, more computationally expensive tier.
      *
-     * <ol>
-     *     <li>File size filtering (different sizes cannot be duplicates)</li>
-     *     <li>Partial hashing (first 1KB) for same-size files</li>
-     *     <li>Full SHA-256 hashing only when partial hashes match</li>
-     * </ol>
-     *
-     * @param photos collection of photos to deduplicate
-     * @return collection of unique photos (first occurrence of each hash)
+     * @param photos the photos to deduplicate
+     * @return a collection of unique photos
      */
     @NotNull
     public Collection<Photo> deduplicate(@NotNull Collection<Photo> photos) {

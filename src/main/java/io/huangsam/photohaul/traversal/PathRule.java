@@ -1,6 +1,6 @@
 package io.huangsam.photohaul.traversal;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -12,7 +12,7 @@ public class PathRule {
     private static final List<String> ALLOW_LIST = List.of(
             "jpg", "jpeg", "png", "gif", "cr2", "nef", "arw");
 
-    @NotNull
+    @NonNull
     public static Predicate<Path> validExtensions() {
         return path -> {
             String pathName = path.toString().toLowerCase();
@@ -20,7 +20,7 @@ public class PathRule {
         };
     }
 
-    @NotNull
+    @NonNull
     public static Predicate<Path> isImageContent() {
         return path -> {
             try {
@@ -32,7 +32,7 @@ public class PathRule {
         };
     }
 
-    @NotNull
+    @NonNull
     public static Predicate<Path> minimumBytes(long minThreshold) {
         return path -> {
             try {
@@ -43,7 +43,7 @@ public class PathRule {
         };
     }
 
-    @NotNull
+    @NonNull
     public static Predicate<Path> isPublic() {
         return path -> !path.getFileName().toString().startsWith(".");
     }

@@ -12,6 +12,7 @@ metadata-extractor = "2.20.0"
 mockito = "5.23.0"
 slf4j-api = "2.0.17"
 sshj = "0.40.0"
+jspecify = "1.0.0"
 task-tree = "4.0.1"
 
 [libraries]
@@ -30,6 +31,7 @@ metadata-extractor = { module = "com.drewnoakes:metadata-extractor", version.ref
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
 mockito-junit = { module = "org.mockito:mockito-junit-jupiter", version.ref = "mockito" }
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j-api" }
+jspecify = { module = "org.jspecify:jspecify", version.ref = "jspecify" }
 sshj = { module = "com.hierynomus:sshj", version.ref = "sshj" }
 
 [plugins]

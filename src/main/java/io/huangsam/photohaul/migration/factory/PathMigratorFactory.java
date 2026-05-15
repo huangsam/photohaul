@@ -4,7 +4,7 @@ import io.huangsam.photohaul.Settings;
 import io.huangsam.photohaul.migration.Migrator;
 import io.huangsam.photohaul.migration.PathMigrator;
 import io.huangsam.photohaul.resolution.PhotoResolver;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.nio.file.Path;
 
@@ -13,13 +13,13 @@ import java.nio.file.Path;
  */
 public class PathMigratorFactory implements MigratorFactoryStrategy {
     @Override
-    public @NotNull Migrator create(@NotNull Settings settings, @NotNull PhotoResolver resolver) {
+    public @NonNull Migrator create(@NonNull Settings settings, @NonNull PhotoResolver resolver) {
         Path target = getPathTargetDirectory(settings);
         String actionValue = settings.getValue("path.action", "MOVE").toUpperCase();
         return new PathMigrator(target, resolver, PathMigrator.Action.valueOf(actionValue));
     }
 
-    private @NotNull Path getPathTargetDirectory(@NotNull Settings settings) {
+    private @NonNull Path getPathTargetDirectory(@NonNull Settings settings) {
         return settings.fileSystem().getPath(System.getProperty("user.home"))
                 .resolve(settings.getValue("path.target"));
     }

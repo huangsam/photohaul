@@ -1,7 +1,7 @@
 package io.huangsam.photohaul.deduplication;
 
 import io.huangsam.photohaul.model.Photo;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 
@@ -21,5 +21,5 @@ interface DeduplicationStrategy {
      * @param context the deduplication context to store unique photos and duplicates
      * @param next    the next strategy to call for potential duplicates
      */
-    void process(@NotNull List<Photo> photos, @NotNull DeduplicationContext context, @NotNull DeduplicationStrategy next);
+    void process(@NonNull List<Photo> photos, @NonNull DeduplicationContext context, @NonNull DeduplicationStrategy next);
 }

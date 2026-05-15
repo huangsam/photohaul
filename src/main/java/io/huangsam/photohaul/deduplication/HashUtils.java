@@ -1,6 +1,8 @@
 package io.huangsam.photohaul.deduplication;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
+
+import java.nio.file.Path;
 
 /**
  * Utility class for hashing operations.
@@ -16,7 +18,7 @@ public final class HashUtils {
      * @param bytes The byte array to convert.
      * @return The hexadecimal string representation.
      */
-    public static @NotNull String bytesToHex(byte @NotNull [] bytes) {
+    public static @NonNull String bytesToHex(byte @NonNull [] bytes) {
         StringBuilder hexString = new StringBuilder();
         for (byte b : bytes) {
             String hex = Integer.toHexString(0xff & b);
@@ -35,7 +37,7 @@ public final class HashUtils {
      * @return The hexadecimal string representation of the hash.
      * @throws java.io.IOException If an I/O error occurs.
      */
-    public static @NotNull String calculateHash(@NotNull java.nio.file.Path path) throws java.io.IOException {
+    public static @NonNull String calculateHash(@NonNull Path path) throws java.io.IOException {
         return calculateHash(path, -1);
     }
 
@@ -47,7 +49,7 @@ public final class HashUtils {
      * @return The hexadecimal string representation of the hash.
      * @throws java.io.IOException If an I/O error occurs.
      */
-    public static @NotNull String calculateHash(@NotNull java.nio.file.Path path, int limit) throws java.io.IOException {
+    public static @NonNull String calculateHash(@NonNull Path path, int limit) throws java.io.IOException {
         try {
             java.security.MessageDigest digest = java.security.MessageDigest.getInstance("SHA-256");
             try (java.io.InputStream inputStream = java.nio.file.Files.newInputStream(path)) {

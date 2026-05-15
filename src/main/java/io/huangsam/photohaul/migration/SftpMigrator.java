@@ -4,7 +4,6 @@ import io.huangsam.photohaul.model.Photo;
 import io.huangsam.photohaul.resolution.PhotoResolver;
 import net.schmizz.sshj.SSHClient;
 import net.schmizz.sshj.sftp.SFTPClient;
-import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 
@@ -25,14 +24,14 @@ public class SftpMigrator extends AbstractMigrator {
     private final @NonNull String targetRoot;
     private final Supplier<SSHClient> sshClientSupplier;
 
-    public SftpMigrator(@NotNull String host, int port, @NotNull String username, @NotNull String password,
-                       @NotNull String target, PhotoResolver resolver) {
+    public SftpMigrator(@NonNull String host, int port, @NonNull String username, @NonNull String password,
+                       @NonNull String target, PhotoResolver resolver) {
         this(host, port, username, password, target, resolver, SSHClient::new);
     }
 
     // For testing
-    SftpMigrator(@NotNull String host, int port, @NotNull String username, @NotNull String password,
-                @NotNull String target, PhotoResolver resolver, Supplier<SSHClient> sshClientSupplier) {
+    SftpMigrator(@NonNull String host, int port, @NonNull String username, @NonNull String password,
+                @NonNull String target, PhotoResolver resolver, Supplier<SSHClient> sshClientSupplier) {
         super(resolver);
         this.host = host;
         this.port = port;
@@ -43,7 +42,7 @@ public class SftpMigrator extends AbstractMigrator {
     }
 
     @Override
-    public void migratePhotos(@NotNull java.util.Collection<Photo> photos) {
+    public void migratePhotos(java.util.@NonNull Collection<Photo> photos) {
         LOG.debug("Start SFTP migration to {}@{}:{}", username, host, port);
         int processedCount = 0;
         try (SSHClient sshClient = sshClientSupplier.get()) {
@@ -77,7 +76,7 @@ public class SftpMigrator extends AbstractMigrator {
         }
     }
 
-    @NotNull
+    @NonNull
     private String getTargetPath(@NonNull Photo photo) {
         return targetRoot + "/" + resolvePath(photo) + "/" + photo.name();
     }

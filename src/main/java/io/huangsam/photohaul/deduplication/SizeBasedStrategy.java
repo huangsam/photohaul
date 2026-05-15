@@ -1,7 +1,7 @@
 package io.huangsam.photohaul.deduplication;
 
 import io.huangsam.photohaul.model.Photo;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -18,7 +18,7 @@ class SizeBasedStrategy implements DeduplicationStrategy {
     private static final Logger LOG = getLogger(SizeBasedStrategy.class);
 
     @Override
-    public void process(@NotNull List<Photo> photos, @NotNull DeduplicationContext context, @NotNull DeduplicationStrategy next) {
+    public void process(@NonNull List<Photo> photos, @NonNull DeduplicationContext context, @NonNull DeduplicationStrategy next) {
         if (photos.size() == 1) {
             addUniquePhoto(photos.getFirst(), context);
         } else {
@@ -26,7 +26,7 @@ class SizeBasedStrategy implements DeduplicationStrategy {
         }
     }
 
-    private void addUniquePhoto(@NotNull Photo photo, @NotNull DeduplicationContext context) {
+    private void addUniquePhoto(@NonNull Photo photo, @NonNull DeduplicationContext context) {
         try {
             long size = Files.size(photo.path());
             String key = "size_" + size;

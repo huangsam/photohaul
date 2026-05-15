@@ -1,6 +1,6 @@
 package io.huangsam.photohaul.traversal;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public record PathRuleSet(List<Predicate<Path>> rules) {
-    @NotNull
+    @NonNull
     public static PathRuleSet getDefault() {
         return new PathRuleSet(List.of(
                 Files::isRegularFile,

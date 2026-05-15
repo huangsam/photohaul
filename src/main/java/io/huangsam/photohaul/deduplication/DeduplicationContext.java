@@ -1,7 +1,7 @@
 package io.huangsam.photohaul.deduplication;
 
 import io.huangsam.photohaul.model.Photo;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -20,7 +20,7 @@ class DeduplicationContext {
      * @param key   The identity key for the photo.
      * @param photo The photo.
      */
-    public void addUnique(@NotNull String key, @NotNull Photo photo) {
+    public void addUnique(@NonNull String key, @NonNull Photo photo) {
         if (!uniquePhotos.containsKey(key)) {
             uniquePhotos.put(key, photo);
         } else {
@@ -34,7 +34,7 @@ class DeduplicationContext {
      * @param key The identity key.
      * @return true if the key exists.
      */
-    public boolean contains(@NotNull String key) {
+    public boolean contains(@NonNull String key) {
         return uniquePhotos.containsKey(key);
     }
 
@@ -59,7 +59,7 @@ class DeduplicationContext {
      *
      * @return collection of unique photos.
      */
-    @NotNull
+    @NonNull
     public Collection<Photo> getUniquePhotos() {
         return uniquePhotos.values();
     }

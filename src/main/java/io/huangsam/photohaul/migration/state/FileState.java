@@ -1,6 +1,6 @@
 package io.huangsam.photohaul.migration.state;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.Objects;
 
@@ -12,7 +12,7 @@ import java.util.Objects;
  * and last modified timestamp in milliseconds since epoch.
  */
 public record FileState(
-        @NotNull String path,
+        @NonNull String path,
         long size,
         long lastModifiedMillis
 ) {
@@ -43,7 +43,7 @@ public record FileState(
      * @param other the other file state to compare
      * @return true if size and lastModifiedMillis match
      */
-    public boolean matches(@NotNull FileState other) {
+    public boolean matches(@NonNull FileState other) {
         return this.size == other.size && this.lastModifiedMillis == other.lastModifiedMillis;
     }
 }

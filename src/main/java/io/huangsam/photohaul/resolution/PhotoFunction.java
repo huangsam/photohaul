@@ -1,7 +1,7 @@
 package io.huangsam.photohaul.resolution;
 
 import io.huangsam.photohaul.model.Photo;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.nio.file.attribute.FileTime;
 import java.time.LocalDateTime;
@@ -14,7 +14,7 @@ public class PhotoFunction {
      *
      * @return function for aperture
      */
-    @NotNull
+    @NonNull
     public static Function<Photo, String> aperture() {
         return Photo::aperture;
     }
@@ -24,7 +24,7 @@ public class PhotoFunction {
      *
      * @return function for flash
      */
-    @NotNull
+    @NonNull
     public static Function<Photo, String> flash() {
         return Photo::flash;
     }
@@ -34,7 +34,7 @@ public class PhotoFunction {
      *
      * @return function for focal length
      */
-    @NotNull
+    @NonNull
     public static Function<Photo, String> focalLength() {
         return Photo::focalLength;
     }
@@ -44,7 +44,7 @@ public class PhotoFunction {
      *
      * @return function for make
      */
-    @NotNull
+    @NonNull
     public static Function<Photo, String> make() {
         return Photo::make;
     }
@@ -54,7 +54,7 @@ public class PhotoFunction {
      *
      * @return function for model
      */
-    @NotNull
+    @NonNull
     public static Function<Photo, String> model() {
         return Photo::model;
     }
@@ -64,7 +64,7 @@ public class PhotoFunction {
      *
      * @return function for shutter speed
      */
-    @NotNull
+    @NonNull
     public static Function<Photo, String> shutterSpeed() {
         return Photo::shutterSpeed;
     }
@@ -74,7 +74,7 @@ public class PhotoFunction {
      *
      * @return function for year modified
      */
-    @NotNull
+    @NonNull
     public static Function<Photo, String> yearModified() {
         return photo -> {
             FileTime modifiedTime = photo.modifiedAt();
@@ -89,7 +89,7 @@ public class PhotoFunction {
      *
      * @return function for year taken
      */
-    @NotNull
+    @NonNull
     public static Function<Photo, String> yearTaken() {
         return photo -> {
             LocalDateTime takenTime = photo.takenAt();

@@ -1,7 +1,7 @@
 package io.huangsam.photohaul.deduplication;
 
 import io.huangsam.photohaul.model.Photo;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -16,13 +16,13 @@ class FullHashStrategy implements DeduplicationStrategy {
     private static final Logger LOG = getLogger(FullHashStrategy.class);
 
     @Override
-    public void process(@NotNull List<Photo> photos, @NotNull DeduplicationContext context, @NotNull DeduplicationStrategy next) {
+    public void process(@NonNull List<Photo> photos, @NonNull DeduplicationContext context, @NonNull DeduplicationStrategy next) {
         for (Photo photo : photos) {
             processPhoto(photo, context);
         }
     }
 
-    private void processPhoto(@NotNull Photo photo, @NotNull DeduplicationContext context) {
+    private void processPhoto(@NonNull Photo photo, @NonNull DeduplicationContext context) {
         try {
             String hash = calculateHash(photo);
             if (!context.contains(hash)) {
@@ -39,7 +39,7 @@ class FullHashStrategy implements DeduplicationStrategy {
         }
     }
 
-    private @NotNull String calculateHash(@NotNull Photo photo) throws IOException {
+    private @NonNull String calculateHash(@NonNull Photo photo) throws IOException {
         return HashUtils.calculateHash(photo.path());
     }
 }

@@ -3,7 +3,6 @@ package io.huangsam.photohaul.migration;
 import io.huangsam.photohaul.model.Photo;
 import io.huangsam.photohaul.resolution.PhotoResolver;
 import io.huangsam.photohaul.resolution.ResolutionException;
-import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 
 /**
@@ -39,7 +38,7 @@ public abstract class AbstractMigrator implements Migrator {
      * @param photo the photo to resolve
      * @return the resolved path string, or "Other" if resolution fails
      */
-    @NotNull
+    @NonNull
     protected String resolvePath(@NonNull Photo photo) {
         try {
             return photoResolver.resolveString(photo);

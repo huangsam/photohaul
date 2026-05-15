@@ -8,7 +8,6 @@ import io.huangsam.photohaul.migration.state.MigrationStateFile;
 import io.huangsam.photohaul.migration.state.PathStateStorage;
 import io.huangsam.photohaul.migration.state.StateFileStorage;
 import io.huangsam.photohaul.resolution.PhotoResolver;
-import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 
@@ -45,7 +44,7 @@ public class MigratorFactory {
      * @param mode    the migrator mode
      * @param factory the factory strategy to register
      */
-    public void register(@NotNull MigratorMode mode, @NotNull MigratorFactoryStrategy factory) {
+    public void register(@NonNull MigratorMode mode, @NonNull MigratorFactoryStrategy factory) {
         registry.put(mode, factory);
     }
 
@@ -57,7 +56,7 @@ public class MigratorFactory {
      * @param resolver photo resolver for target path
      * @return migrator instance
      */
-    public @NonNull Migrator make(@NotNull MigratorMode mode, @NonNull Settings settings, PhotoResolver resolver) {
+    public @NonNull Migrator make(@NonNull MigratorMode mode, @NonNull Settings settings, PhotoResolver resolver) {
         MigratorFactoryStrategy strategy = registry.get(mode);
         if (strategy == null) {
             throw new IllegalArgumentException("Unsupported migrator mode: " + mode);
@@ -72,8 +71,8 @@ public class MigratorFactory {
         return baseMigrator;
     }
 
-    private @NotNull Migrator wrapWithDeltaMigrator(@NotNull Migrator baseMigrator, @NotNull MigratorMode mode,
-            @NotNull Settings settings) {
+    private @NonNull Migrator wrapWithDeltaMigrator(@NonNull Migrator baseMigrator, @NonNull MigratorMode mode,
+            @NonNull Settings settings) {
         StateFileStorage stateStorage = switch (mode) {
             case PATH -> new PathStateStorage(getPathTargetDirectory(settings));
             // Delta migration for cloud storage types requires additional implementation
@@ -90,8 +89,8 @@ public class MigratorFactory {
         return new DeltaMigrator(baseMigrator, stateFile);
     }
 
-    @NotNull
-    private Path getPathTargetDirectory(@NotNull Settings settings) {
+    @NonNull
+    private Path getPathTargetDirectory(@NonNull Settings settings) {
         return settings.fileSystem().getPath(System.getProperty("user.home"))
                 .resolve(settings.getValue("path.target"));
     }

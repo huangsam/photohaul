@@ -6,7 +6,6 @@ import com.dropbox.core.v2.files.DbxUserFilesRequests;
 import com.dropbox.core.v2.files.ListFolderErrorException;
 import io.huangsam.photohaul.model.Photo;
 import io.huangsam.photohaul.resolution.PhotoResolver;
-import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 
@@ -23,7 +22,7 @@ public class DropboxMigrator extends AbstractMigrator {
     private final @NonNull String targetRoot;
     private final DbxClientV2 dropboxClient;
 
-    public DropboxMigrator(@NotNull String target, PhotoResolver resolver, DbxClientV2 client) {
+    public DropboxMigrator(@NonNull String target, PhotoResolver resolver, DbxClientV2 client) {
         super(resolver);
         if (!target.startsWith("/")) {
             throw new IllegalArgumentException("Target must begin with a '/' character");
@@ -33,7 +32,7 @@ public class DropboxMigrator extends AbstractMigrator {
     }
 
     @Override
-    public void migratePhotos(@NotNull Collection<Photo> photos) {
+    public void migratePhotos(@NonNull Collection<Photo> photos) {
         LOG.debug("Start Dropbox migration to {}", targetRoot);
         DbxUserFilesRequests requests = dropboxClient.files();
         photos.forEach(photo -> {
@@ -54,7 +53,7 @@ public class DropboxMigrator extends AbstractMigrator {
         });
     }
 
-    @NotNull
+    @NonNull
     private String getTargetPath(Photo photo) {
         return targetRoot + "/" + resolvePath(photo);
     }

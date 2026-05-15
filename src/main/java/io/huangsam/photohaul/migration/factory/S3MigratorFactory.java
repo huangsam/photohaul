@@ -4,7 +4,7 @@ import io.huangsam.photohaul.Settings;
 import io.huangsam.photohaul.migration.Migrator;
 import io.huangsam.photohaul.migration.S3Migrator;
 import io.huangsam.photohaul.resolution.PhotoResolver;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
@@ -15,7 +15,7 @@ import software.amazon.awssdk.services.s3.S3Client;
  */
 public class S3MigratorFactory implements MigratorFactoryStrategy {
     @Override
-    public @NotNull Migrator create(@NotNull Settings settings, @NotNull PhotoResolver resolver) {
+    public @NonNull Migrator create(@NonNull Settings settings, @NonNull PhotoResolver resolver) {
         String accessKey = settings.getValue("s3.accessKey");
         String secretKey = settings.getValue("s3.secretKey");
         String region = settings.getValue("s3.region", "us-east-1");

@@ -4,7 +4,6 @@ import io.huangsam.photohaul.migration.Migrator;
 import io.huangsam.photohaul.migration.state.FileState;
 import io.huangsam.photohaul.migration.state.MigrationStateFile;
 import io.huangsam.photohaul.model.Photo;
-import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 
@@ -49,13 +48,13 @@ public class DeltaMigrator implements Migrator {
      * @param delegate  the underlying migrator to delegate to
      * @param stateFile the state file manager for tracking migrations
      */
-    public DeltaMigrator(@NotNull Migrator delegate, @NotNull MigrationStateFile stateFile) {
+    public DeltaMigrator(@NonNull Migrator delegate, @NonNull MigrationStateFile stateFile) {
         this.delegate = delegate;
         this.stateFile = stateFile;
     }
 
     @Override
-    public void migratePhotos(@NotNull Collection<Photo> photos) {
+    public void migratePhotos(@NonNull Collection<Photo> photos) {
         // Load existing state
         stateFile.load();
 
@@ -68,7 +67,7 @@ public class DeltaMigrator implements Migrator {
         performMigrationAndUpdateState(batch);
     }
 
-    private MigrationBatch filterPhotosNeedingMigration(@NotNull Collection<Photo> photos) {
+    private MigrationBatch filterPhotosNeedingMigration(@NonNull Collection<Photo> photos) {
         List<Photo> photosToMigrate = new ArrayList<>();
         List<FileState> fileStates = new ArrayList<>();
 
@@ -96,7 +95,7 @@ public class DeltaMigrator implements Migrator {
         return new MigrationBatch(photosToMigrate, fileStates);
     }
 
-    private void performMigrationAndUpdateState(@NotNull MigrationBatch batch) {
+    private void performMigrationAndUpdateState(@NonNull MigrationBatch batch) {
         long previousSuccessCount = delegate.getSuccessCount();
 
         // Delegate actual migration
@@ -109,7 +108,7 @@ public class DeltaMigrator implements Migrator {
         }
     }
 
-    private void recordSuccessfulMigrations(@NotNull List<FileState> fileStates, long successfulMigrations) {
+    private void recordSuccessfulMigrations(@NonNull List<FileState> fileStates, long successfulMigrations) {
         // Record states only for the number of successful migrations
         // Since we process in order, record states from the beginning
         int statesToRecord = (int) Math.min(successfulMigrations, fileStates.size());
@@ -152,8 +151,8 @@ public class DeltaMigrator implements Migrator {
         delegate.close();
     }
 
-    @NotNull
-    private FileState createFileState(@NotNull Photo photo) throws IOException {
+    @NonNull
+    private FileState createFileState(@NonNull Photo photo) throws IOException {
         String path = photo.path().toString();
         long size = Files.size(photo.path());
         FileTime modifiedTime = Files.getLastModifiedTime(photo.path());

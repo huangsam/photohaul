@@ -1,8 +1,7 @@
 package io.huangsam.photohaul.model;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -40,7 +39,7 @@ public class Photo {
      *
      * @return file name
      */
-    @NotNull
+    @NonNull
     public String name() {
         return path.getFileName().toString();
     }
@@ -50,7 +49,7 @@ public class Photo {
      *
      * @return the path
      */
-    @NotNull
+    @NonNull
     public Path path() {
         return path;
     }
@@ -164,7 +163,7 @@ public class Photo {
      *
      * @return photo metadata
      */
-    public synchronized @NotNull PhotoMetadata metadata() {
+    public synchronized @NonNull PhotoMetadata metadata() {
         if (metadata == null) {
             metadata = metadataSupplier.get();
         }

@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
-import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 
@@ -44,7 +43,7 @@ public class MigrationStateFile {
      *
      * @param storage the storage backend for reading/writing state
      */
-    public MigrationStateFile(@NotNull StateFileStorage storage) {
+    public MigrationStateFile(@NonNull StateFileStorage storage) {
         this(storage, DEFAULT_STATE_FILE_NAME);
     }
 
@@ -54,7 +53,7 @@ public class MigrationStateFile {
      * @param storage      the storage backend for reading/writing state
      * @param stateFileName the name of the state file
      */
-    public MigrationStateFile(@NotNull StateFileStorage storage, @NotNull String stateFileName) {
+    public MigrationStateFile(@NonNull StateFileStorage storage, @NonNull String stateFileName) {
         this.storage = storage;
         this.stateFileName = stateFileName;
         this.state = new HashMap<>();
@@ -102,7 +101,7 @@ public class MigrationStateFile {
      * @param currentState the current state of the file
      * @return true if the file is new or modified since last migration
      */
-    public boolean needsMigration(@NotNull FileState currentState) {
+    public boolean needsMigration(@NonNull FileState currentState) {
         FileState previousState = state.get(currentState.path());
         if (previousState == null) {
             return true; // New file
@@ -115,7 +114,7 @@ public class MigrationStateFile {
      *
      * @param fileState the state of the successfully migrated file
      */
-    public void recordMigration(@NotNull FileState fileState) {
+    public void recordMigration(@NonNull FileState fileState) {
         state.put(fileState.path(), fileState);
     }
 

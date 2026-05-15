@@ -1,6 +1,5 @@
 package io.huangsam.photohaul.migration.state;
 
-import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
@@ -22,7 +21,7 @@ public class PathStateStorage implements StateFileStorage {
      *
      * @param rootPath the root directory where state files will be stored
      */
-    public PathStateStorage(@NotNull Path rootPath) {
+    public PathStateStorage(@NonNull Path rootPath) {
         this.rootPath = rootPath;
     }
 

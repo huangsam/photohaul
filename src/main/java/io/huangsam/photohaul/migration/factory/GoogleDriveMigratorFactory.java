@@ -14,7 +14,7 @@ import io.huangsam.photohaul.migration.MigrationException;
 import io.huangsam.photohaul.migration.Migrator;
 import io.huangsam.photohaul.migration.MigratorMode;
 import io.huangsam.photohaul.resolution.PhotoResolver;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -29,7 +29,7 @@ public class GoogleDriveMigratorFactory implements MigratorFactoryStrategy {
     private static final List<String> SCOPES = List.of(DriveScopes.DRIVE);
 
     @Override
-    public @NotNull Migrator create(@NotNull Settings settings, @NotNull PhotoResolver resolver) {
+    public @NonNull Migrator create(@NonNull Settings settings, @NonNull PhotoResolver resolver) {
         String fileName = settings.getValue("drive.credentialFile");
         String app = settings.getValue("drive.appName");
         try {

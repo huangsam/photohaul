@@ -1,7 +1,6 @@
 package io.huangsam.photohaul.resolution;
 
 import io.huangsam.photohaul.model.Photo;
-import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 
 import java.util.ArrayList;
@@ -14,7 +13,7 @@ public record PhotoResolver(List<Function<Photo, String>> photoFunctions) {
      *
      * @return default photo resolver
      */
-    @NotNull
+    @NonNull
     public static PhotoResolver getDefault() {
         return new PhotoResolver(List.of(PhotoFunction.yearTaken()));
     }

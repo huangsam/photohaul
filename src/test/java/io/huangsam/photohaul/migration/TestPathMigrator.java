@@ -3,7 +3,7 @@ package io.huangsam.photohaul.migration;
 import io.huangsam.photohaul.model.Photo;
 import io.huangsam.photohaul.resolution.PhotoResolver;
 import io.huangsam.photohaul.resolution.ResolutionException;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -74,7 +74,7 @@ public class TestPathMigrator extends TestMigrationAbstract {
         migrator.close(); // No-op
     }
 
-    @NotNull
+    @NonNull
     private static PathMigrator getPathMover(Path destination, PhotoResolver resolver, PathMigrator.Action action) {
         return new PathMigrator(destination, resolver, action);
     }

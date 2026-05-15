@@ -14,7 +14,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly(libs.jetbrains.annotations)
+    implementation(libs.jspecify)
     implementation(libs.bundles.aws.all)
     implementation(libs.bundles.google.all)
     implementation(libs.dropbox.sdk)
@@ -22,7 +22,7 @@ dependencies {
     implementation(libs.metadata.extractor)
     implementation(libs.slf4j.api)
     implementation(libs.sshj)
-    testCompileOnly(libs.jetbrains.annotations)
+    testImplementation(libs.jspecify)
     testImplementation(libs.bundles.mockito.all)
     testImplementation(libs.junit.jupiter)
     testImplementation(platform(libs.junit.bom))

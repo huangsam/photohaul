@@ -2,7 +2,6 @@ package io.huangsam.photohaul.migration;
 
 import io.huangsam.photohaul.model.Photo;
 import io.huangsam.photohaul.resolution.PhotoResolver;
-import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 
@@ -27,7 +26,7 @@ public class PathMigrator extends AbstractMigrator {
     }
 
     @Override
-    public final void migratePhotos(@NotNull Collection<Photo> photos) {
+    public final void migratePhotos(@NonNull Collection<Photo> photos) {
         LOG.debug("Start path migration to {}", targetRoot);
         photos.forEach(photo -> {
             Path targetPath = getTargetPath(photo);
@@ -42,7 +41,7 @@ public class PathMigrator extends AbstractMigrator {
         });
     }
 
-    @NotNull
+    @NonNull
     private Path getTargetPath(Photo photo) {
         return targetRoot.resolve(resolvePath(photo));
     }

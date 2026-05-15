@@ -1,7 +1,6 @@
 package io.huangsam.photohaul;
 
 import io.huangsam.photohaul.migration.MigratorMode;
-import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 
@@ -28,7 +27,7 @@ public record Settings(Properties properties, FileSystem fileSystem) {
      * @return A Settings instance.
      * @throws IllegalStateException if the settings file is not found.
      */
-    @NotNull
+    @NonNull
     public static Settings getDefault() {
         String configFileName = System.getProperty(CONFIG_FILE_SYSTEM_PROPERTY);
         if (configFileName == null || configFileName.isEmpty()) {

@@ -1,7 +1,6 @@
 package io.huangsam.photohaul.deduplication;
 
 import io.huangsam.photohaul.model.Photo;
-import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 
@@ -40,8 +39,8 @@ public class PhotoDeduplicator {
      * @param photos the photos to deduplicate
      * @return a collection of unique photos
      */
-    @NotNull
-    public Collection<Photo> deduplicate(@NotNull Collection<Photo> photos) {
+    @NonNull
+    public Collection<Photo> deduplicate(@NonNull Collection<Photo> photos) {
         Map<Long, List<Photo>> photosBySize = groupBySize(photos);
         DeduplicationContext context = new DeduplicationContext();
 
@@ -75,7 +74,7 @@ public class PhotoDeduplicator {
         }
     }
 
-    private long getFileSize(@NotNull Photo photo) throws IOException {
+    private long getFileSize(@NonNull Photo photo) throws IOException {
         return Files.size(photo.path());
     }
 }

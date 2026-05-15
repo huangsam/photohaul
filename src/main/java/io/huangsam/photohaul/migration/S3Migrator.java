@@ -2,7 +2,6 @@ package io.huangsam.photohaul.migration;
 
 import io.huangsam.photohaul.model.Photo;
 import io.huangsam.photohaul.resolution.PhotoResolver;
-import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -18,14 +17,14 @@ public class S3Migrator extends AbstractMigrator {
     private final @NonNull String bucketName;
     private final S3Client s3Client;
 
-    public S3Migrator(@NotNull String bucket, PhotoResolver resolver, S3Client client) {
+    public S3Migrator(@NonNull String bucket, PhotoResolver resolver, S3Client client) {
         super(resolver);
         bucketName = bucket;
         s3Client = client;
     }
 
     @Override
-    public void migratePhotos(@NotNull Collection<Photo> photos) {
+    public void migratePhotos(@NonNull Collection<Photo> photos) {
         LOG.debug("Start S3 migration to bucket {}", bucketName);
         photos.forEach(photo -> {
             String key = getTargetKey(photo);
@@ -49,7 +48,7 @@ public class S3Migrator extends AbstractMigrator {
         s3Client.close();
     }
 
-    @NotNull
+    @NonNull
     private String getTargetKey(@NonNull Photo photo) {
         return resolvePath(photo) + "/" + photo.name();
     }

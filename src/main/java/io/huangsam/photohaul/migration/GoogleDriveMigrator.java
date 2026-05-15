@@ -7,9 +7,8 @@ import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
 import io.huangsam.photohaul.model.Photo;
 import io.huangsam.photohaul.resolution.PhotoResolver;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -36,7 +35,7 @@ public class GoogleDriveMigrator extends AbstractMigrator {
     }
 
     @Override
-    public void migratePhotos(@NotNull Collection<Photo> photos) {
+    public void migratePhotos(@NonNull Collection<Photo> photos) {
         LOG.debug("Start Drive migration to {}", targetRoot);
         photos.forEach(photo -> {
             String targetPath = getTargetPath(photo);
@@ -85,7 +84,7 @@ public class GoogleDriveMigrator extends AbstractMigrator {
         return folderId;
     }
 
-    private void createDrivePhoto(@NonNull String folderId, @NotNull Photo photo) throws IOException {
+    private void createDrivePhoto(@NonNull String folderId, @NonNull Photo photo) throws IOException {
         String existingId = getExistingId(folderId, photo.name());
         if (existingId != null) {
             successCount++;

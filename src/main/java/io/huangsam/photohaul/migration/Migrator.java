@@ -1,7 +1,7 @@
 package io.huangsam.photohaul.migration;
 
 import io.huangsam.photohaul.model.Photo;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.Collection;
 
@@ -25,7 +25,7 @@ public interface Migrator extends AutoCloseable {
      *
      * @param photos collection of photo records
      */
-    void migratePhotos(@NotNull Collection<Photo> photos);
+    void migratePhotos(@NonNull Collection<Photo> photos);
 
     /**
      * Get success count.

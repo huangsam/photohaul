@@ -1,6 +1,5 @@
 package io.huangsam.photohaul.model;
 
-import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 import org.junit.jupiter.api.Test;
 
@@ -34,7 +33,7 @@ public class TestPhoto {
         assertNull(FAKE_PHOTO.modifiedAt());
     }
 
-    @NotNull
+    @NonNull
     private static Photo getPhoto(@NonNull String pathName) {
         return new Photo(Path.of(pathName));
     }

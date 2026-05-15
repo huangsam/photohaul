@@ -13,6 +13,7 @@ Effortless photo management.
 - Filter photos by file type, size, and other criteria
 - Detect photo duplicates using modern hash techniques
 - Skip unchanged files for faster subsequent runs
+- Simulate migrations safely using Dry Run mode
 
 Say goodbye to photo clutter - 👋 + 🚀
 

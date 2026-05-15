@@ -38,7 +38,6 @@ Configure the following property fields:
 - `path.action`: Choose one of the following:
     - `COPY`: Copy photos to target (original files remain)
     - `MOVE`: Move photos to target (original files removed)
-    - `DRY_RUN`: Log what would happen without modifying any files
 
 ### Dropbox setup
 
@@ -90,6 +89,16 @@ Configure the following property fields:
 - `s3.region`: AWS region (optional, defaults to us-east-1)
 
 Amazon S3 (Simple Storage Service) is used for scalable cloud storage. You'll need AWS credentials with S3 permissions. Refer to the [AWS SDK for Java documentation](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/get-started.html) to learn how to obtain and configure AWS credentials.
+
+## Dry run (Simulation)
+
+Dry run mode allows you to simulate a migration without actually copying, moving, or uploading any files to the destination. It logs the exact source paths and intended target destinations, making it perfect for auditing your settings and folder structures before executing large data transfers.
+
+To enable dry run mode, add the following to your configuration file:
+
+```properties
+dryrun.enabled=true
+```
 
 ## Delta migration (optional)
 

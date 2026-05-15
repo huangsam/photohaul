@@ -7,7 +7,6 @@ import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
 import io.huangsam.photohaul.model.Photo;
 import io.huangsam.photohaul.resolution.PhotoResolver;
-import io.huangsam.photohaul.resolution.ResolutionException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
@@ -21,22 +20,17 @@ import java.util.Objects;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-public class GoogleDriveMigrator implements Migrator {
+public class GoogleDriveMigrator extends AbstractMigrator {
     private static final Logger LOG = getLogger(GoogleDriveMigrator.class);
     private static final String MIME_FOLDER = "application/vnd.google-apps.folder";
 
     private final String targetRoot;
-    private final PhotoResolver photoResolver;
     private final Drive driveService;
     private final HttpTransport httpTransport;
 
-    private long createdCount = 0L;
-    private long existedCount = 0L;
-    private long failureCount = 0L;
-
     public GoogleDriveMigrator(String target, PhotoResolver resolver, Drive service, HttpTransport transport) {
+        super(resolver);
         targetRoot = target;
-        photoResolver = resolver;
         driveService = service;
         httpTransport = transport;
     }
@@ -58,26 +52,12 @@ public class GoogleDriveMigrator implements Migrator {
     }
 
     @Override
-    public long getSuccessCount() {
-        return createdCount + existedCount;
-    }
-
-    @Override
-    public long getFailureCount() {
-        return failureCount;
-    }
-
-    @Override
     public void close() throws Exception {
         httpTransport.shutdown();
     }
 
     private @NonNull String getTargetPath(Photo photo) {
-        try {
-            return photoResolver.resolveString(photo);
-        } catch (ResolutionException e) {
-            return "Other";
-        }
+        return resolvePath(photo);
     }
 
     private String createDriveFolder(@NonNull String targetPath) throws IOException {
@@ -108,7 +88,7 @@ public class GoogleDriveMigrator implements Migrator {
     private void createDrivePhoto(@NonNull String folderId, @NotNull Photo photo) throws IOException {
         String existingId = getExistingId(folderId, photo.name());
         if (existingId != null) {
-            existedCount++;
+            successCount++;
             return;
         }
 
@@ -130,7 +110,7 @@ public class GoogleDriveMigrator implements Migrator {
 
         LOG.trace("Photo created: {}", photoSuccess.getId());
 
-        createdCount++;
+        successCount++;
     }
 
     @Nullable

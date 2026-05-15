@@ -2,7 +2,6 @@ package io.huangsam.photohaul.migration;
 
 import io.huangsam.photohaul.model.Photo;
 import io.huangsam.photohaul.resolution.PhotoResolver;
-import io.huangsam.photohaul.resolution.ResolutionException;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
@@ -15,19 +14,15 @@ import java.util.Collection;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-public class PathMigrator implements Migrator {
+public class PathMigrator extends AbstractMigrator {
     private static final Logger LOG = getLogger(PathMigrator.class);
 
     private final Path targetRoot;
-    private final PhotoResolver photoResolver;
     private final Action migratorAction;
 
-    private long successCount = 0L;
-    private long failureCount = 0L;
-
     public PathMigrator(Path target, PhotoResolver resolver, Action action) {
+        super(resolver);
         targetRoot = target;
-        photoResolver = resolver;
         migratorAction = action;
     }
 
@@ -47,28 +42,9 @@ public class PathMigrator implements Migrator {
         });
     }
 
-    @Override
-    public final long getSuccessCount() {
-        return successCount;
-    }
-
-    @Override
-    public final long getFailureCount() {
-        return failureCount;
-    }
-
-    @Override
-    public void close() throws Exception {
-        // No-op: no resources to close
-    }
-
     @NotNull
     private Path getTargetPath(Photo photo) {
-        try {
-            return targetRoot.resolve(photoResolver.resolveString(photo));
-        } catch (ResolutionException e) {
-            return targetRoot.resolve("Other");
-        }
+        return targetRoot.resolve(resolvePath(photo));
     }
 
     private void migratePhoto(@NonNull Path target, @NonNull Photo photo) throws IOException {

@@ -2,7 +2,6 @@ package io.huangsam.photohaul.migration;
 
 import io.huangsam.photohaul.model.Photo;
 import io.huangsam.photohaul.resolution.PhotoResolver;
-import io.huangsam.photohaul.resolution.ResolutionException;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
@@ -13,19 +12,15 @@ import java.util.Collection;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-public class S3Migrator implements Migrator {
+public class S3Migrator extends AbstractMigrator {
     private static final Logger LOG = getLogger(S3Migrator.class);
 
     private final @NonNull String bucketName;
-    private final PhotoResolver photoResolver;
     private final S3Client s3Client;
 
-    private long successCount = 0L;
-    private long failureCount = 0L;
-
     public S3Migrator(@NotNull String bucket, PhotoResolver resolver, S3Client client) {
+        super(resolver);
         bucketName = bucket;
-        photoResolver = resolver;
         s3Client = client;
     }
 
@@ -50,26 +45,12 @@ public class S3Migrator implements Migrator {
     }
 
     @Override
-    public long getSuccessCount() {
-        return successCount;
-    }
-
-    @Override
-    public long getFailureCount() {
-        return failureCount;
-    }
-
-    @Override
     public void close() throws Exception {
         s3Client.close();
     }
 
     @NotNull
     private String getTargetKey(@NonNull Photo photo) {
-        try {
-            return photoResolver.resolveString(photo) + "/" + photo.name();
-        } catch (ResolutionException e) {
-            return "Other/" + photo.name();
-        }
+        return resolvePath(photo) + "/" + photo.name();
     }
 }

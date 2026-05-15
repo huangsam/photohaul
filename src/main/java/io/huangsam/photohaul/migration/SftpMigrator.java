@@ -2,7 +2,6 @@ package io.huangsam.photohaul.migration;
 
 import io.huangsam.photohaul.model.Photo;
 import io.huangsam.photohaul.resolution.PhotoResolver;
-import io.huangsam.photohaul.resolution.ResolutionException;
 import net.schmizz.sshj.SSHClient;
 import net.schmizz.sshj.sftp.SFTPClient;
 import org.jetbrains.annotations.NotNull;
@@ -16,7 +15,7 @@ import java.util.function.Supplier;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-public class SftpMigrator implements Migrator {
+public class SftpMigrator extends AbstractMigrator {
     private static final Logger LOG = getLogger(SftpMigrator.class);
 
     private final @NonNull String host;
@@ -24,11 +23,7 @@ public class SftpMigrator implements Migrator {
     private final @NonNull String username;
     private final @NonNull String password;
     private final @NonNull String targetRoot;
-    private final PhotoResolver photoResolver;
     private final Supplier<SSHClient> sshClientSupplier;
-
-    private long successCount = 0L;
-    private long failureCount = 0L;
 
     public SftpMigrator(@NotNull String host, int port, @NotNull String username, @NotNull String password,
                        @NotNull String target, PhotoResolver resolver) {
@@ -38,12 +33,12 @@ public class SftpMigrator implements Migrator {
     // For testing
     SftpMigrator(@NotNull String host, int port, @NotNull String username, @NotNull String password,
                 @NotNull String target, PhotoResolver resolver, Supplier<SSHClient> sshClientSupplier) {
+        super(resolver);
         this.host = host;
         this.port = port;
         this.username = username;
         this.password = password;
         this.targetRoot = target;
-        this.photoResolver = resolver;
         this.sshClientSupplier = sshClientSupplier;
     }
 
@@ -82,27 +77,8 @@ public class SftpMigrator implements Migrator {
         }
     }
 
-    @Override
-    public long getSuccessCount() {
-        return successCount;
-    }
-
-    @Override
-    public long getFailureCount() {
-        return failureCount;
-    }
-
-    @Override
-    public void close() throws Exception {
-        // No-op: resources are closed within migratePhotos
-    }
-
     @NotNull
     private String getTargetPath(@NonNull Photo photo) {
-        try {
-            return targetRoot + "/" + photoResolver.resolveString(photo) + "/" + photo.name();
-        } catch (ResolutionException e) {
-            return targetRoot + "/Other/" + photo.name();
-        }
+        return targetRoot + "/" + resolvePath(photo) + "/" + photo.name();
     }
 }

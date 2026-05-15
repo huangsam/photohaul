@@ -6,7 +6,6 @@ import com.dropbox.core.v2.files.DbxUserFilesRequests;
 import com.dropbox.core.v2.files.ListFolderErrorException;
 import io.huangsam.photohaul.model.Photo;
 import io.huangsam.photohaul.resolution.PhotoResolver;
-import io.huangsam.photohaul.resolution.ResolutionException;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
@@ -18,22 +17,18 @@ import java.util.Collection;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-public class DropboxMigrator implements Migrator {
+public class DropboxMigrator extends AbstractMigrator {
     private static final Logger LOG = getLogger(DropboxMigrator.class);
 
     private final @NonNull String targetRoot;
-    private final PhotoResolver photoResolver;
     private final DbxClientV2 dropboxClient;
 
-    private long successCount = 0L;
-    private long failureCount = 0L;
-
     public DropboxMigrator(@NotNull String target, PhotoResolver resolver, DbxClientV2 client) {
+        super(resolver);
         if (!target.startsWith("/")) {
             throw new IllegalArgumentException("Target must begin with a '/' character");
         }
         targetRoot = target;
-        photoResolver = resolver;
         dropboxClient = client;
     }
 
@@ -59,27 +54,8 @@ public class DropboxMigrator implements Migrator {
         });
     }
 
-    @Override
-    public long getSuccessCount() {
-        return successCount;
-    }
-
-    @Override
-    public long getFailureCount() {
-        return failureCount;
-    }
-
-    @Override
-    public void close() throws Exception {
-        // No-op: DbxClientV2 does not provide a close method
-    }
-
     @NotNull
     private String getTargetPath(Photo photo) {
-        try {
-            return targetRoot + "/" + photoResolver.resolveString(photo);
-        } catch (ResolutionException e) {
-            return targetRoot + "/Other";
-        }
+        return targetRoot + "/" + resolvePath(photo);
     }
 }

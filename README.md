@@ -7,13 +7,10 @@
 
 Effortless photo management.
 
-- Reorganize 10K+ photos (30 GB) in seconds!
-- Migrate photos locally and to the cloud (Dropbox, Google Drive, SFTP, S3)
-- Customize folder structures based on date, camera, and more
-- Filter photos by file type, size, and other criteria
-- Detect photo duplicates using modern hash techniques
-- Skip unchanged files for faster subsequent runs
-- Simulate migrations safely using Dry Run mode
+- **Sync Anywhere:** Local, Cloud (S3, GDrive, Dropbox), or SFTP.
+- **Auto-Organize:** Custom paths by date, camera, or file type.
+- **Smart Logic:** Hash-based deduplication and incremental runs.
+- **Risk-Free:** Built-in dry run simulation.
 
 Say goodbye to photo clutter - 👋 + 🚀
 
@@ -40,10 +37,6 @@ For detailed instructions: [link](USERGUIDE.md)
 - Java 21 or later
 - Gradle 9 or later
 
-**Build application:**
-
-- Run `./gradlew build` in your terminal
-
 **Configure settings:**
 
 - Set your **Filtering rules** to filter by extension, file size, etc.
@@ -54,7 +47,7 @@ For detailed instructions: [link](USERGUIDE.md)
 **Run application:**
 
 - Run `./gradlew run` in your terminal
-    - Optional: override with `-Dphotohaul.config=personal/path.properties` (classpath) or an absolute/relative filesystem path (e.g., `-Dphotohaul.config=./src/main/resources/personal/path.properties`).
+    - Optional: override `-Dphotohaul.config` with classpath or filesystem path.
 
 ```text
 > Task :run

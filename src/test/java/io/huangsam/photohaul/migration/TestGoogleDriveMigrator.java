@@ -82,7 +82,7 @@ public class TestGoogleDriveMigrator extends TestMigrationAbstract {
 
         when(photoResolverMock.resolveString(any(Photo.class))).thenReturn("some/path");
 
-        Migrator migrator = new GoogleDriveMigrator(TARGET_ROOT, photoResolverMock, driveMock, httpTransportMock);
+        Migrator migrator = new GoogleDriveMigrator(TARGET_ROOT, photoResolverMock, driveMock, httpTransportMock, false);
         run(migrator);
 
         verify(filesMock, times(4)).list();
@@ -108,7 +108,7 @@ public class TestGoogleDriveMigrator extends TestMigrationAbstract {
 
         when(photoResolverMock.resolveString(any(Photo.class))).thenReturn("some/path");
 
-        Migrator migrator = new GoogleDriveMigrator(TARGET_ROOT, photoResolverMock, driveMock, httpTransportMock);
+        Migrator migrator = new GoogleDriveMigrator(TARGET_ROOT, photoResolverMock, driveMock, httpTransportMock, false);
         run(migrator);
 
         verify(listedFileMock, times(4)).getId();
@@ -138,7 +138,7 @@ public class TestGoogleDriveMigrator extends TestMigrationAbstract {
 
         when(photoResolverMock.resolveString(any(Photo.class))).thenReturn("some/path");
 
-        Migrator migrator = new GoogleDriveMigrator(TARGET_ROOT, photoResolverMock, driveMock, httpTransportMock);
+        Migrator migrator = new GoogleDriveMigrator(TARGET_ROOT, photoResolverMock, driveMock, httpTransportMock, false);
         run(migrator);
 
         verify(filesMock, times(2)).list();
@@ -172,7 +172,7 @@ public class TestGoogleDriveMigrator extends TestMigrationAbstract {
 
         when(photoResolverMock.resolveString(any(Photo.class))).thenThrow(new ResolutionException("Resolution failed"));
 
-        Migrator migrator = new GoogleDriveMigrator(TARGET_ROOT, photoResolverMock, driveMock, httpTransportMock);
+        Migrator migrator = new GoogleDriveMigrator(TARGET_ROOT, photoResolverMock, driveMock, httpTransportMock, false);
         run(migrator);
 
         verify(filesMock, times(4)).list();

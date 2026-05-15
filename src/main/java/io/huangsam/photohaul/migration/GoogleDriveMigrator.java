@@ -27,8 +27,8 @@ public class GoogleDriveMigrator extends AbstractMigrator {
     private final Drive driveService;
     private final HttpTransport httpTransport;
 
-    public GoogleDriveMigrator(String target, PhotoResolver resolver, Drive service, HttpTransport transport) {
-        super(resolver);
+    public GoogleDriveMigrator(String target, PhotoResolver resolver, Drive service, HttpTransport transport, boolean dryRun) {
+        super(resolver, dryRun);
         targetRoot = target;
         driveService = service;
         httpTransport = transport;
@@ -40,6 +40,11 @@ public class GoogleDriveMigrator extends AbstractMigrator {
         photos.forEach(photo -> {
             String targetPath = getTargetPath(photo);
             LOG.trace("Move {} to {}", photo.name(), targetPath);
+            if (dryRun) {
+                LOG.info("Dry-run {} to Google Drive path: {}/{}", photo.path(), targetPath, photo.name());
+                successCount++;
+                return;
+            }
             try {
                 String folderId = createDriveFolder(targetPath);
                 createDrivePhoto(folderId, photo);

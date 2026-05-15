@@ -154,4 +154,17 @@ public record Settings(Properties properties, FileSystem fileSystem) {
     public boolean isDeltaEnabled() {
         return Boolean.parseBoolean(getValue("delta.enabled", "false"));
     }
+
+    /**
+     * Check if dry run mode is enabled.
+     *
+     * <p>When enabled, the migration process will simulate all operations without
+     * actually moving or copying any files. This is useful for auditing the migration
+     * logic and verifying target paths before committing to changes.
+     *
+     * @return true if dry run is enabled (dryrun.enabled=true), false by default
+     */
+    public boolean isDryRun() {
+        return Boolean.parseBoolean(getValue("dryrun.enabled", "false"));
+    }
 }

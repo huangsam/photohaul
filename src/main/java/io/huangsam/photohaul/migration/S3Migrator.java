@@ -17,8 +17,8 @@ public class S3Migrator extends AbstractMigrator {
     private final @NonNull String bucketName;
     private final S3Client s3Client;
 
-    public S3Migrator(@NonNull String bucket, PhotoResolver resolver, S3Client client) {
-        super(resolver);
+    public S3Migrator(@NonNull String bucket, PhotoResolver resolver, S3Client client, boolean dryRun) {
+        super(resolver, dryRun);
         bucketName = bucket;
         s3Client = client;
     }
@@ -29,6 +29,11 @@ public class S3Migrator extends AbstractMigrator {
         photos.forEach(photo -> {
             String key = getTargetKey(photo);
             LOG.trace("Upload {} to s3://{}/{}", photo.name(), bucketName, key);
+            if (dryRun) {
+                LOG.info("Dry-run {} to s3://{}/{}", photo.path(), bucketName, key);
+                successCount++;
+                return;
+            }
             try {
                 PutObjectRequest request = PutObjectRequest.builder()
                         .bucket(bucketName)

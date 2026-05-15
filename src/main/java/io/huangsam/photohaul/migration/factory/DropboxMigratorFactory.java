@@ -17,6 +17,6 @@ public class DropboxMigratorFactory implements MigratorFactoryStrategy {
         String target = settings.getValue("dbx.target");
         DbxRequestConfig config = DbxRequestConfig.newBuilder(settings.getValue("dbx.clientId")).build();
         DbxClientV2 client = new DbxClientV2(config, settings.getValue("dbx.accessToken"));
-        return new DropboxMigrator(target, resolver, client);
+        return new DropboxMigrator(target, resolver, client, settings.isDryRun());
     }
 }

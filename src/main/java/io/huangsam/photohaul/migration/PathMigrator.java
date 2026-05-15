@@ -19,8 +19,8 @@ public class PathMigrator extends AbstractMigrator {
     private final Path targetRoot;
     private final Action migratorAction;
 
-    public PathMigrator(Path target, PhotoResolver resolver, Action action) {
-        super(resolver);
+    public PathMigrator(Path target, PhotoResolver resolver, Action action, boolean dryRun) {
+        super(resolver, dryRun);
         targetRoot = target;
         migratorAction = action;
     }
@@ -48,7 +48,7 @@ public class PathMigrator extends AbstractMigrator {
 
     private void migratePhoto(@NonNull Path target, @NonNull Photo photo) throws IOException {
         Path photoLocation = target.resolve(photo.name());
-        if (migratorAction == Action.DRY_RUN) {
+        if (dryRun) {
             LOG.info("Dry-run {} to {}", photo.path(), photoLocation);
             return;
         }
@@ -56,7 +56,6 @@ public class PathMigrator extends AbstractMigrator {
         switch (migratorAction) {
             case MOVE -> Files.move(photo.path(), photoLocation, StandardCopyOption.REPLACE_EXISTING);
             case COPY -> Files.copy(photo.path(), photoLocation, StandardCopyOption.REPLACE_EXISTING);
-            case DRY_RUN -> { return; }
         }
     }
 
@@ -75,13 +74,6 @@ public class PathMigrator extends AbstractMigrator {
          * Copy the photo from its original location to the target path.
          * The original photo remains untouched.
          */
-        COPY,
-
-        /**
-         * Perform a dry run of the migration process.
-         * No files are actually moved or copied.
-         * Logs information about where each photo would be placed.
-         */
-        DRY_RUN
+        COPY
     }
 }

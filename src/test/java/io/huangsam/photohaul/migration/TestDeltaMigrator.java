@@ -39,7 +39,7 @@ public class TestDeltaMigrator {
     @BeforeEach
     void setUp() {
         MigrationStateFile stateFile = new MigrationStateFile(mockStorage);
-        deltaMigrator = new DeltaMigrator(mockDelegate, stateFile);
+        deltaMigrator = new DeltaMigrator(mockDelegate, stateFile, false);
     }
 
     @Test

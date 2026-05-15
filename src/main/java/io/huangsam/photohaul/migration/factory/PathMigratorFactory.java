@@ -16,7 +16,7 @@ public class PathMigratorFactory implements MigratorFactoryStrategy {
     public @NonNull Migrator create(@NonNull Settings settings, @NonNull PhotoResolver resolver) {
         Path target = getPathTargetDirectory(settings);
         String actionValue = settings.getValue("path.action", "MOVE").toUpperCase();
-        return new PathMigrator(target, resolver, PathMigrator.Action.valueOf(actionValue));
+        return new PathMigrator(target, resolver, PathMigrator.Action.valueOf(actionValue), settings.isDryRun());
     }
 
     private @NonNull Path getPathTargetDirectory(@NonNull Settings settings) {

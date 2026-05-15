@@ -39,6 +39,7 @@ public class DeltaMigrator implements Migrator {
 
     private final @NonNull Migrator delegate;
     private final @NonNull MigrationStateFile stateFile;
+    private final boolean dryRun;
 
     private long skippedCount = 0L;
 
@@ -47,10 +48,12 @@ public class DeltaMigrator implements Migrator {
      *
      * @param delegate  the underlying migrator to delegate to
      * @param stateFile the state file manager for tracking migrations
+     * @param dryRun    whether to execute in dry-run mode
      */
-    public DeltaMigrator(@NonNull Migrator delegate, @NonNull MigrationStateFile stateFile) {
+    public DeltaMigrator(@NonNull Migrator delegate, @NonNull MigrationStateFile stateFile, boolean dryRun) {
         this.delegate = delegate;
         this.stateFile = stateFile;
+        this.dryRun = dryRun;
     }
 
     @Override
@@ -103,7 +106,7 @@ public class DeltaMigrator implements Migrator {
 
         long successfulMigrations = delegate.getSuccessCount() - previousSuccessCount;
 
-        if (successfulMigrations > 0) {
+        if (successfulMigrations > 0 && !dryRun) {
             recordSuccessfulMigrations(batch.fileStates(), successfulMigrations);
         }
     }

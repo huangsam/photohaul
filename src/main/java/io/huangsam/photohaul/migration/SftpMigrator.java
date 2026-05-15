@@ -17,43 +17,45 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class SftpMigrator extends AbstractMigrator {
     private static final Logger LOG = getLogger(SftpMigrator.class);
 
-    private final @NonNull String host;
-    private final int port;
-    private final @NonNull String username;
-    private final @NonNull String password;
+    private final @NonNull Config config;
     private final @NonNull String targetRoot;
     private final Supplier<SSHClient> sshClientSupplier;
 
-    public SftpMigrator(@NonNull String host, int port, @NonNull String username, @NonNull String password,
-                       @NonNull String target, PhotoResolver resolver) {
-        this(host, port, username, password, target, resolver, SSHClient::new);
+    public record Config(@NonNull String host, int port, @NonNull String username, @NonNull String password) { }
+
+    public SftpMigrator(@NonNull Config config,
+                       @NonNull String target, PhotoResolver resolver, boolean dryRun) {
+        this(config, target, resolver, SSHClient::new, dryRun);
     }
 
     // For testing
-    SftpMigrator(@NonNull String host, int port, @NonNull String username, @NonNull String password,
-                @NonNull String target, PhotoResolver resolver, Supplier<SSHClient> sshClientSupplier) {
-        super(resolver);
-        this.host = host;
-        this.port = port;
-        this.username = username;
-        this.password = password;
+    SftpMigrator(@NonNull Config config,
+                @NonNull String target, PhotoResolver resolver, Supplier<SSHClient> sshClientSupplier, boolean dryRun) {
+        super(resolver, dryRun);
+        this.config = config;
         this.targetRoot = target;
         this.sshClientSupplier = sshClientSupplier;
     }
 
     @Override
     public void migratePhotos(java.util.@NonNull Collection<Photo> photos) {
-        LOG.debug("Start SFTP migration to {}@{}:{}", username, host, port);
+        LOG.debug("Start SFTP migration to {}@{}:{}", config.username(), config.host(), config.port());
         int processedCount = 0;
         try (SSHClient sshClient = sshClientSupplier.get()) {
             sshClient.loadKnownHosts();
-            sshClient.connect(host, port);
-            sshClient.authPassword(username, password);
+            sshClient.connect(config.host(), config.port());
+            sshClient.authPassword(config.username(), config.password());
 
             try (SFTPClient sftpClient = sshClient.newSFTPClient()) {
                 for (Photo photo : photos) {
                     String targetPath = getTargetPath(photo);
                     LOG.trace("Upload {} to {}", photo.name(), targetPath);
+                    if (dryRun) {
+                        LOG.info("Dry-run {} to sftp://{}@{}:{}/{}", photo.path(), config.username(), config.host(), config.port(), targetPath);
+                        successCount++;
+                        processedCount++;
+                        continue;
+                    }
                     try {
                         // Ensure target directory exists
                         Path targetPathObj = Paths.get(targetPath);

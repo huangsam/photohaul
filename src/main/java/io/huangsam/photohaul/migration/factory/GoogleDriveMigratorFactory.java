@@ -44,8 +44,7 @@ public class GoogleDriveMigratorFactory implements MigratorFactoryStrategy {
                 Drive service = new Drive.Builder(transport, JSON_FACTORY, requestInitializer)
                         .setApplicationName(app)
                         .build();
-
-                return new GoogleDriveMigrator(settings.getValue("drive.target"), resolver, service, transport);
+                return new GoogleDriveMigrator(settings.getValue("drive.target"), resolver, service, transport, settings.isDryRun());
             }
         } catch (IOException e) {
             throw new MigrationException(e.getMessage(), MigratorMode.GOOGLE_DRIVE);

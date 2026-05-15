@@ -46,7 +46,7 @@ public class TestDropboxMigrator extends TestMigrationAbstract {
 
         when(photoResolverMock.resolveString(any(Photo.class))).thenReturn("some/path");
 
-        Migrator migrator = new DropboxMigrator("/Foobar", photoResolverMock, clientMock);
+        Migrator migrator = new DropboxMigrator("/Foobar", photoResolverMock, clientMock, false);
         run(migrator);
 
         verify(requestsMock, times(0)).createFolderV2(anyString());
@@ -67,7 +67,7 @@ public class TestDropboxMigrator extends TestMigrationAbstract {
 
         when(photoResolverMock.resolveString(any(Photo.class))).thenReturn("some/path");
 
-        Migrator migrator = new DropboxMigrator("/Foobar", photoResolverMock, clientMock);
+        Migrator migrator = new DropboxMigrator("/Foobar", photoResolverMock, clientMock, false);
         run(migrator);
 
         verify(requestsMock, times(2)).createFolderV2(anyString());
@@ -83,7 +83,7 @@ public class TestDropboxMigrator extends TestMigrationAbstract {
     @SuppressWarnings("resource")
     void testDropboxSetupNotWorking() {
         assertThrows(IllegalArgumentException.class, () ->
-                new DropboxMigrator("NoSlashAtStart", photoResolverMock, clientMock));
+                new DropboxMigrator("NoSlashAtStart", photoResolverMock, clientMock, false));
     }
 
     @Test
@@ -94,7 +94,7 @@ public class TestDropboxMigrator extends TestMigrationAbstract {
 
         when(photoResolverMock.resolveString(any(Photo.class))).thenThrow(new ResolutionException("Resolution failed"));
 
-        Migrator migrator = new DropboxMigrator("/Foobar", photoResolverMock, clientMock);
+        Migrator migrator = new DropboxMigrator("/Foobar", photoResolverMock, clientMock, false);
         run(migrator);
 
         verify(requestsMock, times(0)).createFolderV2(anyString());

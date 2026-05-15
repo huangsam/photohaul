@@ -26,7 +26,7 @@ public class TestPathMigrator extends TestMigrationAbstract {
     void testMigratePhotosDryRunAllSuccess() throws Exception {
         when(photoResolverMock.resolveString(any(Photo.class))).thenReturn("some/path");
 
-        Migrator migrator = getPathMover(getTempResources(), photoResolverMock, PathMigrator.Action.DRY_RUN);
+        Migrator migrator = getPathMover(getTempResources(), photoResolverMock, PathMigrator.Action.COPY, true);
         run(migrator);
 
         assertEquals(2, migrator.getSuccessCount());
@@ -39,7 +39,7 @@ public class TestPathMigrator extends TestMigrationAbstract {
     void testMigratePhotosCopyAllSuccess() throws Exception {
         when(photoResolverMock.resolveString(any(Photo.class))).thenReturn("some/path");
 
-        Migrator migrator = getPathMover(getTempResources(), photoResolverMock, PathMigrator.Action.COPY);
+        Migrator migrator = getPathMover(getTempResources(), photoResolverMock, PathMigrator.Action.COPY, false);
         run(migrator);
 
         assertEquals(2, migrator.getSuccessCount());
@@ -52,7 +52,7 @@ public class TestPathMigrator extends TestMigrationAbstract {
     void testMigratePhotosMoveAllFailure() throws Exception {
         when(photoResolverMock.resolveString(any(Photo.class))).thenReturn("some/path");
 
-        Migrator migrator = getPathMover(getTempResources(), photoResolverMock, PathMigrator.Action.MOVE);
+        Migrator migrator = getPathMover(getTempResources(), photoResolverMock, PathMigrator.Action.MOVE, false);
         run(migrator, List.of("foobar.jpg"));
 
         assertEquals(0, migrator.getSuccessCount());
@@ -65,7 +65,7 @@ public class TestPathMigrator extends TestMigrationAbstract {
     void testMigratePhotosWithResolutionException() throws Exception {
         when(photoResolverMock.resolveString(any(Photo.class))).thenThrow(new ResolutionException("Resolution failed"));
 
-        Migrator migrator = getPathMover(getTempResources(), photoResolverMock, PathMigrator.Action.COPY);
+        Migrator migrator = getPathMover(getTempResources(), photoResolverMock, PathMigrator.Action.COPY, false);
         run(migrator);
 
         assertEquals(2, migrator.getSuccessCount());
@@ -75,7 +75,7 @@ public class TestPathMigrator extends TestMigrationAbstract {
     }
 
     @NonNull
-    private static PathMigrator getPathMover(Path destination, PhotoResolver resolver, PathMigrator.Action action) {
-        return new PathMigrator(destination, resolver, action);
+    private static PathMigrator getPathMover(Path destination, PhotoResolver resolver, PathMigrator.Action action, boolean dryRun) {
+        return new PathMigrator(destination, resolver, action, dryRun);
     }
 }

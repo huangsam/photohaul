@@ -30,7 +30,7 @@ public class TestS3Migrator extends TestMigrationAbstract {
     void testMigratePhotosSuccess() throws Exception {
         when(photoResolverMock.resolveString(any(Photo.class))).thenReturn("some/path");
 
-        Migrator migrator = new S3Migrator("test-bucket", photoResolverMock, s3ClientMock);
+        Migrator migrator = new S3Migrator("test-bucket", photoResolverMock, s3ClientMock, false);
         run(migrator);
 
         verify(s3ClientMock, times(2)).putObject(any(PutObjectRequest.class), any(Path.class));
@@ -47,7 +47,7 @@ public class TestS3Migrator extends TestMigrationAbstract {
         when(s3ClientMock.putObject(any(PutObjectRequest.class), any(Path.class))).thenThrow(new RuntimeException("Upload failed"));
         when(photoResolverMock.resolveString(any(Photo.class))).thenReturn("some/path");
 
-        Migrator migrator = new S3Migrator("test-bucket", photoResolverMock, s3ClientMock);
+        Migrator migrator = new S3Migrator("test-bucket", photoResolverMock, s3ClientMock, false);
         run(migrator);
 
         verify(s3ClientMock, times(2)).putObject(any(PutObjectRequest.class), any(Path.class));
@@ -63,7 +63,7 @@ public class TestS3Migrator extends TestMigrationAbstract {
     void testMigratePhotosWithResolutionException() throws Exception {
         when(photoResolverMock.resolveString(any(Photo.class))).thenThrow(new ResolutionException("Resolution failed"));
 
-        Migrator migrator = new S3Migrator("test-bucket", photoResolverMock, s3ClientMock);
+        Migrator migrator = new S3Migrator("test-bucket", photoResolverMock, s3ClientMock, false);
         run(migrator);
 
         verify(s3ClientMock, times(2)).putObject(any(PutObjectRequest.class), any(Path.class));

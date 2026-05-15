@@ -10,11 +10,13 @@ import org.jspecify.annotations.NonNull;
  */
 public abstract class AbstractMigrator implements Migrator {
     protected final PhotoResolver photoResolver;
+    protected final boolean dryRun;
     protected long successCount = 0L;
     protected long failureCount = 0L;
 
-    protected AbstractMigrator(PhotoResolver photoResolver) {
+    protected AbstractMigrator(PhotoResolver photoResolver, boolean dryRun) {
         this.photoResolver = photoResolver;
+        this.dryRun = dryRun;
     }
 
     @Override

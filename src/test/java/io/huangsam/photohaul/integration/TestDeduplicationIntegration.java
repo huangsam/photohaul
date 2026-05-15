@@ -70,7 +70,7 @@ public class TestDeduplicationIntegration {
 
         // Step 3: Migrate unique photos
         PhotoResolver photoResolver = new PhotoResolver(List.of());
-        PathMigrator migrator = new PathMigrator(targetDir, photoResolver, PathMigrator.Action.COPY);
+        PathMigrator migrator = new PathMigrator(targetDir, photoResolver, PathMigrator.Action.COPY, false);
         migrator.migratePhotos(uniquePhotos);
 
         // Verify migration succeeded for 2 unique photos
@@ -118,7 +118,7 @@ public class TestDeduplicationIntegration {
 
         // Migrate
         PhotoResolver photoResolver = new PhotoResolver(List.of());
-        PathMigrator migrator = new PathMigrator(targetDir, photoResolver, PathMigrator.Action.COPY);
+        PathMigrator migrator = new PathMigrator(targetDir, photoResolver, PathMigrator.Action.COPY, false);
         migrator.migratePhotos(uniquePhotos);
 
         assertEquals(3, migrator.getSuccessCount());

@@ -84,7 +84,7 @@ public class TestMigratorFactory {
                 "migrator.mode=PATH%n"
                         + "path.source=Dummy/Source%n"
                         + "path.target=Dummy/Target%n"
-                        + "path.action=DRY_RUN%n"
+                        + "path.action=COPY%n"
                         + "delta.enabled=true%n");
         Files.writeString(propsFile, propsContent);
 
@@ -171,7 +171,7 @@ public class TestMigratorFactory {
                 "migrator.mode=PATH%n"
                         + "path.source=Dummy/Source%n"
                         + "path.target=Dummy/Target%n"
-                        + "path.action=DRY_RUN%n"
+                        + "path.action=COPY%n"
                         + "delta.enabled=false%n");
         Files.writeString(propsFile, propsContent);
 

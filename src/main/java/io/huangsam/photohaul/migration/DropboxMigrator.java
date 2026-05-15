@@ -22,8 +22,8 @@ public class DropboxMigrator extends AbstractMigrator {
     private final @NonNull String targetRoot;
     private final DbxClientV2 dropboxClient;
 
-    public DropboxMigrator(@NonNull String target, PhotoResolver resolver, DbxClientV2 client) {
-        super(resolver);
+    public DropboxMigrator(@NonNull String target, PhotoResolver resolver, DbxClientV2 client, boolean dryRun) {
+        super(resolver, dryRun);
         if (!target.startsWith("/")) {
             throw new IllegalArgumentException("Target must begin with a '/' character");
         }
@@ -38,6 +38,11 @@ public class DropboxMigrator extends AbstractMigrator {
         photos.forEach(photo -> {
             String targetPath = getTargetPath(photo);
             LOG.trace("Move {} to {}", photo.name(), targetPath);
+            if (dryRun) {
+                LOG.info("Dry-run {} to {}", photo.path(), targetPath + "/" + photo.name());
+                successCount++;
+                return;
+            }
             try (InputStream in = Files.newInputStream(photo.path())) {
                 try {
                     requests.listFolder(targetPath);

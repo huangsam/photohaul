@@ -21,10 +21,10 @@ public class S3MigratorFactory implements MigratorFactoryStrategy {
         String region = settings.getValue("s3.region", "us-east-1");
         String bucket = settings.getValue("s3.bucket");
         AwsBasicCredentials credentials = AwsBasicCredentials.create(accessKey, secretKey);
-        S3Client s3Client = S3Client.builder()
-                .credentialsProvider(StaticCredentialsProvider.create(credentials))
+        S3Client client = S3Client.builder()
                 .region(Region.of(region))
+                .credentialsProvider(StaticCredentialsProvider.create(credentials))
                 .build();
-        return new S3Migrator(bucket, resolver, s3Client);
+        return new S3Migrator(bucket, resolver, client, settings.isDryRun());
     }
 }

@@ -86,7 +86,7 @@ public class MigratorFactory {
         };
         LOG.info("Delta migration enabled for mode {}", mode);
         MigrationStateFile stateFile = new MigrationStateFile(stateStorage);
-        return new DeltaMigrator(baseMigrator, stateFile);
+        return new DeltaMigrator(baseMigrator, stateFile, settings.isDryRun());
     }
 
     @NonNull

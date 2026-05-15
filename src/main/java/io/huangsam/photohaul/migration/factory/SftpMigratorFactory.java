@@ -17,6 +17,7 @@ public class SftpMigratorFactory implements MigratorFactoryStrategy {
         String username = settings.getValue("sftp.username");
         String password = settings.getValue("sftp.password");
         String target = settings.getValue("sftp.target");
-        return new SftpMigrator(host, port, username, password, target, resolver);
+        SftpMigrator.Config config = new SftpMigrator.Config(host, port, username, password);
+        return new SftpMigrator(config, target, resolver, settings.isDryRun());
     }
 }

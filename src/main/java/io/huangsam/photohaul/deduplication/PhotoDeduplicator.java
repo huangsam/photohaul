@@ -45,17 +45,23 @@ public class PhotoDeduplicator {
     @NotNull
     public Collection<Photo> deduplicate(@NotNull Collection<Photo> photos) {
         Map<Long, List<Photo>> photosBySize = groupBySize(photos);
+        DeduplicationContext context = new DeduplicationContext();
 
-        Map<String, Photo> uniquePhotos = new LinkedHashMap<>();
-        DeduplicationStrategy strategy = new SizeBasedStrategy();
+        DeduplicationStrategy fullHash = new FullHashStrategy();
+        DeduplicationStrategy partialHash = new PartialHashStrategy();
+        DeduplicationStrategy sizeBased = new SizeBasedStrategy();
 
-        int duplicateCount = photosBySize.values().stream()
-            .mapToInt(sizeGroup -> strategy.processPhotos(sizeGroup, uniquePhotos))
-            .sum();
+        for (List<Photo> sizeGroup : photosBySize.values()) {
+            sizeBased.process(sizeGroup, context, (group, ctx, next) ->
+                partialHash.process(group, ctx, (g, c, n) ->
+                    fullHash.process(g, c, null)
+                )
+            );
+        }
 
         LOG.info("Deduplication complete: {} unique photos, {} duplicates removed",
-                uniquePhotos.size(), duplicateCount);
-        return uniquePhotos.values();
+                context.getUniquePhotos().size(), context.getDuplicateCount());
+        return context.getUniquePhotos();
     }
 
     private @NonNull Map<Long, List<Photo>> groupBySize(@NonNull Collection<Photo> photos) {

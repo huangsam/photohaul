@@ -8,9 +8,7 @@ import org.junit.jupiter.api.io.TempDir;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -18,20 +16,22 @@ public class TestPartialHashStrategy {
     private final PartialHashStrategy strategy = new PartialHashStrategy();
 
     @Test
-    void testDeduplicateSinglePhoto() {
+    void testDeduplicateSinglePhoto(@TempDir @NonNull Path tempDir) throws IOException {
         // Create a single photo
-        Photo photo = new Photo(Path.of("test.jpg"));
+        Path testFile = tempDir.resolve("test.jpg");
+        Files.write(testFile, "test content".getBytes());
+        Photo photo = new Photo(testFile);
         List<Photo> photos = List.of(photo);
-        Map<String, Photo> uniquePhotos = new LinkedHashMap<>();
+        DeduplicationContext context = new DeduplicationContext();
 
-        int duplicatesRemoved = strategy.processPhotos(photos, uniquePhotos);
+        strategy.process(photos, context, (p, c, n) -> { });
 
-        assertEquals(0, duplicatesRemoved);
-        assertEquals(1, uniquePhotos.size());
+        assertEquals(0, context.getDuplicateCount());
+        assertEquals(1, context.getUniquePhotos().size());
     }
 
     @Test
-    void testDeduplicateSamePartialHashDifferentRest(@TempDir @NonNull Path tempDir) throws IOException {
+    void testDeduplicateSamePartialHashDelegation(@TempDir @NonNull Path tempDir) throws IOException {
         // Create files with same first 1KB but different content after
         Path file1 = tempDir.resolve("file1.jpg");
         Path file2 = tempDir.resolve("file2.jpg");
@@ -56,37 +56,20 @@ public class TestPartialHashStrategy {
         Files.write(file2, content2);
 
         List<Photo> photos = List.of(new Photo(file1), new Photo(file2));
-        Map<String, Photo> uniquePhotos = new LinkedHashMap<>();
+        DeduplicationContext context = new DeduplicationContext();
 
-        // Should delegate to FullHashStrategy and keep both since full content differs
-        int duplicatesRemoved = strategy.processPhotos(photos, uniquePhotos);
+        // Should delegate to the next strategy because partial hashes match
+        strategy.process(photos, context, (group, ctx, n) -> {
+            ctx.addUnique("delegated_1", group.get(0));
+            ctx.addUnique("delegated_2", group.get(1));
+        });
 
-        assertEquals(0, duplicatesRemoved);
-        assertEquals(2, uniquePhotos.size());
+        assertEquals(0, context.getDuplicateCount());
+        assertEquals(2, context.getUniquePhotos().size());
     }
 
     @Test
-    void testDeduplicateIdenticalFiles(@TempDir @NonNull Path tempDir) throws IOException {
-        // Create two identical files
-        Path file1 = tempDir.resolve("file1.jpg");
-        Path file2 = tempDir.resolve("file2.jpg");
-
-        byte[] content = "identical content for both files".getBytes();
-        Files.write(file1, content);
-        Files.write(file2, content);
-
-        List<Photo> photos = List.of(new Photo(file1), new Photo(file2));
-        Map<String, Photo> uniquePhotos = new LinkedHashMap<>();
-
-        // Should deduplicate since they're identical
-        int duplicatesRemoved = strategy.processPhotos(photos, uniquePhotos);
-
-        assertEquals(1, duplicatesRemoved);
-        assertEquals(1, uniquePhotos.size());
-    }
-
-    @Test
-    void testDeduplicateCompletelyDifferentFiles(@TempDir @NonNull Path tempDir) throws IOException {
+    void testDeduplicateDifferentPartialHashes(@TempDir @NonNull Path tempDir) throws IOException {
         // Create files with completely different content
         Path file1 = tempDir.resolve("file1.jpg");
         Path file2 = tempDir.resolve("file2.jpg");
@@ -95,12 +78,14 @@ public class TestPartialHashStrategy {
         Files.write(file2, "content two".getBytes());
 
         List<Photo> photos = List.of(new Photo(file1), new Photo(file2));
-        Map<String, Photo> uniquePhotos = new LinkedHashMap<>();
+        DeduplicationContext context = new DeduplicationContext();
 
-        // Should keep both since they're different
-        int duplicatesRemoved = strategy.processPhotos(photos, uniquePhotos);
+        // Should keep both without delegation because partial hashes differ
+        strategy.process(photos, context, (group, ctx, n) -> {
+            throw new RuntimeException("Should not delegate!");
+        });
 
-        assertEquals(0, duplicatesRemoved);
-        assertEquals(2, uniquePhotos.size());
+        assertEquals(0, context.getDuplicateCount());
+        assertEquals(2, context.getUniquePhotos().size());
     }
 }

@@ -26,7 +26,7 @@ public record Settings(Properties properties, FileSystem fileSystem) {
      * or falling back to a default file name.
      *
      * @return A Settings instance.
-     * @throws IllegalArgumentException if the value is not defined.
+     * @throws IllegalStateException if the settings file is not found.
      */
     @NotNull
     public static Settings getDefault() {
@@ -35,11 +35,11 @@ public record Settings(Properties properties, FileSystem fileSystem) {
             configFileName = CONFIG_FILE_DEFAULT;
         }
         LOG.info("Use config file from {}: {}", CONFIG_FILE_SYSTEM_PROPERTY, configFileName);
-        return new Settings(configFileName);
+        return load(configFileName);
     }
 
     /**
-     * Constructs Settings by loading properties from a classpath resource name, with a filesystem fallback.
+     * Loads settings from a classpath resource name, with a filesystem fallback.
      * The loading order is as follows:
      *
      * <ol>
@@ -48,15 +48,16 @@ public record Settings(Properties properties, FileSystem fileSystem) {
      * </ol>
      *
      * @param name The classpath resource name or filesystem path.
+     * @return A Settings instance.
      * @throws IllegalStateException if the settings file is not found in either location.
      * @throws RuntimeException      if the settings file cannot be parsed.
      */
-    public Settings(@NonNull String name) {
-        this(new Properties(), FileSystems.getDefault());
+    public static Settings load(@NonNull String name) {
+        Properties properties = new Properties();
         boolean fromClasspath = true;
 
         // Resolve input stream from classpath first, then filesystem fallback
-        InputStream resolved = getClass().getClassLoader().getResourceAsStream(name);
+        InputStream resolved = Settings.class.getClassLoader().getResourceAsStream(name);
         if (resolved == null) {
             fromClasspath = false;
             Path fsPath = Paths.get(name);
@@ -87,7 +88,10 @@ public record Settings(Properties properties, FileSystem fileSystem) {
             LOG.error("Error reading settings file '{}': {}", name, e.getMessage());
             throw new RuntimeException("Failed to load settings file: " + name, e);
         }
+
+        return new Settings(properties, FileSystems.getDefault());
     }
+
 
     /**
      * Retrieves a mandatory string value from settings. Throws NullPointerException if key is not found.

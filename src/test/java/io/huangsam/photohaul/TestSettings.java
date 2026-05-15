@@ -18,25 +18,25 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class TestSettings {
     @Test
     void testGetSourcePath() {
-        Settings settings = new Settings("path-example.properties");
+        Settings settings = Settings.load("path-example.properties");
         assertTrue(settings.getSourcePath().endsWith("Dummy/Source"));
     }
 
     @Test
     void testGetValueIsValid() {
-        Settings settings = new Settings("dbx-example.properties");
+        Settings settings = Settings.load("dbx-example.properties");
         assertTrue(settings.getValue("dbx.target").startsWith("/"));
     }
 
     @Test
     void testGetValueIsMissing() {
-        Settings settings = new Settings("drive-example.properties");
+        Settings settings = Settings.load("drive-example.properties");
         assertThrows(NullPointerException.class, () -> settings.getValue("foo.bar"));
     }
 
     @Test
     void testGetValueWithFallback() {
-        Settings settings = new Settings("path-example.properties");
+        Settings settings = Settings.load("path-example.properties");
         String expected = "foo";
         assertEquals(expected, settings.getValue("foo.bar", expected));
     }
@@ -56,7 +56,7 @@ public class TestSettings {
 
     @Test
     void testGetMigratorMode() {
-        Settings settings = new Settings("path-example.properties");
+        Settings settings = Settings.load("path-example.properties");
         assertEquals(io.huangsam.photohaul.migration.MigratorMode.PATH, settings.getMigratorMode());
     }
 
@@ -67,7 +67,7 @@ public class TestSettings {
         Files.writeString(props, "hello=filesystem\n");
 
         // Act: load using absolute filesystem path
-        Settings settings = new Settings(props.toString());
+        Settings settings = Settings.load(props.toString());
 
         // Assert
         assertEquals("filesystem", settings.getValue("hello"));
@@ -75,7 +75,7 @@ public class TestSettings {
 
     @Test
     void testMissingSettingsThrows() {
-        assertThrows(IllegalStateException.class, () -> new Settings("__definitely_not_here__.properties"));
+        assertThrows(IllegalStateException.class, () -> Settings.load("__definitely_not_here__.properties"));
     }
 
     @Test
@@ -99,7 +99,7 @@ public class TestSettings {
 
     @Test
     void testIsDeltaEnabledDefaultsFalse() {
-        Settings settings = new Settings("path-example.properties");
+        Settings settings = Settings.load("path-example.properties");
         assertFalse(settings.isDeltaEnabled());
     }
 
@@ -107,7 +107,7 @@ public class TestSettings {
     void testIsDeltaEnabledWhenTrue(@TempDir @NonNull Path tmp) throws IOException {
         Path props = tmp.resolve("delta.properties");
         Files.writeString(props, "path.source=Dummy/Source\nmigrator.mode=PATH\ndelta.enabled=true\n");
-        Settings settings = new Settings(props.toString());
+        Settings settings = Settings.load(props.toString());
         assertTrue(settings.isDeltaEnabled());
     }
 
@@ -115,7 +115,7 @@ public class TestSettings {
     void testIsDeltaEnabledWhenExplicitlyFalse(@TempDir @NonNull Path tmp) throws IOException {
         Path props = tmp.resolve("nodelta.properties");
         Files.writeString(props, "path.source=Dummy/Source\nmigrator.mode=PATH\ndelta.enabled=false\n");
-        Settings settings = new Settings(props.toString());
+        Settings settings = Settings.load(props.toString());
         assertFalse(settings.isDeltaEnabled());
     }
 }

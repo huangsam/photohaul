@@ -8,29 +8,26 @@ import org.junit.jupiter.api.io.TempDir;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestFullHashStrategy {
     private final FullHashStrategy strategy = new FullHashStrategy();
 
     @Test
-    void testDeduplicateSinglePhoto() {
+    void testDeduplicateSinglePhoto(@TempDir @NonNull Path tempDir) throws IOException {
         // Create a single photo
-        Photo photo = new Photo(Path.of("test.jpg"));
+        Path testFile = tempDir.resolve("test.jpg");
+        Files.write(testFile, "test content".getBytes());
+        Photo photo = new Photo(testFile);
         List<Photo> photos = List.of(photo);
-        Map<String, Photo> uniquePhotos = new LinkedHashMap<>();
+        DeduplicationContext context = new DeduplicationContext();
 
-        int duplicatesRemoved = strategy.processPhotos(photos, uniquePhotos);
+        strategy.process(photos, context, null);
 
-        assertEquals(0, duplicatesRemoved);
-        assertEquals(1, uniquePhotos.size());
-        // Should have a hash key
-        assertTrue(uniquePhotos.keySet().iterator().next().length() > 10); // SHA-256 hex is 64 chars
+        assertEquals(0, context.getDuplicateCount());
+        assertEquals(1, context.getUniquePhotos().size());
     }
 
     @Test
@@ -44,12 +41,12 @@ public class TestFullHashStrategy {
         Files.write(file2, content);
 
         List<Photo> photos = List.of(new Photo(file1), new Photo(file2));
-        Map<String, Photo> uniquePhotos = new LinkedHashMap<>();
+        DeduplicationContext context = new DeduplicationContext();
 
-        int duplicatesRemoved = strategy.processPhotos(photos, uniquePhotos);
+        strategy.process(photos, context, null);
 
-        assertEquals(1, duplicatesRemoved);
-        assertEquals(1, uniquePhotos.size());
+        assertEquals(1, context.getDuplicateCount());
+        assertEquals(1, context.getUniquePhotos().size());
     }
 
     @Test
@@ -62,12 +59,12 @@ public class TestFullHashStrategy {
         Files.write(file2, "Content of second file".getBytes());
 
         List<Photo> photos = List.of(new Photo(file1), new Photo(file2));
-        Map<String, Photo> uniquePhotos = new LinkedHashMap<>();
+        DeduplicationContext context = new DeduplicationContext();
 
-        int duplicatesRemoved = strategy.processPhotos(photos, uniquePhotos);
+        strategy.process(photos, context, null);
 
-        assertEquals(0, duplicatesRemoved);
-        assertEquals(2, uniquePhotos.size());
+        assertEquals(0, context.getDuplicateCount());
+        assertEquals(2, context.getUniquePhotos().size());
     }
 
     @Test
@@ -87,12 +84,12 @@ public class TestFullHashStrategy {
         Files.write(unique, uniqueContent);
 
         List<Photo> photos = List.of(new Photo(file1), new Photo(file2), new Photo(file3), new Photo(unique));
-        Map<String, Photo> uniquePhotos = new LinkedHashMap<>();
+        DeduplicationContext context = new DeduplicationContext();
 
-        int duplicatesRemoved = strategy.processPhotos(photos, uniquePhotos);
+        strategy.process(photos, context, null);
 
-        assertEquals(2, duplicatesRemoved); // 2 duplicates removed from 3 identical files
-        assertEquals(2, uniquePhotos.size()); // 1 from duplicates + 1 unique
+        assertEquals(2, context.getDuplicateCount()); // 2 duplicates removed from 3 identical files
+        assertEquals(2, context.getUniquePhotos().size()); // 1 from duplicates + 1 unique
     }
 
     @Test
@@ -101,14 +98,11 @@ public class TestFullHashStrategy {
         Path nonExistent = Path.of("nonexistent.jpg");
         Photo photo = new Photo(nonExistent);
         List<Photo> photos = List.of(photo);
-        Map<String, Photo> uniquePhotos = new LinkedHashMap<>();
+        DeduplicationContext context = new DeduplicationContext();
 
-        int duplicatesRemoved = strategy.processPhotos(photos, uniquePhotos);
+        strategy.process(photos, context, null);
 
-        assertEquals(0, duplicatesRemoved);
-        assertEquals(1, uniquePhotos.size());
-        // Should have a UUID fallback key for error case
-        String key = uniquePhotos.keySet().iterator().next();
-        assertTrue(key.contains("error_") || key.length() == 36); // UUID length
+        assertEquals(0, context.getDuplicateCount());
+        assertEquals(1, context.getUniquePhotos().size());
     }
 }

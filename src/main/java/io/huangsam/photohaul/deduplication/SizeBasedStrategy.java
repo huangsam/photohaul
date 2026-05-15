@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
-import java.util.Map;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -19,25 +18,22 @@ class SizeBasedStrategy implements DeduplicationStrategy {
     private static final Logger LOG = getLogger(SizeBasedStrategy.class);
 
     @Override
-    public int processPhotos(@NotNull List<Photo> photos, @NotNull Map<String, Photo> uniquePhotos) {
+    public void process(@NotNull List<Photo> photos, @NotNull DeduplicationContext context, @NotNull DeduplicationStrategy next) {
         if (photos.size() == 1) {
-            return addUniquePhoto(photos.getFirst(), uniquePhotos);
+            addUniquePhoto(photos.getFirst(), context);
+        } else {
+            next.process(photos, context, null); // Delegate to next level
         }
-
-        // Group by partial hash for same-size photos
-        DeduplicationStrategy nextStrategy = new PartialHashStrategy();
-        return nextStrategy.processPhotos(photos, uniquePhotos);
     }
 
-    private int addUniquePhoto(@NotNull Photo photo, @NotNull Map<String, Photo> uniquePhotos) {
+    private void addUniquePhoto(@NotNull Photo photo, @NotNull DeduplicationContext context) {
         try {
             long size = Files.size(photo.path());
-            String key = "size_" + size + "_" + photo.path();
-            uniquePhotos.put(key, photo);
+            String key = "size_" + size;
+            context.addUnique(key, photo);
             LOG.trace("Added unique photo by size: {} (size: {})", photo.name(), size);
         } catch (IOException e) {
-            uniquePhotos.put(java.util.UUID.randomUUID().toString(), photo);
+            context.addUnique(java.util.UUID.randomUUID().toString(), photo);
         }
-        return 0;
     }
 }

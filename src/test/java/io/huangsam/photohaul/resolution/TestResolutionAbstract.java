@@ -1,5 +1,6 @@
 package io.huangsam.photohaul.resolution;
 
+import io.huangsam.photohaul.model.MetadataService;
 import io.huangsam.photohaul.model.Photo;
 import org.jspecify.annotations.NonNull;
 
@@ -13,7 +14,8 @@ public abstract class TestResolutionAbstract {
 
     private static @NonNull Photo buildBauerPhoto() {
         Path photoPath = getStaticResources().resolve("bauerlite.jpg");
-        return new Photo(photoPath);
+        MetadataService metadataService = new MetadataService();
+        return new Photo(photoPath, metadataService.getSupplier(photoPath));
     }
 
     @NonNull Photo getBauerPhoto() {

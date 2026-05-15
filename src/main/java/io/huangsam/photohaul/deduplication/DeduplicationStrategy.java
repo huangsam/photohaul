@@ -4,18 +4,17 @@ import io.huangsam.photohaul.model.Photo;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Strategy interface for photo deduplication at different levels.
  */
 interface DeduplicationStrategy {
     /**
-     * Process a group of photos and add unique ones to the result map.
+     * Process a group of photos and add unique ones to the context.
      *
-     * @param photos the photos to process
-     * @param uniquePhotos the map to add unique photos to
-     * @return the number of duplicates found
+     * @param photos  the photos to process
+     * @param context the deduplication context
+     * @param next    the next strategy to call for potential duplicates
      */
-    int processPhotos(@NotNull List<Photo> photos, @NotNull Map<String, Photo> uniquePhotos);
+    void process(@NotNull List<Photo> photos, @NotNull DeduplicationContext context, @NotNull DeduplicationStrategy next);
 }

@@ -5,10 +5,6 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,15 +17,14 @@ import static org.slf4j.LoggerFactory.getLogger;
  */
 class PartialHashStrategy implements DeduplicationStrategy {
     private static final Logger LOG = getLogger(PartialHashStrategy.class);
-    private static final String HASH_ALGORITHM = "SHA-256";
 
     @Override
-    public int processPhotos(@NotNull List<Photo> photos, @NotNull Map<String, Photo> uniquePhotos) {
+    public void process(@NotNull List<Photo> photos, @NotNull DeduplicationContext context, @NotNull DeduplicationStrategy next) {
         Map<String, List<Photo>> photosByPartialHash = groupByPartialHash(photos);
 
-        return photosByPartialHash.values().stream()
-            .mapToInt(group -> processPartialHashGroup(group, uniquePhotos))
-            .sum();
+        for (List<Photo> group : photosByPartialHash.values()) {
+            processPartialHashGroup(group, context, next);
+        }
     }
 
     private Map<String, List<Photo>> groupByPartialHash(@NotNull List<Photo> photos) {
@@ -38,60 +33,34 @@ class PartialHashStrategy implements DeduplicationStrategy {
                          LinkedHashMap::new, Collectors.toList()));
     }
 
-    private int processPartialHashGroup(@NotNull List<Photo> group, @NotNull Map<String, Photo> uniquePhotos) {
+    private void processPartialHashGroup(@NotNull List<Photo> group, @NotNull DeduplicationContext context, @NotNull DeduplicationStrategy next) {
         if (group.size() == 1) {
-            return addUniquePhotoByPartialHash(group.getFirst(), uniquePhotos);
+            addUniquePhoto(group.getFirst(), context);
+        } else {
+            next.process(group, context, null); // Call next level
         }
-
-        // Use full hash strategy for groups with same partial hash
-        DeduplicationStrategy nextStrategy = new FullHashStrategy();
-        return nextStrategy.processPhotos(group, uniquePhotos);
     }
 
-    private int addUniquePhotoByPartialHash(@NotNull Photo photo, @NotNull Map<String, Photo> uniquePhotos) {
+    private void addUniquePhoto(@NotNull Photo photo, @NotNull DeduplicationContext context) {
         try {
-            String partialHash = calculatePartialHash(photo);
-            String key = "partial_" + partialHash + "_" + photo.path();
-            uniquePhotos.put(key, photo);
+            String hash = calculatePartialHash(photo);
+            context.addUnique(hash, photo);
             LOG.trace("Added unique photo by partial hash: {}", photo.name());
-        } catch (IOException | NoSuchAlgorithmException e) {
-            uniquePhotos.put(java.util.UUID.randomUUID().toString(), photo);
+        } catch (IOException e) {
+            context.addUnique(java.util.UUID.randomUUID().toString(), photo);
         }
-        return 0;
     }
 
     private @NotNull String safeCalculatePartialHash(@NotNull Photo photo) {
         try {
             return calculatePartialHash(photo);
-        } catch (IOException | NoSuchAlgorithmException e) {
+        } catch (IOException e) {
             return "error_" + java.util.UUID.randomUUID();
         }
     }
 
-    private @NotNull String calculatePartialHash(@NotNull Photo photo) throws IOException, NoSuchAlgorithmException {
-        MessageDigest digest = MessageDigest.getInstance(HASH_ALGORITHM);
-
-        try (InputStream inputStream = Files.newInputStream(photo.path())) {
-            byte[] buffer = new byte[1024]; // 1KB
-            int bytesRead = inputStream.read(buffer);
-            if (bytesRead > 0) {
-                digest.update(buffer, 0, bytesRead);
-            }
-        }
-
-        byte[] hashBytes = digest.digest();
-        return bytesToHex(hashBytes);
-    }
-
-    private @NotNull String bytesToHex(byte @NotNull [] bytes) {
-        StringBuilder hexString = new StringBuilder();
-        for (byte b : bytes) {
-            String hex = Integer.toHexString(0xff & b);
-            if (hex.length() == 1) {
-                hexString.append('0');
-            }
-            hexString.append(hex);
-        }
-        return hexString.toString();
+    private @NotNull String calculatePartialHash(@NotNull Photo photo) throws IOException {
+        return HashUtils.calculateHash(photo.path(), 1024);
     }
 }
+

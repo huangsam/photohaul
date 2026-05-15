@@ -1,5 +1,6 @@
 package io.huangsam.photohaul.traversal;
 
+import io.huangsam.photohaul.model.MetadataService;
 import io.huangsam.photohaul.model.Photo;
 import org.jspecify.annotations.NonNull;
 
@@ -9,6 +10,15 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class PhotoCollector {
     private final ConcurrentHashMap<Path, Photo> photoIndex = new ConcurrentHashMap<>();
+    private final MetadataService metadataService;
+
+    public PhotoCollector() {
+        this(new MetadataService());
+    }
+
+    public PhotoCollector(@NonNull MetadataService metadataService) {
+        this.metadataService = metadataService;
+    }
 
     /**
      * Get all collected photos.
@@ -25,6 +35,6 @@ public class PhotoCollector {
      * @param path path to the photo file
      */
     public void addPhoto(@NonNull Path path) {
-        photoIndex.put(path, new Photo(path));
+        photoIndex.put(path, new Photo(path, metadataService.getSupplier(path)));
     }
 }

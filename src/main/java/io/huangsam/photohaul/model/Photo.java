@@ -1,54 +1,38 @@
 package io.huangsam.photohaul.model;
 
-import com.drew.imaging.ImageMetadataReader;
-import com.drew.imaging.ImageProcessingException;
-import com.drew.metadata.Directory;
-import com.drew.metadata.Metadata;
-import com.drew.metadata.Tag;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.FileTime;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Supplier;
 
 /**
  * Represents a photo with its metadata.
- *
- * <p>Note that this metadata is not guaranteed for all photos. This metadata
- * exists on the following assets:
- *
- * <ul>
- *     <li>RAW formats from providers such as Canon, Nikon and Sony</li>
- *     <li>JPG/JPEG files which were generated from Adobe Lightroom</li>
- * </ul>
  *
  * <p>Metadata is extracted lazily on first access to improve performance
  * during photo collection.
  */
 public class Photo {
-    // Metadata keys
-    private static final String TAKEN_KEY = "Date/Time Original";
-    private static final String MAKE_KEY = "Make";
-    private static final String MODEL_KEY = "Model";
-    private static final String FOCAL_LENGTH_KEY = "Focal Length";
-    private static final String SHUTTER_SPEED_KEY = "Shutter Speed Value";
-    private static final String APERTURE_KEY = "Aperture Value";
-    private static final String FLASH_KEY = "Flash";
-
     private final Path path;
-    private final Map<String, String> metadata = new ConcurrentHashMap<>();
-    private volatile boolean metadataLoaded = false;
+    private final Supplier<PhotoMetadata> metadataSupplier;
+    private PhotoMetadata metadata;
 
-    public Photo(Path path) {
+    public Photo(@NonNull Path path) {
+        this(path, PhotoMetadata.EMPTY);
+    }
+
+    public Photo(@NonNull Path path, @NonNull PhotoMetadata metadata) {
+        this(path, () -> metadata);
+    }
+
+    public Photo(@NonNull Path path, @NonNull Supplier<PhotoMetadata> metadataSupplier) {
         this.path = path;
+        this.metadataSupplier = metadataSupplier;
     }
 
     /**
@@ -78,7 +62,8 @@ public class Photo {
      */
     @Nullable
     public String taken() {
-        return getMetadata(TAKEN_KEY);
+        LocalDateTime taken = takenAt();
+        return (taken == null) ? null : taken.format(java.time.format.DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss"));
     }
 
     /**
@@ -88,7 +73,7 @@ public class Photo {
      */
     @Nullable
     public String make() {
-        return getMetadata(MAKE_KEY);
+        return metadata().make();
     }
 
     /**
@@ -98,7 +83,7 @@ public class Photo {
      */
     @Nullable
     public String model() {
-        return getMetadata(MODEL_KEY);
+        return metadata().model();
     }
 
     /**
@@ -108,7 +93,7 @@ public class Photo {
      */
     @Nullable
     public String focalLength() {
-        return getMetadata(FOCAL_LENGTH_KEY);
+        return metadata().focalLength();
     }
 
     /**
@@ -118,7 +103,7 @@ public class Photo {
      */
     @Nullable
     public String shutterSpeed() {
-        return getMetadata(SHUTTER_SPEED_KEY);
+        return metadata().shutterSpeed();
     }
 
     /**
@@ -128,7 +113,7 @@ public class Photo {
      */
     @Nullable
     public String aperture() {
-        return getMetadata(APERTURE_KEY);
+        return metadata().aperture();
     }
 
     /**
@@ -138,7 +123,7 @@ public class Photo {
      */
     @Nullable
     public String flash() {
-        return getMetadata(FLASH_KEY);
+        return metadata().flash();
     }
 
     /**
@@ -162,48 +147,19 @@ public class Photo {
      */
     @Nullable
     public LocalDateTime takenAt() {
-        String taken = taken();
-        if (taken == null) { return null; }
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss");
-        try {
-            return LocalDateTime.parse(taken, formatter);
-        } catch (Exception e) {
-            return null;
-        }
+        return metadata().takenAt();
     }
 
     /**
-     * Get metadata value by key, ensuring metadata is loaded first.
+     * Get the photo metadata, extracting it if necessary.
      *
-     * @param key the metadata key
-     * @return the metadata value or null
+     * @return photo metadata
      */
-    @Nullable
-    private String getMetadata(String key) {
-        ensureMetadataLoaded();
-        return metadata.get(key);
-    }
-
-    private void ensureMetadataLoaded() {
-        if (metadataLoaded) {
-            return;
+    public synchronized @NotNull PhotoMetadata metadata() {
+        if (metadata == null) {
+            metadata = metadataSupplier.get();
         }
-        synchronized (this) {
-            if (metadataLoaded) {
-                return;
-            }
-            try (InputStream input = Files.newInputStream(path)) {
-                Metadata imageMetadata = ImageMetadataReader.readMetadata(input);
-                for (Directory directory : imageMetadata.getDirectories()) {
-                    for (Tag tag : directory.getTags()) {
-                        metadata.put(tag.getTagName(), tag.getDescription());
-                    }
-                }
-            } catch (IOException | ImageProcessingException e) {
-                // Metadata extraction failed, metadata map remains empty
-            }
-            metadataLoaded = true;
-        }
+        return metadata;
     }
 
     @Override

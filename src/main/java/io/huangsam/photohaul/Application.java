@@ -28,7 +28,7 @@ public record Application(Settings settings,
      * <p>Collects photos from the source path, deduplicates them, and migrates
      * them to the configured destination using the specified migrator.
      */
-    public void run() {
+    public void run() throws Exception {
         PathWalker pathWalker = new PathWalker(settings.getSourcePath(), pathRuleSet);
         pathWalker.traverse(photoCollector);
 
@@ -41,10 +41,11 @@ public record Application(Settings settings,
             LOG.info("Finish with success={} failure={}", migrator.getSuccessCount(), migrator.getFailureCount());
         } catch (MigrationException e) {
             LOG.error("Cannot migrate with mode {}: {}", e.getMode(), e.getMessage());
-            System.exit(1);
+            throw e;
         } catch (Exception e) {
             LOG.error("Error during migration or closing migrator: {}", e.getMessage());
-            System.exit(1);
+            throw e;
         }
     }
+
 }

@@ -25,7 +25,19 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class MigratorFactory {
     private static final Logger LOG = getLogger(MigratorFactory.class);
 
+    /**
+     * Registers default migrator factories.
+     */
+    public void registerDefaults() {
+        register(MigratorMode.PATH, new PathMigratorFactory());
+        register(MigratorMode.DROPBOX, new DropboxMigratorFactory());
+        register(MigratorMode.GOOGLE_DRIVE, new GoogleDriveMigratorFactory());
+        register(MigratorMode.SFTP, new SftpMigratorFactory());
+        register(MigratorMode.S3, new S3MigratorFactory());
+    }
+
     private final Map<MigratorMode, MigratorFactoryStrategy> registry = new EnumMap<>(MigratorMode.class);
+
 
     /**
      * Registers a migrator factory strategy for a given mode.

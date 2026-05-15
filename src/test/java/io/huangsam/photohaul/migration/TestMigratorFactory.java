@@ -37,7 +37,7 @@ public class TestMigratorFactory {
 
     @Test
     void testMakePathMigratorSuccess() throws Exception {
-        Settings settings = new Settings("path-example.properties");
+        Settings settings = Settings.load("path-example.properties");
         try (Migrator migrator = FACTORY.make(MigratorMode.PATH, settings, RESOLVER)) {
             assertSame(PathMigrator.class, migrator.getClass());
         }
@@ -45,7 +45,7 @@ public class TestMigratorFactory {
 
     @Test
     void testMakeDropboxMigratorSuccess() throws Exception {
-        Settings settings = new Settings("dbx-example.properties");
+        Settings settings = Settings.load("dbx-example.properties");
         try (Migrator migrator = FACTORY.make(MigratorMode.DROPBOX, settings, RESOLVER)) {
             assertSame(DropboxMigrator.class, migrator.getClass());
         }
@@ -54,7 +54,7 @@ public class TestMigratorFactory {
     @Test
     @SuppressWarnings("resource")
     void testMakeGoogleDriveMigratorFailure() {
-        Settings settings = new Settings("drive-example.properties");
+        Settings settings = Settings.load("drive-example.properties");
         MigrationException exception = assertThrows(MigrationException.class,
                 () -> FACTORY.make(MigratorMode.GOOGLE_DRIVE, settings, RESOLVER));
         assertEquals(MigratorMode.GOOGLE_DRIVE, exception.getMode());
@@ -62,7 +62,7 @@ public class TestMigratorFactory {
 
     @Test
     void testMakeSftpMigratorSuccess() throws Exception {
-        Settings settings = new Settings("sftp-example.properties");
+        Settings settings = Settings.load("sftp-example.properties");
         try (Migrator migrator = FACTORY.make(MigratorMode.SFTP, settings, RESOLVER)) {
             assertSame(SftpMigrator.class, migrator.getClass());
         }
@@ -70,7 +70,7 @@ public class TestMigratorFactory {
 
     @Test
     void testMakeS3MigratorSuccess() throws Exception {
-        Settings settings = new Settings("s3-example.properties");
+        Settings settings = Settings.load("s3-example.properties");
         try (Migrator migrator = FACTORY.make(MigratorMode.S3, settings, RESOLVER)) {
             assertSame(S3Migrator.class, migrator.getClass());
         }
@@ -88,7 +88,7 @@ public class TestMigratorFactory {
                         + "delta.enabled=true%n");
         Files.writeString(propsFile, propsContent);
 
-        Settings settings = new Settings(propsFile.toString());
+        Settings settings = Settings.load(propsFile.toString());
         try (Migrator migrator = FACTORY.make(MigratorMode.PATH, settings, RESOLVER)) {
             assertInstanceOf(DeltaMigrator.class, migrator);
         }
@@ -107,7 +107,7 @@ public class TestMigratorFactory {
                         + "delta.enabled=true%n");
         Files.writeString(propsFile, propsContent);
 
-        Settings settings = new Settings(propsFile.toString());
+        Settings settings = Settings.load(propsFile.toString());
         try (Migrator migrator = FACTORY.make(MigratorMode.DROPBOX, settings, RESOLVER)) {
             assertInstanceOf(DeltaMigrator.class, migrator);
         }
@@ -128,7 +128,7 @@ public class TestMigratorFactory {
                         + "delta.enabled=true%n");
         Files.writeString(propsFile, propsContent);
 
-        Settings settings = new Settings(propsFile.toString());
+        Settings settings = Settings.load(propsFile.toString());
         try (Migrator migrator = FACTORY.make(MigratorMode.SFTP, settings, RESOLVER)) {
             assertInstanceOf(DeltaMigrator.class, migrator);
         }
@@ -148,7 +148,7 @@ public class TestMigratorFactory {
                         + "delta.enabled=true%n");
         Files.writeString(propsFile, propsContent);
 
-        Settings settings = new Settings(propsFile.toString());
+        Settings settings = Settings.load(propsFile.toString());
         try (Migrator migrator = FACTORY.make(MigratorMode.S3, settings, RESOLVER)) {
             assertInstanceOf(DeltaMigrator.class, migrator);
         }
@@ -156,7 +156,7 @@ public class TestMigratorFactory {
 
     @Test
     void testMakePathMigratorWithDeltaDisabled() throws Exception {
-        Settings settings = new Settings("path-example.properties");
+        Settings settings = Settings.load("path-example.properties");
         try (Migrator migrator = FACTORY.make(MigratorMode.PATH, settings, RESOLVER)) {
             // Default is delta disabled, so should be PathMigrator
             assertSame(PathMigrator.class, migrator.getClass());
@@ -175,7 +175,7 @@ public class TestMigratorFactory {
                         + "delta.enabled=false%n");
         Files.writeString(propsFile, propsContent);
 
-        Settings settings = new Settings(propsFile.toString());
+        Settings settings = Settings.load(propsFile.toString());
         try (Migrator migrator = FACTORY.make(MigratorMode.PATH, settings, RESOLVER)) {
             assertSame(PathMigrator.class, migrator.getClass());
         }

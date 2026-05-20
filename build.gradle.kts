@@ -37,10 +37,11 @@ tasks.withType<JavaCompile>().configureEach {
 application {
     mainClass.set("io.huangsam.photohaul.Main")
     // JVM performance tuning for photo processing workloads
-    // -Xmx1g: Increase max heap size to 1GB for memory-intensive operations
+    // -Xms2g: Increase min heap size to 2GB for memory-intensive operations
+    // -Xmx4g: Increase max heap size to 4GB for memory-intensive operations
     // -XX:+UseZGC: Use ZGC for sub-millisecond pause times when loading large image buffers
     // -XX:+ZGenerational: Enable generational ZGC for improved throughput (stable since Java 21)
-    applicationDefaultJvmArgs = listOf("-Xmx1g", "-XX:+UseZGC", "-XX:+ZGenerational")
+    applicationDefaultJvmArgs = listOf("-Xms2g", "-Xmx4g", "-XX:+UseZGC", "-XX:+ZGenerational")
 }
 
 // Forward only the JVM system property -Dphotohaul.config to the app's JVM when provided.

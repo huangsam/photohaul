@@ -52,7 +52,7 @@ public class TestPhotoResolver extends TestResolutionAbstract {
     void testFromPatternValid() {
         PhotoResolver resolver = PhotoResolver.fromPattern("yearTaken/make/model/iso");
         assertEquals(4, resolver.size());
-        
+
         List<String> resolved = resolver.resolveList(getBauerPhoto());
         assertEquals(4, resolved.size());
         assertEquals("2023", resolved.get(0)); // yearTaken
@@ -79,10 +79,10 @@ public class TestPhotoResolver extends TestResolutionAbstract {
         java.util.Properties props = new java.util.Properties();
         props.setProperty("folder.structure", "make/model");
         io.huangsam.photohaul.Settings settings = new io.huangsam.photohaul.Settings(props, java.nio.file.FileSystems.getDefault());
-        
+
         PhotoResolver resolver = PhotoResolver.fromSettings(settings);
         assertEquals(2, resolver.size());
-        
+
         List<String> resolved = resolver.resolveList(getBauerPhoto());
         assertEquals("Canon", resolved.getFirst());
         assertEquals("Canon EOS R6", resolved.get(1));

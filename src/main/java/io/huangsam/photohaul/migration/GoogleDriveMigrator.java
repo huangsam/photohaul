@@ -15,7 +15,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -26,6 +28,7 @@ public class GoogleDriveMigrator extends AbstractMigrator {
     private final String targetRoot;
     private final Drive driveService;
     private final HttpTransport httpTransport;
+    private final Map<String, String> folderCache = new ConcurrentHashMap<>();
 
     public GoogleDriveMigrator(String target, PhotoResolver resolver, Drive service, HttpTransport transport, boolean dryRun) {
         super(resolver, dryRun);
@@ -65,28 +68,53 @@ public class GoogleDriveMigrator extends AbstractMigrator {
     }
 
     private String createDriveFolder(@NonNull String targetPath) throws IOException {
-        String existingId = getExistingId(targetRoot, targetPath);
-        if (existingId != null) {
-            return existingId;
-        }
         if (targetPath.isEmpty()) {
             return targetRoot;
         }
 
-        File folderMetadata = new File();
-        folderMetadata.setName(targetPath);
-        folderMetadata.setMimeType(MIME_FOLDER);
-        folderMetadata.setParents(List.of(targetRoot));
+        String[] parts = targetPath.split("/");
+        String currentParentId = targetRoot;
+        StringBuilder pathBuilder = new StringBuilder();
 
-        File folderSuccess = driveService.files().create(folderMetadata)
-                .setFields("id")
-                .execute();
+        for (String part : parts) {
+            if (part.isEmpty()) {
+                continue;
+            }
+            if (pathBuilder.length() > 0) {
+                pathBuilder.append("/");
+            }
+            pathBuilder.append(part);
+            String pathKey = pathBuilder.toString();
 
-        String folderId = folderSuccess.getId();
+            String cachedId = folderCache.get(pathKey);
+            if (cachedId != null) {
+                currentParentId = cachedId;
+                continue;
+            }
 
-        LOG.trace("Folder created: {}", folderId);
+            String existingId = getExistingId(currentParentId, part);
+            if (existingId != null) {
+                currentParentId = existingId;
+            } else {
+                File folderMetadata = new File();
+                folderMetadata.setName(part);
+                folderMetadata.setMimeType(MIME_FOLDER);
+                folderMetadata.setParents(List.of(currentParentId));
 
-        return folderId;
+                File folderSuccess = driveService.files().create(folderMetadata)
+                        .setFields("id")
+                        .execute();
+                String newFolderId = folderSuccess.getId();
+                if (newFolderId == null) {
+                    throw new IOException("Failed to create Google Drive folder: " + part);
+                }
+                currentParentId = newFolderId;
+                LOG.trace("Folder created: {} with ID: {}", part, currentParentId);
+            }
+            folderCache.put(pathKey, currentParentId);
+        }
+
+        return currentParentId;
     }
 
     private void createDrivePhoto(@NonNull String folderId, @NonNull Photo photo) throws IOException {

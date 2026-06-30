@@ -175,8 +175,53 @@ public class TestGoogleDriveMigrator extends TestMigrationAbstract {
         Migrator migrator = new GoogleDriveMigrator(TARGET_ROOT, photoResolverMock, driveMock, httpTransportMock, false);
         run(migrator);
 
-        verify(filesMock, times(4)).list();
-        verify(driveCreateFolderMock, times(2)).execute();
+        verify(filesMock, times(3)).list();
+        verify(driveCreateFolderMock, times(1)).execute();
+        verify(driveCreatePhotoMock, times(2)).execute();
+
+        assertEquals(2, migrator.getSuccessCount());
+        assertEquals(0, migrator.getFailureCount());
+
+        migrator.close();
+        verify(httpTransportMock).shutdown();
+    }
+
+    @Test
+    void testMigratePhotosRecursiveFoldersAndCache() throws Exception {
+        when(driveMock.files()).thenReturn(filesMock);
+
+        when(filesMock.list()).thenReturn(driveListMock);
+        when(driveListMock.setQ(anyString())).thenReturn(driveListMock);
+        when(driveListMock.execute()).thenReturn(fileListMock);
+        when(fileListMock.getFiles()).thenReturn(List.of(listedFileMock));
+        when(listedFileMock.getId()).thenReturn(null); // Force folder creation for all parts
+
+        when(filesMock.create(any())).thenReturn(driveCreateFolderMock);
+        when(driveCreateFolderMock.setFields(anyString())).thenReturn(driveCreateFolderMock);
+        when(driveCreateFolderMock.execute()).thenReturn(createdFolderMock);
+        when(createdFolderMock.getId()).thenReturn("nestedId123");
+
+        when(filesMock.create(any(), any())).thenReturn(driveCreatePhotoMock);
+        when(driveCreatePhotoMock.setFields(anyString())).thenReturn(driveCreatePhotoMock);
+        when(driveCreatePhotoMock.execute()).thenReturn(createdPhotoMock);
+
+        when(photoResolverMock.resolveString(any(Photo.class))).thenReturn("2026/06/30");
+
+        Migrator migrator = new GoogleDriveMigrator(TARGET_ROOT, photoResolverMock, driveMock, httpTransportMock, false);
+        run(migrator);
+
+        // Verification details:
+        // Photo 1:
+        //   - list/create "2026" under TARGET_ROOT (1 list, 1 create)
+        //   - list/create "06" under "nestedId123" (1 list, 1 create)
+        //   - list/create "30" under "nestedId123" (1 list, 1 create)
+        //   - list/create photo 1 under "nestedId123" (1 list, 1 create)
+        // Photo 2:
+        //   - retrieves "2026", "2026/06", "2026/06/30" folder ID from cache
+        //   - list/create photo 2 under "nestedId123" (1 list, 1 create)
+        // Total: 5 list calls, 3 folder creates, 2 photo creates
+        verify(filesMock, times(5)).list();
+        verify(driveCreateFolderMock, times(3)).execute();
         verify(driveCreatePhotoMock, times(2)).execute();
 
         assertEquals(2, migrator.getSuccessCount());

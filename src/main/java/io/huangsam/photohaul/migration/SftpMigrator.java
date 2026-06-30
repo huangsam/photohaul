@@ -8,8 +8,6 @@ import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.function.Supplier;
 
 import static org.slf4j.LoggerFactory.getLogger;
@@ -58,10 +56,10 @@ public class SftpMigrator extends AbstractMigrator {
                     }
                     try {
                         // Ensure target directory exists
-                        Path targetPathObj = Paths.get(targetPath);
-                        Path targetDir = targetPathObj.getParent();
-                        if (targetDir != null) {
-                            sftpClient.mkdirs(targetDir.toString());
+                        int lastSlash = targetPath.lastIndexOf('/');
+                        if (lastSlash > 0) {
+                            String targetDir = targetPath.substring(0, lastSlash);
+                            sftpClient.mkdirs(targetDir);
                         }
                         sftpClient.put(photo.path().toString(), targetPath);
                         successCount++;

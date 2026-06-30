@@ -98,4 +98,14 @@ public class PhotoFunction {
                     : String.valueOf(takenTime.getYear());
         };
     }
+
+    /**
+     * Create function to extract ISO metadata.
+     *
+     * @return function for ISO
+     */
+    @NonNull
+    public static Function<Photo, String> iso() {
+        return Photo::iso;
+    }
 }

@@ -90,6 +90,29 @@ Configure the following property fields:
 
 Amazon S3 (Simple Storage Service) is used for scalable cloud storage. You'll need AWS credentials with S3 permissions. Refer to the [AWS SDK for Java documentation](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/get-started.html) to learn how to obtain and configure AWS credentials.
 
+## Folder structure setup
+
+By default, photos are organized into subfolders by the year they were taken. You can customize this organization structure by adding the `folder.structure` property to your configuration file.
+
+The property value is a slash-separated (`/`) pattern of metadata keys that will define the nested folder structure.
+
+Supported metadata keys:
+- `yearTaken`: Year the photo was taken (derived from EXIF).
+- `yearModified`: Year the file was last modified.
+- `make`: Camera manufacturer (e.g., Canon, Apple).
+- `model`: Camera model (e.g., Canon EOS 5D Mark IV).
+- `focalLength`: Lens focal length (e.g., 50.0 mm).
+- `shutterSpeed`: Shutter speed value (e.g., 1/125 sec).
+- `aperture`: Aperture value (e.g., f/2.8).
+- `flash`: Flash status.
+- `iso`: ISO speed rating (e.g., 100).
+
+Example configuration to organize photos by year taken and then camera make (e.g., `2026/Canon/my-photo.jpg`):
+
+```properties
+folder.structure=yearTaken/make
+```
+
 ## Dry run (Simulation)
 
 Dry run mode allows you to simulate a migration without actually copying, moving, or uploading any files to the destination. It logs the exact source paths and intended target destinations, making it perfect for auditing your settings and folder structures before executing large data transfers.

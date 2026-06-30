@@ -167,4 +167,14 @@ public record Settings(Properties properties, FileSystem fileSystem) {
     public boolean isDryRun() {
         return Boolean.parseBoolean(getValue("dryrun.enabled", "false"));
     }
+
+    /**
+     * Get the folder structure pattern for organizing photos.
+     * Defaults to "yearTaken".
+     *
+     * @return the folder structure pattern
+     */
+    public @NonNull String getFolderStructure() {
+        return getValue("folder.structure", "yearTaken");
+    }
 }

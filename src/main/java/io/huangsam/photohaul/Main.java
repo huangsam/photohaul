@@ -17,7 +17,7 @@ public class Main {
         PhotoCollector photoCollector = new PhotoCollector();
         PathRuleSet pathRuleSet = PathRuleSet.getDefault();
         PhotoDeduplicator deduplicator = new PhotoDeduplicator();
-        PhotoResolver photoResolver = PhotoResolver.getDefault();
+        PhotoResolver photoResolver = PhotoResolver.fromSettings(settings);
 
         MigratorFactory migratorFactory = new MigratorFactory();
         migratorFactory.registerDefaults();

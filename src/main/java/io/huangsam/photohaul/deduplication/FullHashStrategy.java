@@ -43,4 +43,3 @@ class FullHashStrategy implements DeduplicationStrategy {
         return HashUtils.calculateHash(photo.path());
     }
 }
-

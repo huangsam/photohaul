@@ -91,7 +91,6 @@ public record Settings(Properties properties, FileSystem fileSystem) {
         return new Settings(properties, FileSystems.getDefault());
     }
 
-
     /**
      * Retrieves a mandatory string value from settings. Throws NullPointerException if key is not found.
      *

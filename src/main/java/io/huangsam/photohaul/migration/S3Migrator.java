@@ -54,7 +54,6 @@ public class S3Migrator extends AbstractMigrator {
         });
     }
 
-
     @Override
     public void close() throws Exception {
         s3Client.close();

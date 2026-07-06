@@ -141,4 +141,3 @@ public class TestSettings {
         assertEquals(1, settings.getMigrationThreads());
     }
 }
-

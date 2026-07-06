@@ -13,6 +13,11 @@
         <property name="max" value="160"/>
     </module>
 
+    <module name="RegexpMultiline">
+        <property name="format" value="\r?\n\s*\r?\n\s*(?:\r?\n|\Z)"/>
+        <property name="message" value="Multiple consecutive blank lines or trailing blank lines are not allowed."/>
+    </module>
+
     <module name="TreeWalker">
         <!-- Naming conventions -->
         <module name="ConstantName"/>

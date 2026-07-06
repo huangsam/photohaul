@@ -105,4 +105,3 @@ public class TestPathMigrator extends TestMigrationAbstract {
         return new PathMigrator(destination, resolver, action, dryRun);
     }
 }
-

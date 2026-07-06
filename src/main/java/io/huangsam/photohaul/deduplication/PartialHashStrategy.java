@@ -63,4 +63,3 @@ class PartialHashStrategy implements DeduplicationStrategy {
         return HashUtils.calculateHash(photo.path(), 1024);
     }
 }
-

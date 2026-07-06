@@ -144,7 +144,6 @@ public class Photo {
         return metadata().tags();
     }
 
-
     /**
      * Get photo modified time.
      *

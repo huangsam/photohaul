@@ -101,4 +101,3 @@ public abstract class AbstractMigrator implements Migrator {
         }
     }
 }
-

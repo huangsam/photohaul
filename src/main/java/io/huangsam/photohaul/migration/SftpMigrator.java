@@ -91,7 +91,6 @@ public class SftpMigrator extends AbstractMigrator {
         }
     }
 
-
     @NonNull
     private String getTargetPath(@NonNull Photo photo) {
         return targetRoot + "/" + resolvePath(photo) + "/" + photo.name();

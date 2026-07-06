@@ -152,5 +152,3 @@ public class TestPhotoResolver extends TestResolutionAbstract {
         assertEquals("Other", emptyResolved.getFirst());
     }
 }
-
-

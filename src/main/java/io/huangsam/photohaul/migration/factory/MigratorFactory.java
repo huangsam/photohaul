@@ -37,7 +37,6 @@ public class MigratorFactory {
 
     private final Map<MigratorMode, MigratorFactoryStrategy> registry = new EnumMap<>(MigratorMode.class);
 
-
     /**
      * Registers a migrator factory strategy for a given mode.
      *

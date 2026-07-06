@@ -46,7 +46,6 @@ public class PathMigrator extends AbstractMigrator {
         });
     }
 
-
     @NonNull
     private Path getTargetPath(Photo photo) {
         return targetRoot.resolve(resolvePath(photo));

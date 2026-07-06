@@ -127,7 +127,6 @@ public record PhotoResolver(List<Function<Photo, String>> photoFunctions) {
         };
     }
 
-
     /**
      * Resolve photo to a list of path components.
      *

@@ -105,4 +105,21 @@ public class TestDropboxMigrator extends TestMigrationAbstract {
 
         migrator.close(); // No-op, but ensures no exception
     }
+
+    @Test
+    void testMigratePhotosDryRun() throws Exception {
+        when(clientMock.files()).thenReturn(requestsMock);
+        when(photoResolverMock.resolveString(any(Photo.class))).thenReturn("some/path");
+
+        Migrator migrator = new DropboxMigrator("/Foobar", photoResolverMock, clientMock, true);
+        run(migrator);
+
+        verify(clientMock).files();
+        verify(requestsMock, times(0)).uploadBuilder(anyString());
+
+        assertEquals(2, migrator.getSuccessCount());
+        assertEquals(0, migrator.getFailureCount());
+
+        migrator.close();
+    }
 }

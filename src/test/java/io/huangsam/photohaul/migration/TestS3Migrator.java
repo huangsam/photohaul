@@ -74,4 +74,20 @@ public class TestS3Migrator extends TestMigrationAbstract {
         migrator.close();
         verify(s3ClientMock).close();
     }
+
+    @Test
+    void testMigratePhotosDryRun() throws Exception {
+        when(photoResolverMock.resolveString(any(Photo.class))).thenReturn("some/path");
+
+        Migrator migrator = new S3Migrator("test-bucket", photoResolverMock, s3ClientMock, true);
+        run(migrator);
+
+        verify(s3ClientMock, times(0)).putObject(any(PutObjectRequest.class), any(Path.class));
+
+        assertEquals(2, migrator.getSuccessCount());
+        assertEquals(0, migrator.getFailureCount());
+
+        migrator.close();
+        verify(s3ClientMock).close();
+    }
 }

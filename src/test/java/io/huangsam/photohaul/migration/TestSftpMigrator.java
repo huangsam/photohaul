@@ -135,4 +135,44 @@ public class TestSftpMigrator extends TestMigrationAbstract {
 
         migrator.close(); // No-op
     }
+
+    @Test
+    void testMigratePhotosDryRun() throws Exception {
+        when(sshClientMock.newSFTPClient()).thenReturn(sftpClientMock);
+        when(photoResolverMock.resolveString(any(Photo.class))).thenReturn("some/path");
+
+        SftpMigrator.Config config = new SftpMigrator.Config("host", 22, "user", "pass");
+        // Create with dryRun = true
+        Migrator migrator = new SftpMigrator(config, "/target", photoResolverMock, () -> sshClientMock, true);
+        run(migrator);
+
+        verify(sshClientMock).connect("host", 22);
+        verify(sshClientMock).authPassword("user", "pass");
+        verify(sshClientMock).newSFTPClient();
+        verify(sftpClientMock, times(0)).put(anyString(), anyString());
+
+        assertEquals(2, migrator.getSuccessCount());
+        assertEquals(0, migrator.getFailureCount());
+
+        migrator.close();
+    }
+
+    @Test
+    void testMigratePhotosParallel() throws Exception {
+        when(sshClientMock.newSFTPClient()).thenReturn(sftpClientMock);
+        when(photoResolverMock.resolveString(any(Photo.class))).thenReturn("some/path");
+
+        SftpMigrator.Config config = new SftpMigrator.Config("host", 22, "user", "pass");
+        // Construct with threadCount = 4
+        Migrator migrator = new SftpMigrator(config, "/target", photoResolverMock, () -> sshClientMock, false, 4);
+        run(migrator);
+
+        verify(sshClientMock).connect("host", 22);
+        verify(sftpClientMock, times(2)).put(anyString(), anyString());
+
+        assertEquals(2, migrator.getSuccessCount());
+        assertEquals(0, migrator.getFailureCount());
+
+        migrator.close();
+    }
 }

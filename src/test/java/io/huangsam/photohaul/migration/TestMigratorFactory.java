@@ -180,4 +180,39 @@ public class TestMigratorFactory {
             assertSame(PathMigrator.class, migrator.getClass());
         }
     }
+
+    @Test
+    void testRegisterDefaults() throws Exception {
+        MigratorFactory factory = new MigratorFactory();
+        factory.registerDefaults();
+
+        Settings settings = Settings.load("path-example.properties");
+        try (Migrator migrator = factory.make(MigratorMode.PATH, settings, RESOLVER)) {
+            assertSame(PathMigrator.class, migrator.getClass());
+        }
+    }
+
+    @Test
+    void testMakeGoogleDriveMigratorSuccess(@TempDir @NonNull Path tempDir) throws Exception {
+        Path propsFile = tempDir.resolve("drive-success.properties");
+        String propsContent = String.format(
+                "migrator.mode=GOOGLE_DRIVE%n"
+                        + "path.source=Dummy/Source%n"
+                        + "drive.target=rootId123%n"
+                        + "drive.credentialFile=mock-credentials.json%n"
+                        + "drive.appName=Photohaul%n");
+        Files.writeString(propsFile, propsContent);
+
+        Settings settings = Settings.load(propsFile.toString());
+        try (Migrator migrator = FACTORY.make(MigratorMode.GOOGLE_DRIVE, settings, RESOLVER)) {
+            assertSame(GoogleDriveMigrator.class, migrator.getClass());
+        }
+    }
+
+    @Test
+    void testMakeUnsupportedMigratorMode() {
+        MigratorFactory factory = new MigratorFactory(); // Empty registry
+        Settings settings = Settings.load("path-example.properties");
+        assertThrows(IllegalArgumentException.class, () -> factory.make(MigratorMode.PATH, settings, RESOLVER));
+    }
 }

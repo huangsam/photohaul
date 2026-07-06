@@ -33,6 +33,38 @@ public class TestPhoto {
         assertNull(FAKE_PHOTO.modifiedAt());
     }
 
+    @Test
+    void testPhotoEqualsAndHashCode() {
+        Photo photo1 = getPhoto("someFolder/foobar.jpg");
+        Photo photo2 = getPhoto("someFolder/foobar.jpg");
+        Photo photo3 = getPhoto("someFolder/diff.jpg");
+
+        assertEquals(photo1, photo1);
+        assertEquals(photo1, photo2);
+        assertEquals(photo1.hashCode(), photo2.hashCode());
+        
+        // Test not equals
+        org.junit.jupiter.api.Assertions.assertNotEquals(photo1, photo3);
+        org.junit.jupiter.api.Assertions.assertNotEquals(photo1, null);
+        org.junit.jupiter.api.Assertions.assertNotEquals(photo1, "string");
+    }
+
+    @Test
+    void testPhotoToString() {
+        Photo photo = getPhoto("someFolder/foobar.jpg");
+        assertEquals("Photo{path=someFolder/foobar.jpg}", photo.toString());
+    }
+
+    @Test
+    void testPhotoMetadataDelegates() {
+        MetadataService service = new MetadataService();
+        Path path = Path.of("src/test/resources/static/bauerlite.jpg");
+        Photo photoWithMeta = new Photo(path, service.getSupplier(path));
+        assertNotNull(photoWithMeta.metadata());
+        assertNotNull(photoWithMeta.taken());
+        assertEquals("Canon", photoWithMeta.make());
+    }
+
     @NonNull
     private static Photo getPhoto(@NonNull String pathName) {
         return new Photo(Path.of(pathName));

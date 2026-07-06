@@ -230,4 +230,20 @@ public class TestGoogleDriveMigrator extends TestMigrationAbstract {
         migrator.close();
         verify(httpTransportMock).shutdown();
     }
+
+    @Test
+    void testMigratePhotosDryRun() throws Exception {
+        when(photoResolverMock.resolveString(any(Photo.class))).thenReturn("some/path");
+
+        Migrator migrator = new GoogleDriveMigrator(TARGET_ROOT, photoResolverMock, driveMock, httpTransportMock, true);
+        run(migrator);
+
+        verify(driveMock, times(0)).files();
+
+        assertEquals(2, migrator.getSuccessCount());
+        assertEquals(0, migrator.getFailureCount());
+
+        migrator.close();
+        verify(httpTransportMock).shutdown();
+    }
 }

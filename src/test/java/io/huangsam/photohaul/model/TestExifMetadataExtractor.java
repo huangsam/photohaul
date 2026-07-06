@@ -88,4 +88,67 @@ public class TestExifMetadataExtractor {
         assertNotNull(metadata);
         assertNull(metadata.tags());
     }
+
+    @Test
+    void testExtractNonImageFile(@TempDir @NonNull Path tempDir) throws IOException {
+        Path txtFile = tempDir.resolve("sample.txt");
+        Files.write(txtFile, "plain text".getBytes());
+
+        ExifMetadataExtractor extractor = new ExifMetadataExtractor();
+        PhotoMetadata metadata = extractor.extract(txtFile);
+
+        assertEquals(PhotoMetadata.EMPTY, metadata);
+    }
+
+    @Test
+    void testPrivateParseDateTime() throws Exception {
+        ExifMetadataExtractor extractor = new ExifMetadataExtractor();
+        java.lang.reflect.Method method = ExifMetadataExtractor.class.getDeclaredMethod("parseDateTime", String.class);
+        method.setAccessible(true);
+
+        // 1. null string input
+        Object resultNull = method.invoke(extractor, (String) null);
+        assertNull(resultNull);
+
+        // 2. malformed string input (causes exception)
+        Object resultMalformed = method.invoke(extractor, "invalid-date-format");
+        assertNull(resultMalformed);
+
+        // 3. valid format
+        Object resultValid = method.invoke(extractor, "2026:07:06 12:34:56");
+        assertNotNull(resultValid);
+    }
+
+    @Test
+    void testPrivateIsSubjectNode() throws Exception {
+        ExifMetadataExtractor extractor = new ExifMetadataExtractor();
+        java.lang.reflect.Method method = ExifMetadataExtractor.class.getDeclaredMethod("isSubjectNode", org.w3c.dom.Node.class);
+        method.setAccessible(true);
+
+        javax.xml.parsers.DocumentBuilderFactory dbf = javax.xml.parsers.DocumentBuilderFactory.newInstance();
+        dbf.setNamespaceAware(true);
+        javax.xml.parsers.DocumentBuilder db = dbf.newDocumentBuilder();
+        org.w3c.dom.Document doc = db.newDocument();
+
+        // 1. Node with null parent
+        org.w3c.dom.Element liNode1 = doc.createElement("li");
+        assertEquals(false, method.invoke(extractor, liNode1));
+
+        // 2. Node where parent localName is null or not Bag/Seq/Alt
+        org.w3c.dom.Element parentNotBag = doc.createElement("NotBag");
+        parentNotBag.appendChild(liNode1);
+        assertEquals(false, method.invoke(extractor, liNode1));
+
+        // 3. Node where grandparent is null
+        org.w3c.dom.Element bagNode = doc.createElement("Bag");
+        org.w3c.dom.Element liNode2 = doc.createElement("li");
+        bagNode.appendChild(liNode2);
+        // bagNode has no parent, so grandparent is null
+        assertEquals(false, method.invoke(extractor, liNode2));
+
+        // 4. Node where grandparent localName is not subject
+        org.w3c.dom.Element grandParentNotSubject = doc.createElement("NotSubject");
+        grandParentNotSubject.appendChild(bagNode);
+        assertEquals(false, method.invoke(extractor, liNode2));
+    }
 }

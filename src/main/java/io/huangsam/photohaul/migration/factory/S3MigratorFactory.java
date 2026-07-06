@@ -25,6 +25,6 @@ public class S3MigratorFactory implements MigratorFactoryStrategy {
                 .region(Region.of(region))
                 .credentialsProvider(StaticCredentialsProvider.create(credentials))
                 .build();
-        return new S3Migrator(bucket, resolver, client, settings.isDryRun());
+        return new S3Migrator(bucket, resolver, client, settings.isDryRun(), settings.getMigrationThreads());
     }
 }

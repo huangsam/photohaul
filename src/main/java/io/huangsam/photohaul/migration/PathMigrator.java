@@ -20,7 +20,11 @@ public class PathMigrator extends AbstractMigrator {
     private final Action migratorAction;
 
     public PathMigrator(Path target, PhotoResolver resolver, Action action, boolean dryRun) {
-        super(resolver, dryRun);
+        this(target, resolver, action, dryRun, 1);
+    }
+
+    public PathMigrator(Path target, PhotoResolver resolver, Action action, boolean dryRun, int threadCount) {
+        super(resolver, dryRun, threadCount);
         targetRoot = target;
         migratorAction = action;
     }
@@ -28,18 +32,20 @@ public class PathMigrator extends AbstractMigrator {
     @Override
     public final void migratePhotos(@NonNull Collection<Photo> photos) {
         LOG.debug("Start path migration to {}", targetRoot);
-        photos.forEach(photo -> {
+        runMigration(photos, photo -> {
             Path targetPath = getTargetPath(photo);
             LOG.trace("Move {} to {}", photo.name(), targetPath);
             try {
                 migratePhoto(targetPath, photo);
-                successCount++;
+                successfulPhotos.add(photo.path().toString());
+                successCount.incrementAndGet();
             } catch (IOException e) {
                 LOG.error("Cannot move {}: {}", photo.name(), e.getMessage());
-                failureCount++;
+                failureCount.incrementAndGet();
             }
         });
     }
+
 
     @NonNull
     private Path getTargetPath(Photo photo) {

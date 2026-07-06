@@ -74,8 +74,35 @@ public class TestPathMigrator extends TestMigrationAbstract {
         migrator.close(); // No-op
     }
 
+    @Test
+    void testMigratePhotosParallelCopyAllSuccess() throws Exception {
+        when(photoResolverMock.resolveString(any(Photo.class))).thenReturn("some/path");
+
+        Migrator migrator = new PathMigrator(getTempResources(), photoResolverMock, PathMigrator.Action.COPY, false, 4);
+        run(migrator);
+
+        assertEquals(2, migrator.getSuccessCount());
+        assertEquals(0, migrator.getFailureCount());
+
+        migrator.close(); // No-op
+    }
+
+    @Test
+    void testMigratePhotosParallelMoveAllFailure() throws Exception {
+        when(photoResolverMock.resolveString(any(Photo.class))).thenReturn("some/path");
+
+        Migrator migrator = new PathMigrator(getTempResources(), photoResolverMock, PathMigrator.Action.MOVE, false, 4);
+        run(migrator, List.of("foobar.jpg"));
+
+        assertEquals(0, migrator.getSuccessCount());
+        assertEquals(1, migrator.getFailureCount());
+
+        migrator.close(); // No-op
+    }
+
     @NonNull
     private static PathMigrator getPathMover(Path destination, PhotoResolver resolver, PathMigrator.Action action, boolean dryRun) {
         return new PathMigrator(destination, resolver, action, dryRun);
     }
 }
+

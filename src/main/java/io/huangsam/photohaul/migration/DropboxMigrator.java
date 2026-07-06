@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.Collection;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -22,8 +24,14 @@ public class DropboxMigrator extends AbstractMigrator {
     private final @NonNull String targetRoot;
     private final DbxClientV2 dropboxClient;
 
+    private final Map<String, Boolean> folderCache = new ConcurrentHashMap<>();
+
     public DropboxMigrator(@NonNull String target, PhotoResolver resolver, DbxClientV2 client, boolean dryRun) {
-        super(resolver, dryRun);
+        this(target, resolver, client, dryRun, 1);
+    }
+
+    public DropboxMigrator(@NonNull String target, PhotoResolver resolver, DbxClientV2 client, boolean dryRun, int threadCount) {
+        super(resolver, dryRun, threadCount);
         if (!target.startsWith("/")) {
             throw new IllegalArgumentException("Target must begin with a '/' character");
         }
@@ -35,25 +43,40 @@ public class DropboxMigrator extends AbstractMigrator {
     public void migratePhotos(@NonNull Collection<Photo> photos) {
         LOG.debug("Start Dropbox migration to {}", targetRoot);
         DbxUserFilesRequests requests = dropboxClient.files();
-        photos.forEach(photo -> {
+        runMigration(photos, photo -> {
             String targetPath = getTargetPath(photo);
             LOG.trace("Move {} to {}", photo.name(), targetPath);
             if (dryRun) {
                 LOG.info("Dry-run {} to {}", photo.path(), targetPath + "/" + photo.name());
-                successCount++;
+                successfulPhotos.add(photo.path().toString());
+                successCount.incrementAndGet();
                 return;
             }
             try (InputStream in = Files.newInputStream(photo.path())) {
-                try {
-                    requests.listFolder(targetPath);
-                } catch (ListFolderErrorException e) {
-                    requests.createFolderV2(targetPath);
+                if (!folderCache.containsKey(targetPath)) {
+                    synchronized (this) {
+                        if (!folderCache.containsKey(targetPath)) {
+                            try {
+                                requests.listFolder(targetPath);
+                            } catch (ListFolderErrorException e) {
+                                try {
+                                    requests.createFolderV2(targetPath);
+                                } catch (DbxException ex) {
+                                    // Ignore if folder was already created by another concurrent thread
+                                }
+                            } catch (DbxException e) {
+                                // Ignore other client metadata checking errors
+                            }
+                            folderCache.put(targetPath, true);
+                        }
+                    }
                 }
                 requests.uploadBuilder(targetPath + "/" + photo.name()).uploadAndFinish(in);
-                successCount++;
+                successfulPhotos.add(photo.path().toString());
+                successCount.incrementAndGet();
             } catch (IOException | DbxException e) {
                 LOG.error("Cannot move {}: {}", photo.name(), e.getMessage());
-                failureCount++;
+                failureCount.incrementAndGet();
             }
         });
     }

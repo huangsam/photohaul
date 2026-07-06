@@ -118,4 +118,27 @@ public class TestSettings {
         Settings settings = Settings.load(props.toString());
         assertFalse(settings.isDeltaEnabled());
     }
+
+    @Test
+    void testGetMigrationThreadsDefault() {
+        Settings settings = Settings.load("path-example.properties");
+        assertEquals(1, settings.getMigrationThreads());
+    }
+
+    @Test
+    void testGetMigrationThreadsCustom(@TempDir @NonNull Path tmp) throws IOException {
+        Path props = tmp.resolve("threads.properties");
+        Files.writeString(props, "path.source=Dummy/Source\nmigrator.mode=PATH\nmigration.threads=4\n");
+        Settings settings = Settings.load(props.toString());
+        assertEquals(4, settings.getMigrationThreads());
+    }
+
+    @Test
+    void testGetMigrationThreadsInvalid(@TempDir @NonNull Path tmp) throws IOException {
+        Path props = tmp.resolve("invalid_threads.properties");
+        Files.writeString(props, "path.source=Dummy/Source\nmigrator.mode=PATH\nmigration.threads=not-a-number\n");
+        Settings settings = Settings.load(props.toString());
+        assertEquals(1, settings.getMigrationThreads());
+    }
 }
+

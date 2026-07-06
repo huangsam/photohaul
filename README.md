@@ -10,6 +10,7 @@ Effortless photo management.
 - **Sync Anywhere:** Local, Cloud (S3, GDrive, Dropbox), or SFTP.
 - **Auto-Organize:** Custom paths by date, camera, or file type.
 - **Smart Logic:** Hash-based deduplication and incremental runs.
+- **Speed & Control:** Configurable concurrent migrations to optimize network utilization.
 - **Risk-Free:** Built-in dry run simulation.
 
 Say goodbye to photo clutter - 👋 + 🚀

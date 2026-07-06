@@ -18,7 +18,11 @@ public class S3Migrator extends AbstractMigrator {
     private final S3Client s3Client;
 
     public S3Migrator(@NonNull String bucket, PhotoResolver resolver, S3Client client, boolean dryRun) {
-        super(resolver, dryRun);
+        this(bucket, resolver, client, dryRun, 1);
+    }
+
+    public S3Migrator(@NonNull String bucket, PhotoResolver resolver, S3Client client, boolean dryRun, int threadCount) {
+        super(resolver, dryRun, threadCount);
         bucketName = bucket;
         s3Client = client;
     }
@@ -26,12 +30,13 @@ public class S3Migrator extends AbstractMigrator {
     @Override
     public void migratePhotos(@NonNull Collection<Photo> photos) {
         LOG.debug("Start S3 migration to bucket {}", bucketName);
-        photos.forEach(photo -> {
+        runMigration(photos, photo -> {
             String key = getTargetKey(photo);
             LOG.trace("Upload {} to s3://{}/{}", photo.name(), bucketName, key);
             if (dryRun) {
                 LOG.info("Dry-run {} to s3://{}/{}", photo.path(), bucketName, key);
-                successCount++;
+                successfulPhotos.add(photo.path().toString());
+                successCount.incrementAndGet();
                 return;
             }
             try {
@@ -40,13 +45,15 @@ public class S3Migrator extends AbstractMigrator {
                         .key(key)
                         .build();
                 s3Client.putObject(request, photo.path());
-                successCount++;
+                successfulPhotos.add(photo.path().toString());
+                successCount.incrementAndGet();
             } catch (Exception e) {
                 LOG.error("Cannot upload {}: {}", photo.name(), e.getMessage());
-                failureCount++;
+                failureCount.incrementAndGet();
             }
         });
     }
+
 
     @Override
     public void close() throws Exception {

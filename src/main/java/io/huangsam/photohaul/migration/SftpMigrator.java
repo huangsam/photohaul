@@ -23,13 +23,24 @@ public class SftpMigrator extends AbstractMigrator {
 
     public SftpMigrator(@NonNull Config config,
                        @NonNull String target, PhotoResolver resolver, boolean dryRun) {
-        this(config, target, resolver, SSHClient::new, dryRun);
+        this(config, target, resolver, SSHClient::new, dryRun, 1);
+    }
+
+    public SftpMigrator(@NonNull Config config,
+                       @NonNull String target, PhotoResolver resolver, boolean dryRun, int threadCount) {
+        this(config, target, resolver, SSHClient::new, dryRun, threadCount);
     }
 
     // For testing
     SftpMigrator(@NonNull Config config,
                 @NonNull String target, PhotoResolver resolver, Supplier<SSHClient> sshClientSupplier, boolean dryRun) {
-        super(resolver, dryRun);
+        this(config, target, resolver, sshClientSupplier, dryRun, 1);
+    }
+
+    // For testing with threadCount
+    SftpMigrator(@NonNull Config config,
+                @NonNull String target, PhotoResolver resolver, Supplier<SSHClient> sshClientSupplier, boolean dryRun, int threadCount) {
+        super(resolver, dryRun, threadCount);
         this.config = config;
         this.targetRoot = target;
         this.sshClientSupplier = sshClientSupplier;
@@ -38,43 +49,48 @@ public class SftpMigrator extends AbstractMigrator {
     @Override
     public void migratePhotos(java.util.@NonNull Collection<Photo> photos) {
         LOG.debug("Start SFTP migration to {}@{}:{}", config.username(), config.host(), config.port());
-        int processedCount = 0;
+        java.util.concurrent.atomic.AtomicInteger processedCount = new java.util.concurrent.atomic.AtomicInteger(0);
         try (SSHClient sshClient = sshClientSupplier.get()) {
             sshClient.loadKnownHosts();
             sshClient.connect(config.host(), config.port());
             sshClient.authPassword(config.username(), config.password());
 
             try (SFTPClient sftpClient = sshClient.newSFTPClient()) {
-                for (Photo photo : photos) {
+                runMigration(photos, photo -> {
                     String targetPath = getTargetPath(photo);
                     LOG.trace("Upload {} to {}", photo.name(), targetPath);
                     if (dryRun) {
                         LOG.info("Dry-run {} to sftp://{}@{}:{}/{}", photo.path(), config.username(), config.host(), config.port(), targetPath);
-                        successCount++;
-                        processedCount++;
-                        continue;
+                        successfulPhotos.add(photo.path().toString());
+                        successCount.incrementAndGet();
+                        processedCount.incrementAndGet();
+                        return;
                     }
                     try {
-                        // Ensure target directory exists
-                        int lastSlash = targetPath.lastIndexOf('/');
-                        if (lastSlash > 0) {
-                            String targetDir = targetPath.substring(0, lastSlash);
-                            sftpClient.mkdirs(targetDir);
+                        synchronized (sftpClient) {
+                            // Ensure target directory exists
+                            int lastSlash = targetPath.lastIndexOf('/');
+                            if (lastSlash > 0) {
+                                String targetDir = targetPath.substring(0, lastSlash);
+                                sftpClient.mkdirs(targetDir);
+                            }
+                            sftpClient.put(photo.path().toString(), targetPath);
                         }
-                        sftpClient.put(photo.path().toString(), targetPath);
-                        successCount++;
+                        successfulPhotos.add(photo.path().toString());
+                        successCount.incrementAndGet();
                     } catch (IOException e) {
                         LOG.error("Cannot upload {}: {}", photo.name(), e.getMessage());
-                        failureCount++;
+                        failureCount.incrementAndGet();
                     }
-                    processedCount++;
-                }
+                    processedCount.incrementAndGet();
+                });
             }
         } catch (IOException e) {
             LOG.error("SFTP connection error: {}", e.getMessage());
-            failureCount += (photos.size() - processedCount);
+            failureCount.addAndGet(photos.size() - processedCount.get());
         }
     }
+
 
     @NonNull
     private String getTargetPath(@NonNull Photo photo) {

@@ -70,7 +70,7 @@ public class TestDropboxMigrator extends TestMigrationAbstract {
         Migrator migrator = new DropboxMigrator("/Foobar", photoResolverMock, clientMock, false);
         run(migrator);
 
-        verify(requestsMock, times(2)).createFolderV2(anyString());
+        verify(requestsMock, times(1)).createFolderV2(anyString());
         verify(requestsMock, times(2)).uploadBuilder(anyString());
 
         assertEquals(2, migrator.getSuccessCount());

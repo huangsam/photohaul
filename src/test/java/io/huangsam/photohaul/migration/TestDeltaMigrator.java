@@ -285,4 +285,34 @@ public class TestDeltaMigrator {
         // Should call delegate since file has different timestamp
         verify(mockDelegate).migratePhotos(ArgumentMatchers.any());
     }
+
+    @Test
+    void testMigratePhotosWithAbstractMigratorDelegate(@TempDir @NonNull Path tempDir) throws IOException {
+        AbstractMigrator mockAM = org.mockito.Mockito.mock(AbstractMigrator.class);
+        MigrationStateFile stateFile = new MigrationStateFile(mockStorage);
+        DeltaMigrator dm = new DeltaMigrator(mockAM, stateFile, false);
+
+        Path testFile1 = tempDir.resolve("photo1.jpg");
+        Path testFile2 = tempDir.resolve("photo2.jpg");
+        Files.writeString(testFile1, "test content 1");
+        Files.writeString(testFile2, "test content 2");
+        Photo photo1 = new Photo(testFile1);
+        Photo photo2 = new Photo(testFile2);
+
+        when(mockStorage.readStateFile(any())).thenReturn(null);
+        when(mockAM.getSuccessCount()).thenReturn(0L, 1L);
+
+        // photo1 succeeded, photo2 failed
+        java.util.Set<String> succeeded = new java.util.HashSet<>();
+        succeeded.add(testFile1.toString());
+        when(mockAM.getSuccessfulPhotos()).thenReturn(succeeded);
+
+        dm.migratePhotos(List.of(photo1, photo2));
+
+        // Verify that the saved state contains photo1.jpg and does not contain photo2.jpg
+        verify(mockStorage).writeStateFile(anyString(), org.mockito.Mockito.argThat(content -> 
+            content.contains("photo1.jpg") && !content.contains("photo2.jpg")
+        ));
+    }
 }
+

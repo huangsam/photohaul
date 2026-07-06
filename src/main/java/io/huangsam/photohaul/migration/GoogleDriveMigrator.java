@@ -31,7 +31,11 @@ public class GoogleDriveMigrator extends AbstractMigrator {
     private final Map<String, String> folderCache = new ConcurrentHashMap<>();
 
     public GoogleDriveMigrator(String target, PhotoResolver resolver, Drive service, HttpTransport transport, boolean dryRun) {
-        super(resolver, dryRun);
+        this(target, resolver, service, transport, dryRun, 1);
+    }
+
+    public GoogleDriveMigrator(String target, PhotoResolver resolver, Drive service, HttpTransport transport, boolean dryRun, int threadCount) {
+        super(resolver, dryRun, threadCount);
         targetRoot = target;
         driveService = service;
         httpTransport = transport;
@@ -40,12 +44,13 @@ public class GoogleDriveMigrator extends AbstractMigrator {
     @Override
     public void migratePhotos(@NonNull Collection<Photo> photos) {
         LOG.debug("Start Drive migration to {}", targetRoot);
-        photos.forEach(photo -> {
+        runMigration(photos, photo -> {
             String targetPath = getTargetPath(photo);
             LOG.trace("Move {} to {}", photo.name(), targetPath);
             if (dryRun) {
                 LOG.info("Dry-run {} to Google Drive path: {}/{}", photo.path(), targetPath, photo.name());
-                successCount++;
+                successfulPhotos.add(photo.path().toString());
+                successCount.incrementAndGet();
                 return;
             }
             try {
@@ -53,7 +58,7 @@ public class GoogleDriveMigrator extends AbstractMigrator {
                 createDrivePhoto(folderId, photo);
             } catch (IOException | NullPointerException e) {
                 LOG.error("Cannot move {}: {}", photo.name(), e.getMessage());
-                failureCount++;
+                failureCount.incrementAndGet();
             }
         });
     }
@@ -67,7 +72,7 @@ public class GoogleDriveMigrator extends AbstractMigrator {
         return resolvePath(photo);
     }
 
-    private String createDriveFolder(@NonNull String targetPath) throws IOException {
+    private synchronized String createDriveFolder(@NonNull String targetPath) throws IOException {
         if (targetPath.isEmpty()) {
             return targetRoot;
         }
@@ -120,7 +125,8 @@ public class GoogleDriveMigrator extends AbstractMigrator {
     private void createDrivePhoto(@NonNull String folderId, @NonNull Photo photo) throws IOException {
         String existingId = getExistingId(folderId, photo.name());
         if (existingId != null) {
-            successCount++;
+            successfulPhotos.add(photo.path().toString());
+            successCount.incrementAndGet();
             return;
         }
 
@@ -142,7 +148,8 @@ public class GoogleDriveMigrator extends AbstractMigrator {
 
         LOG.trace("Photo created: {}", photoSuccess.getId());
 
-        successCount++;
+        successfulPhotos.add(photo.path().toString());
+        successCount.incrementAndGet();
     }
 
     @Nullable

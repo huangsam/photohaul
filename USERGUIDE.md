@@ -154,6 +154,24 @@ delta.enabled=true
 
 **Note:** Delta migration is disabled by default to ensure backward compatibility.
 
+## Concurrent migration (optional)
+
+To accelerate photo copying, moving, or cloud uploading, Photohaul supports running migration workloads in parallel.
+
+To enable concurrency, set the `migration.threads` property to a value greater than `1` (defaults to `1` for safety reasons):
+
+```properties
+# Number of threads to use for parallel migration (default: 1)
+migration.threads=4
+```
+
+> [!NOTE]
+> Parallel migration is fully integrated with dry-runs and delta migrations. When delta migration is enabled, Photohaul safely tracks and records only the exact set of successfully transferred photos.
+
+> [!WARNING]
+> - **API Rate Limits:** High thread counts (e.g. $>4$) for cloud endpoints (Google Drive and Dropbox) may trigger HTTP 429 "Too Many Requests" rate limiting errors. Keep thread count moderate for cloud migrations.
+> - **SFTP Limitation:** Because the underlying SSHJ SFTP client does not support multi-threaded writes over a single channel, concurrent SFTP uploads are serialized internally for safety. You will not see significant upload speedups for SFTP under concurrency.
+
 ## Run migration
 
 - Open your terminal and navigate to the `./photohaul` directory

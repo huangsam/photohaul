@@ -1,5 +1,6 @@
 package io.huangsam.photohaul.migration.delta;
 
+import io.huangsam.photohaul.migration.AbstractMigrator;
 import io.huangsam.photohaul.migration.Migrator;
 import io.huangsam.photohaul.migration.state.FileState;
 import io.huangsam.photohaul.migration.state.MigrationStateFile;
@@ -112,13 +113,22 @@ public class DeltaMigrator implements Migrator {
     }
 
     private void recordSuccessfulMigrations(@NonNull List<FileState> fileStates, long successfulMigrations) {
-        // Record states only for the number of successful migrations
-        // Since we process in order, record states from the beginning
-        int statesToRecord = (int) Math.min(successfulMigrations, fileStates.size());
-        for (int i = 0; i < statesToRecord; i++) {
-            FileState fileState = fileStates.get(i);
-            if (fileState != null) {
-                stateFile.recordMigration(fileState);
+        if (delegate instanceof AbstractMigrator abstractMigrator) {
+            java.util.Set<String> successful = abstractMigrator.getSuccessfulPhotos();
+            for (FileState fileState : fileStates) {
+                if (fileState != null && successful.contains(fileState.path())) {
+                    stateFile.recordMigration(fileState);
+                }
+            }
+        } else {
+            // Record states only for the number of successful migrations
+            // Since we process in order, record states from the beginning
+            int statesToRecord = (int) Math.min(successfulMigrations, fileStates.size());
+            for (int i = 0; i < statesToRecord; i++) {
+                FileState fileState = fileStates.get(i);
+                if (fileState != null) {
+                    stateFile.recordMigration(fileState);
+                }
             }
         }
 

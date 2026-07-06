@@ -177,4 +177,20 @@ public record Settings(Properties properties, FileSystem fileSystem) {
     public @NonNull String getFolderStructure() {
         return getValue("folder.structure", "yearTaken");
     }
+
+    /**
+     * Get the number of threads to use for photo migration.
+     * Defaults to 1.
+     *
+     * @return the migration thread count
+     */
+    public int getMigrationThreads() {
+        try {
+            return Integer.parseInt(getValue("migration.threads", "1"));
+        } catch (NumberFormatException e) {
+            LOG.warn("Invalid migration.threads value, falling back to 1: {}", e.getMessage());
+            return 1;
+        }
+    }
 }
+

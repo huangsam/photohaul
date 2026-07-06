@@ -1,11 +1,5 @@
 package io.huangsam.photohaul.migration;
 
-import io.huangsam.photohaul.model.Photo;
-import io.huangsam.photohaul.resolution.PhotoResolver;
-import io.huangsam.photohaul.resolution.ResolutionException;
-import org.jspecify.annotations.NonNull;
-import org.slf4j.Logger;
-
 import java.util.Collection;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -13,14 +7,16 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 
-import static org.slf4j.LoggerFactory.getLogger;
+import org.jspecify.annotations.NonNull;
+
+import io.huangsam.photohaul.model.Photo;
+import io.huangsam.photohaul.resolution.PhotoResolver;
+import io.huangsam.photohaul.resolution.ResolutionException;
 
 /**
  * Base class for {@link Migrator} implementations to reduce boilerplate.
  */
 public abstract class AbstractMigrator implements Migrator {
-    private static final Logger LOG = getLogger(AbstractMigrator.class);
-
     protected final PhotoResolver photoResolver;
     protected final boolean dryRun;
     protected final int threadCount;

@@ -25,6 +25,7 @@ public record PhotoResolver(List<Function<Photo, String>> photoFunctions) {
         map.put("aperture", PhotoFunction.aperture());
         map.put("flash", PhotoFunction.flash());
         map.put("iso", PhotoFunction.iso());
+        map.put("tags", PhotoFunction.tags());
         COMPONENT_MAP = Collections.unmodifiableMap(map);
     }
 

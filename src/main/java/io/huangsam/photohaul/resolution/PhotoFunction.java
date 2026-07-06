@@ -108,4 +108,22 @@ public class PhotoFunction {
     public static Function<Photo, String> iso() {
         return Photo::iso;
     }
+
+    /**
+     * Create function to extract the primary tag from photo tags.
+     * Splits tags by comma or semicolon and returns the first one.
+     *
+     * @return function for tags
+     */
+    @NonNull
+    public static Function<Photo, String> tags() {
+        return photo -> {
+            String val = photo.tags();
+            if (val == null || val.isBlank()) {
+                return null;
+            }
+            String[] parts = val.split("[,;]");
+            return parts[0].trim();
+        };
+    }
 }

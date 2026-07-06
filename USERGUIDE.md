@@ -106,6 +106,7 @@ Supported metadata keys:
 - `aperture`: Aperture value (e.g., f/2.8).
 - `flash`: Flash status.
 - `iso`: ISO speed rating (e.g., 100).
+- `tags`: Photo keywords or subjects (derived from external `.xmp` sidecar files or embedded IPTC/XMP tags).
 
 Example configuration to organize photos by year taken and then camera make (e.g., `2026/Canon/my-photo.jpg`):
 
@@ -117,11 +118,11 @@ folder.structure=yearTaken/make
 
 If a photo does not contain a specific EXIF tag, you can specify fallback options by separating them with a pipe character (`|`). The resolver will try each option from left to right, using the first one that successfully resolves.
 
-*   **Chaining Metadata:** Try the year taken first, and fall back to the year modified if the EXIF header is missing:
+* **Chaining Metadata:** Try the year taken first, and fall back to the year modified if the EXIF header is missing:
     ```properties
     folder.structure=yearTaken|yearModified/make
     ```
-*   **Constant Literal Fallbacks:** Fall back to a constant string literal (like `Unknown`) if a metadata key is missing:
+* **Constant Literal Fallbacks:** Fall back to a constant string literal (like `Unknown`) if a metadata key is missing:
     ```properties
     folder.structure=yearTaken/make|Unknown
     ```
@@ -137,6 +138,13 @@ If all options in a fallback chain evaluate to null/blank, Photohaul uses a defa
 folder.fallback=Unsorted
 ```
 
+### XMP Sidecars & Keywords (Tags)
+
+If `tags` is included in your `folder.structure`, Photohaul looks for photo keywords/subjects to use as a folder name:
+
+* **Sidecar Discovery:** Photohaul automatically checks for an external `.xmp` sidecar file next to the image. It scans for both `[name].xmp` (e.g. `bauer.xmp` for `bauer.jpg`) and `[name].[ext].xmp` (e.g. `bauer.jpg.xmp` for `bauer.jpg`).
+* **Embedded Fallback:** If no external sidecar is found, it will attempt to extract embedded `"Keywords"` or `"Subject"` tags from the image file itself.
+* **Multiple Tags:** If a photo has multiple keywords (e.g. `wedding, bride`), only the first keyword is used as the folder component to ensure a single, valid target path.
 
 ## Dry run (Simulation)
 

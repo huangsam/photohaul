@@ -135,6 +135,17 @@ public class Photo {
     }
 
     /**
+     * Get tags metadata.
+     *
+     * @return tags string or null
+     */
+    @Nullable
+    public String tags() {
+        return metadata().tags();
+    }
+
+
+    /**
      * Get photo modified time.
      *
      * @return modified time as {@code FileTime}

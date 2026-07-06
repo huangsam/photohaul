@@ -23,11 +23,12 @@ public record PhotoMetadata(
     String shutterSpeed,
     String aperture,
     String flash,
-    String iso
+    String iso,
+    String tags
 ) {
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss");
 
-    public static final PhotoMetadata EMPTY = new PhotoMetadata(null, null, null, null, null, null, null, null);
+    public static final PhotoMetadata EMPTY = new PhotoMetadata(null, null, null, null, null, null, null, null, null);
 
     /**
      * Format the takenAt date as a string.

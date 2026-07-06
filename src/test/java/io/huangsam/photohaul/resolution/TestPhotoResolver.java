@@ -1,6 +1,7 @@
 package io.huangsam.photohaul.resolution;
 
 import io.huangsam.photohaul.model.Photo;
+import io.huangsam.photohaul.model.PhotoMetadata;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -133,5 +134,23 @@ public class TestPhotoResolver extends TestResolutionAbstract {
     void testFromPatternWithInvalidFallbackFirstThrows() {
         assertThrows(IllegalArgumentException.class, () -> PhotoResolver.fromPattern("Unknown|make"));
     }
+
+    @Test
+    void testResolveTagsPrimary() {
+        PhotoMetadata metadata = new PhotoMetadata(null, null, null, null, null, null, null, null, "Wedding, Landscape; Bride");
+        Photo photo = new Photo(java.nio.file.Paths.get("dummy.jpg"), () -> metadata);
+        PhotoResolver resolver = PhotoResolver.fromPattern("tags");
+        List<String> resolved = resolver.resolveList(photo);
+        assertEquals("Wedding", resolved.getFirst());
+    }
+
+    @Test
+    void testResolveTagsFallback() {
+        PhotoResolver resolver = PhotoResolver.fromPattern("tags");
+        Photo emptyPhoto = new Photo(java.nio.file.Paths.get("dummy.jpg"), io.huangsam.photohaul.model.PhotoMetadata.EMPTY);
+        List<String> emptyResolved = resolver.resolveList(emptyPhoto);
+        assertEquals("Other", emptyResolved.getFirst());
+    }
 }
+
 

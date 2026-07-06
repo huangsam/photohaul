@@ -111,6 +111,7 @@ public class ExifMetadataExtractor implements MetadataExtractor {
         try (InputStream in = Files.newInputStream(xmpPath)) {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setNamespaceAware(true);
+            factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document doc = builder.parse(in);
 

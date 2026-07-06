@@ -108,7 +108,7 @@ public class TestPhotoResolver extends TestResolutionAbstract {
     @Test
     void testFromPatternWithLiteralFallbacks() {
         PhotoResolver resolver = PhotoResolver.fromPattern("make|Unknown/iso|999");
-        
+
         // Bauer photo has make and iso
         List<String> resolved = resolver.resolveList(getBauerPhoto());
         assertEquals("Canon", resolved.getFirst());

@@ -310,7 +310,7 @@ public class TestDeltaMigrator {
         dm.migratePhotos(List.of(photo1, photo2));
 
         // Verify that the saved state contains photo1.jpg and does not contain photo2.jpg
-        verify(mockStorage).writeStateFile(anyString(), org.mockito.Mockito.argThat(content -> 
+        verify(mockStorage).writeStateFile(anyString(), org.mockito.Mockito.argThat(content ->
             content.contains("photo1.jpg") && !content.contains("photo2.jpg")
         ));
     }

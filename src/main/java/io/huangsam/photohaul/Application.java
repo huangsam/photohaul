@@ -47,5 +47,4 @@ public record Application(Settings settings,
             throw e;
         }
     }
-
 }

@@ -45,7 +45,7 @@ public class TestPhoto {
         assertEquals(photo1, photo1);
         assertEquals(photo1, photo2);
         assertEquals(photo1.hashCode(), photo2.hashCode());
-        
+
         // Test not equals
         org.junit.jupiter.api.Assertions.assertNotEquals(photo1, photo3);
         org.junit.jupiter.api.Assertions.assertNotEquals(photo1, null);

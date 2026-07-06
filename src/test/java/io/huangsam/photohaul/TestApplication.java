@@ -51,7 +51,7 @@ public class TestApplication {
     @Test
     void testRunSuccess(@TempDir @NonNull Path tempDir) throws Exception {
         Settings settings = createSettings(tempDir);
-        
+
         MigratorFactory factory = new MigratorFactory();
         factory.register(MigratorMode.PATH, (s, r) -> migratorMock);
 

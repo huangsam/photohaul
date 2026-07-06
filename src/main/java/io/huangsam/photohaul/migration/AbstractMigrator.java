@@ -1,17 +1,16 @@
 package io.huangsam.photohaul.migration;
 
+import io.huangsam.photohaul.model.Photo;
+import io.huangsam.photohaul.resolution.PhotoResolver;
+import io.huangsam.photohaul.resolution.ResolutionException;
+import org.jspecify.annotations.NonNull;
+
 import java.util.Collection;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
-
-import org.jspecify.annotations.NonNull;
-
-import io.huangsam.photohaul.model.Photo;
-import io.huangsam.photohaul.resolution.PhotoResolver;
-import io.huangsam.photohaul.resolution.ResolutionException;
 
 /**
  * Base class for {@link Migrator} implementations to reduce boilerplate.

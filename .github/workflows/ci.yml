@@ -28,7 +28,7 @@ jobs:
           distribution: 'zulu'
           cache: 'gradle'
       - name: Build source with Gradle
-        run: gradle build
+        run: ./gradlew build
       - name: Upload coverage data to Codecov
         uses: codecov/codecov-action@v7
         env:

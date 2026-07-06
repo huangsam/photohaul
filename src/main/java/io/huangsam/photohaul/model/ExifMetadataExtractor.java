@@ -107,6 +107,11 @@ public class ExifMetadataExtractor implements MetadataExtractor {
         }
     }
 
+    // Only dc:subject is read — it is the standard Dublin Core keyword field written by every
+    // major photo app (Lightroom, Capture One, digiKam, Photos.app, etc.). Proprietary extras
+    // like lr:hierarchicalSubject are always written in addition to dc:subject, so nothing is
+    // lost by ignoring them. A custom parser is necessary because metadata-extractor's XMP
+    // support covers only XMP embedded inside image files, not standalone .xmp sidecars.
     private @Nullable String parseXmpTags(@NonNull Path xmpPath) {
         try (InputStream in = Files.newInputStream(xmpPath)) {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -132,6 +137,9 @@ public class ExifMetadataExtractor implements MetadataExtractor {
         return null;
     }
 
+    // Accepts rdf:Bag, rdf:Seq, and rdf:Alt as valid dc:subject containers per the XMP spec.
+    // The grandparent check on "subject" (local name, namespace-agnostic) pins the match to
+    // dc:subject specifically, avoiding false positives from other list-valued fields.
     private boolean isSubjectNode(@NonNull Node node) {
         Node parent = node.getParentNode();
         if (parent == null) {

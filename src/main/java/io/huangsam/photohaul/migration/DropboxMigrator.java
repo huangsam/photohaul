@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -45,33 +46,21 @@ public class DropboxMigrator extends AbstractMigrator {
         DbxUserFilesRequests requests = dropboxClient.files();
         runMigration(photos, photo -> {
             String targetPath = getTargetPath(photo);
+            Path sidecarLocal = photo.getSidecarPath();
+            String sidecarName = (sidecarLocal != null) ? sidecarLocal.getFileName().toString() : null;
+
             LOG.trace("Move {} to {}", photo.name(), targetPath);
             if (dryRun) {
                 LOG.info("Dry-run {} to {}", photo.path(), targetPath + "/" + photo.name());
+                if (sidecarLocal != null) {
+                    LOG.info("Dry-run sidecar {} to {}", sidecarLocal, targetPath + "/" + sidecarName);
+                }
                 successfulPhotos.add(photo.path().toString());
                 successCount.incrementAndGet();
                 return;
             }
-            try (InputStream in = Files.newInputStream(photo.path())) {
-                if (!folderCache.containsKey(targetPath)) {
-                    synchronized (this) {
-                        if (!folderCache.containsKey(targetPath)) {
-                            try {
-                                requests.listFolder(targetPath);
-                            } catch (ListFolderErrorException e) {
-                                try {
-                                    requests.createFolderV2(targetPath);
-                                } catch (DbxException ex) {
-                                    // Ignore if folder was already created by another concurrent thread
-                                }
-                            } catch (DbxException e) {
-                                // Ignore other client metadata checking errors
-                            }
-                            folderCache.put(targetPath, true);
-                        }
-                    }
-                }
-                requests.uploadBuilder(targetPath + "/" + photo.name()).uploadAndFinish(in);
+            try {
+                uploadPhotoAndSidecar(requests, targetPath, photo, sidecarLocal, sidecarName);
                 successfulPhotos.add(photo.path().toString());
                 successCount.incrementAndGet();
             } catch (IOException | DbxException e) {
@@ -79,6 +68,38 @@ public class DropboxMigrator extends AbstractMigrator {
                 failureCount.incrementAndGet();
             }
         });
+    }
+
+    private void uploadPhotoAndSidecar(DbxUserFilesRequests requests, String targetPath, Photo photo,
+                                       Path sidecarLocal, String sidecarName) throws IOException, DbxException {
+        if (!folderCache.containsKey(targetPath)) {
+            synchronized (this) {
+                if (!folderCache.containsKey(targetPath)) {
+                    try {
+                        requests.listFolder(targetPath);
+                    } catch (ListFolderErrorException e) {
+                        try {
+                            requests.createFolderV2(targetPath);
+                        } catch (DbxException ex) {
+                            // Ignore if folder was already created by another concurrent thread
+                        }
+                    } catch (DbxException e) {
+                        // Ignore other client metadata checking errors
+                    }
+                    folderCache.put(targetPath, true);
+                }
+            }
+        }
+
+        try (InputStream in = Files.newInputStream(photo.path())) {
+            requests.uploadBuilder(targetPath + "/" + photo.name()).uploadAndFinish(in);
+        }
+
+        if (sidecarLocal != null) {
+            try (InputStream inXmp = Files.newInputStream(sidecarLocal)) {
+                requests.uploadBuilder(targetPath + "/" + sidecarName).uploadAndFinish(inXmp);
+            }
+        }
     }
 
     @NonNull

@@ -13,6 +13,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -120,6 +124,28 @@ public class TestDropboxMigrator extends TestMigrationAbstract {
         assertEquals(2, migrator.getSuccessCount());
         assertEquals(0, migrator.getFailureCount());
 
+        migrator.close();
+    }
+
+    @Test
+    void testMigratePhotosWithSidecar(@org.junit.jupiter.api.io.TempDir Path tempDir) throws Exception {
+        when(clientMock.files()).thenReturn(requestsMock);
+        when(requestsMock.listFolder(anyString())).thenReturn(folderResultMock);
+        when(requestsMock.uploadBuilder(anyString())).thenReturn(uploadBuilderMock);
+        when(photoResolverMock.resolveString(any(Photo.class))).thenReturn("some/path");
+
+        Path imageFile = tempDir.resolve("bauerlite.jpg");
+        Files.copy(io.huangsam.photohaul.TestHelper.getStaticResources().resolve("bauerlite.jpg"), imageFile);
+        Path xmpFile = tempDir.resolve("bauerlite.xmp");
+        Files.writeString(xmpFile, "sidecar content");
+
+        Migrator migrator = new DropboxMigrator("/Foobar", photoResolverMock, clientMock, false);
+        Photo photo = new Photo(imageFile, new io.huangsam.photohaul.model.MetadataService().getSupplier(imageFile));
+        migrator.migratePhotos(List.of(photo));
+
+        verify(requestsMock, times(2)).uploadBuilder(anyString()); // 1 for photo, 1 for sidecar
+        assertEquals(1, migrator.getSuccessCount());
+        assertEquals(0, migrator.getFailureCount());
         migrator.close();
     }
 }

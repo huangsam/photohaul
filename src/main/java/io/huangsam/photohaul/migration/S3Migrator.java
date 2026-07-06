@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
+import java.nio.file.Path;
 import java.util.Collection;
 
 import static org.slf4j.LoggerFactory.getLogger;
@@ -32,9 +33,18 @@ public class S3Migrator extends AbstractMigrator {
         LOG.debug("Start S3 migration to bucket {}", bucketName);
         runMigration(photos, photo -> {
             String key = getTargetKey(photo);
+            Path sidecarLocal = photo.getSidecarPath();
+            String sidecarKey = null;
+            if (sidecarLocal != null) {
+                sidecarKey = resolvePath(photo) + "/" + sidecarLocal.getFileName().toString();
+            }
+
             LOG.trace("Upload {} to s3://{}/{}", photo.name(), bucketName, key);
             if (dryRun) {
                 LOG.info("Dry-run {} to s3://{}/{}", photo.path(), bucketName, key);
+                if (sidecarLocal != null) {
+                    LOG.info("Dry-run sidecar {} to s3://{}/{}", sidecarLocal, bucketName, sidecarKey);
+                }
                 successfulPhotos.add(photo.path().toString());
                 successCount.incrementAndGet();
                 return;
@@ -45,6 +55,15 @@ public class S3Migrator extends AbstractMigrator {
                         .key(key)
                         .build();
                 s3Client.putObject(request, photo.path());
+
+                if (sidecarLocal != null) {
+                    PutObjectRequest sidecarRequest = PutObjectRequest.builder()
+                            .bucket(bucketName)
+                            .key(sidecarKey)
+                            .build();
+                    s3Client.putObject(sidecarRequest, sidecarLocal);
+                }
+
                 successfulPhotos.add(photo.path().toString());
                 successCount.incrementAndGet();
             } catch (Exception e) {

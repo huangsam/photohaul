@@ -196,4 +196,43 @@ public class Photo {
     public @NonNull String toString() {
         return "Photo{path=" + path + "}";
     }
+
+    /**
+     * Get the Path to an associated XMP sidecar file for a given photo path if one exists.
+     * Looks for both name.xmp and name.ext.xmp.
+     *
+     * @param photoPath the photo file path
+     * @return the sidecar Path, or null if not found
+     */
+    public static @Nullable Path getSidecarPath(@NonNull Path photoPath) {
+        Path parent = photoPath.getParent();
+        String fileName = photoPath.getFileName().toString();
+
+        // 1. replace extension
+        int lastDot = fileName.lastIndexOf('.');
+        if (lastDot > 0) {
+            String nameWithoutExt = fileName.substring(0, lastDot) + ".xmp";
+            Path p1 = (parent != null) ? parent.resolve(nameWithoutExt) : photoPath.getFileSystem().getPath(nameWithoutExt);
+            if (Files.exists(p1)) {
+                return p1;
+            }
+        }
+
+        // 2. append extension
+        String nameWithXmp = fileName + ".xmp";
+        Path p2 = (parent != null) ? parent.resolve(nameWithXmp) : photoPath.getFileSystem().getPath(nameWithXmp);
+        if (Files.exists(p2)) {
+            return p2;
+        }
+        return null;
+    }
+
+    /**
+     * Get the Path to an associated XMP sidecar file for this photo if one exists.
+     *
+     * @return the sidecar Path, or null if not found
+     */
+    public @Nullable Path getSidecarPath() {
+        return getSidecarPath(this.path);
+    }
 }

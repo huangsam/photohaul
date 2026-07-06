@@ -9,6 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -98,6 +99,39 @@ public class TestPathMigrator extends TestMigrationAbstract {
         assertEquals(1, migrator.getFailureCount());
 
         migrator.close(); // No-op
+    }
+
+    @Test
+    void testMigratePhotosWithSidecarCopy(@org.junit.jupiter.api.io.TempDir Path tempDir) throws Exception {
+        Path srcDir = tempDir.resolve("src");
+        Path destDir = tempDir.resolve("dest");
+        Files.createDirectories(srcDir);
+        Files.createDirectories(destDir);
+
+        Path imageFile = srcDir.resolve("bauerlite.jpg");
+        Files.copy(io.huangsam.photohaul.TestHelper.getStaticResources().resolve("bauerlite.jpg"), imageFile);
+
+        Path xmpFile = srcDir.resolve("bauerlite.xmp");
+        Files.writeString(xmpFile, "sidecar content");
+
+        when(photoResolverMock.resolveString(any(Photo.class))).thenReturn("2023");
+
+        Migrator migrator = new PathMigrator(destDir, photoResolverMock, PathMigrator.Action.COPY, false);
+
+        Photo photo = new Photo(imageFile, new io.huangsam.photohaul.model.MetadataService().getSupplier(imageFile));
+        migrator.migratePhotos(List.of(photo));
+
+        assertEquals(1, migrator.getSuccessCount());
+        assertEquals(0, migrator.getFailureCount());
+
+        Path targetImage = destDir.resolve("2023").resolve("bauerlite.jpg");
+        Path targetXmp = destDir.resolve("2023").resolve("bauerlite.xmp");
+
+        org.junit.jupiter.api.Assertions.assertTrue(Files.exists(targetImage));
+        org.junit.jupiter.api.Assertions.assertTrue(Files.exists(targetXmp));
+        assertEquals("sidecar content", Files.readString(targetXmp));
+
+        migrator.close();
     }
 
     @NonNull

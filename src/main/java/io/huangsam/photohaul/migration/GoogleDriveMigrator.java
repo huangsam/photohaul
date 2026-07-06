@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -46,9 +47,15 @@ public class GoogleDriveMigrator extends AbstractMigrator {
         LOG.debug("Start Drive migration to {}", targetRoot);
         runMigration(photos, photo -> {
             String targetPath = getTargetPath(photo);
+            Path sidecarLocal = photo.getSidecarPath();
+            String sidecarName = (sidecarLocal != null) ? sidecarLocal.getFileName().toString() : null;
+
             LOG.trace("Move {} to {}", photo.name(), targetPath);
             if (dryRun) {
                 LOG.info("Dry-run {} to Google Drive path: {}/{}", photo.path(), targetPath, photo.name());
+                if (sidecarLocal != null) {
+                    LOG.info("Dry-run sidecar {} to Google Drive path: {}/{}", sidecarLocal, targetPath, sidecarName);
+                }
                 successfulPhotos.add(photo.path().toString());
                 successCount.incrementAndGet();
                 return;
@@ -56,6 +63,11 @@ public class GoogleDriveMigrator extends AbstractMigrator {
             try {
                 String folderId = createDriveFolder(targetPath);
                 createDrivePhoto(folderId, photo);
+                if (sidecarLocal != null) {
+                    createDriveSidecar(folderId, sidecarLocal);
+                }
+                successfulPhotos.add(photo.path().toString());
+                successCount.incrementAndGet();
             } catch (IOException | NullPointerException e) {
                 LOG.error("Cannot move {}: {}", photo.name(), e.getMessage());
                 failureCount.incrementAndGet();
@@ -125,8 +137,6 @@ public class GoogleDriveMigrator extends AbstractMigrator {
     private void createDrivePhoto(@NonNull String folderId, @NonNull Photo photo) throws IOException {
         String existingId = getExistingId(folderId, photo.name());
         if (existingId != null) {
-            successfulPhotos.add(photo.path().toString());
-            successCount.incrementAndGet();
             return;
         }
 
@@ -147,9 +157,29 @@ public class GoogleDriveMigrator extends AbstractMigrator {
                 .execute();
 
         LOG.trace("Photo created: {}", photoSuccess.getId());
+    }
 
-        successfulPhotos.add(photo.path().toString());
-        successCount.incrementAndGet();
+    private void createDriveSidecar(@NonNull String folderId, @NonNull Path sidecarPath) throws IOException {
+        String fileName = sidecarPath.getFileName().toString();
+        String existingId = getExistingId(folderId, fileName);
+        if (existingId != null) {
+            return;
+        }
+
+        String contentType = "application/x-xmp";
+
+        File sidecarMetadata = new File();
+        sidecarMetadata.setName(fileName);
+        sidecarMetadata.setParents(List.of(folderId));
+
+        java.io.File sidecarFile = new java.io.File(sidecarPath.toString());
+        FileContent sidecarContent = new FileContent(contentType, sidecarFile);
+
+        File sidecarSuccess = driveService.files().create(sidecarMetadata, sidecarContent)
+                .setFields("id")
+                .execute();
+
+        LOG.trace("Sidecar created: {}", sidecarSuccess.getId());
     }
 
     @Nullable

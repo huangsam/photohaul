@@ -8,6 +8,7 @@ import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.function.Supplier;
 
 import static org.slf4j.LoggerFactory.getLogger;
@@ -58,9 +59,24 @@ public class SftpMigrator extends AbstractMigrator {
             try (SFTPClient sftpClient = sshClient.newSFTPClient()) {
                 runMigration(photos, photo -> {
                     String targetPath = getTargetPath(photo);
+                    Path sidecarLocal = photo.getSidecarPath();
+                    String sidecarTargetPath = null;
+                    if (sidecarLocal != null) {
+                        int lastSlash = targetPath.lastIndexOf('/');
+                        if (lastSlash > 0) {
+                            sidecarTargetPath = targetPath.substring(0, lastSlash) + "/" + sidecarLocal.getFileName().toString();
+                        } else {
+                            sidecarTargetPath = sidecarLocal.getFileName().toString();
+                        }
+                    }
+
                     LOG.trace("Upload {} to {}", photo.name(), targetPath);
                     if (dryRun) {
                         LOG.info("Dry-run {} to sftp://{}@{}:{}/{}", photo.path(), config.username(), config.host(), config.port(), targetPath);
+                        if (sidecarLocal != null) {
+                            LOG.info("Dry-run sidecar {} to sftp://{}@{}:{}/{}",
+                                    sidecarLocal, config.username(), config.host(), config.port(), sidecarTargetPath);
+                        }
                         successfulPhotos.add(photo.path().toString());
                         successCount.incrementAndGet();
                         processedCount.incrementAndGet();
@@ -75,14 +91,18 @@ public class SftpMigrator extends AbstractMigrator {
                                 sftpClient.mkdirs(targetDir);
                             }
                             sftpClient.put(photo.path().toString(), targetPath);
+                            if (sidecarLocal != null) {
+                                sftpClient.put(sidecarLocal.toString(), sidecarTargetPath);
+                            }
                         }
                         successfulPhotos.add(photo.path().toString());
                         successCount.incrementAndGet();
+                        processedCount.incrementAndGet();
                     } catch (IOException e) {
                         LOG.error("Cannot upload {}: {}", photo.name(), e.getMessage());
                         failureCount.incrementAndGet();
+                        processedCount.incrementAndGet();
                     }
-                    processedCount.incrementAndGet();
                 });
             }
         } catch (IOException e) {

@@ -53,14 +53,33 @@ public class PathMigrator extends AbstractMigrator {
 
     private void migratePhoto(@NonNull Path target, @NonNull Photo photo) throws IOException {
         Path photoLocation = target.resolve(photo.name());
+        Path sidecarLocal = photo.getSidecarPath();
+        Path sidecarLocation = null;
+        if (sidecarLocal != null) {
+            sidecarLocation = target.resolve(sidecarLocal.getFileName().toString());
+        }
+
         if (dryRun) {
             LOG.info("Dry-run {} to {}", photo.path(), photoLocation);
+            if (sidecarLocal != null) {
+                LOG.info("Dry-run sidecar {} to {}", sidecarLocal, sidecarLocation);
+            }
             return;
         }
         Files.createDirectories(target);
         switch (migratorAction) {
-            case MOVE -> Files.move(photo.path(), photoLocation, StandardCopyOption.REPLACE_EXISTING);
-            case COPY -> Files.copy(photo.path(), photoLocation, StandardCopyOption.REPLACE_EXISTING);
+            case MOVE -> {
+                Files.move(photo.path(), photoLocation, StandardCopyOption.REPLACE_EXISTING);
+                if (sidecarLocal != null) {
+                    Files.move(sidecarLocal, sidecarLocation, StandardCopyOption.REPLACE_EXISTING);
+                }
+            }
+            case COPY -> {
+                Files.copy(photo.path(), photoLocation, StandardCopyOption.REPLACE_EXISTING);
+                if (sidecarLocal != null) {
+                    Files.copy(sidecarLocal, sidecarLocation, StandardCopyOption.REPLACE_EXISTING);
+                }
+            }
         }
     }
 

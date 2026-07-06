@@ -81,7 +81,7 @@ public class ExifMetadataExtractor implements MetadataExtractor {
     private @Nullable String resolveTags(@NonNull Path path, @NonNull Map<String, String> tags) {
         // First try to load from sidecar XMP
         String tagsVal = null;
-        Path sidecarPath = getSidecarPath(path);
+        Path sidecarPath = Photo.getSidecarPath(path);
         if (sidecarPath != null) {
             tagsVal = parseXmpTags(sidecarPath);
         }
@@ -105,29 +105,6 @@ public class ExifMetadataExtractor implements MetadataExtractor {
         } catch (Exception e) {
             return null;
         }
-    }
-
-    private @Nullable Path getSidecarPath(@NonNull Path photoPath) {
-        Path parent = photoPath.getParent();
-        String fileName = photoPath.getFileName().toString();
-
-        // 1. replace extension
-        int lastDot = fileName.lastIndexOf('.');
-        if (lastDot > 0) {
-            String nameWithoutExt = fileName.substring(0, lastDot) + ".xmp";
-            Path p1 = (parent != null) ? parent.resolve(nameWithoutExt) : photoPath.getFileSystem().getPath(nameWithoutExt);
-            if (Files.exists(p1)) {
-                return p1;
-            }
-        }
-
-        // 2. append extension
-        String nameWithXmp = fileName + ".xmp";
-        Path p2 = (parent != null) ? parent.resolve(nameWithXmp) : photoPath.getFileSystem().getPath(nameWithXmp);
-        if (Files.exists(p2)) {
-            return p2;
-        }
-        return null;
     }
 
     private @Nullable String parseXmpTags(@NonNull Path xmpPath) {

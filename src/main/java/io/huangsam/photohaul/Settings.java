@@ -179,6 +179,16 @@ public record Settings(Properties properties, FileSystem fileSystem) {
     }
 
     /**
+     * Get the default fallback folder name to use when metadata is missing.
+     * Defaults to "Other".
+     *
+     * @return the fallback folder name
+     */
+    public @NonNull String getFolderFallback() {
+        return getValue("folder.fallback", "Other");
+    }
+
+    /**
      * Get the number of threads to use for photo migration.
      * Defaults to 1.
      *
@@ -193,4 +203,3 @@ public record Settings(Properties properties, FileSystem fileSystem) {
         }
     }
 }
-

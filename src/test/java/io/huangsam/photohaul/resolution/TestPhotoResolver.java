@@ -1,5 +1,6 @@
 package io.huangsam.photohaul.resolution;
 
+import io.huangsam.photohaul.model.Photo;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -87,4 +88,50 @@ public class TestPhotoResolver extends TestResolutionAbstract {
         assertEquals("Canon", resolved.getFirst());
         assertEquals("Canon EOS R6", resolved.get(1));
     }
+
+    @Test
+    void testFromPatternWithMetadataFallbacks() {
+        // bauerlite has make (Canon) and taken year (2023)
+        PhotoResolver resolver = PhotoResolver.fromPattern("make|yearModified/yearTaken|yearModified");
+        List<String> resolved = resolver.resolveList(getBauerPhoto());
+        assertEquals("Canon", resolved.getFirst());
+        assertEquals("2023", resolved.get(1));
+
+        // For an empty photo, should resolve to default fallback (Other)
+        Photo emptyPhoto = new Photo(java.nio.file.Paths.get("dummy.jpg"), io.huangsam.photohaul.model.PhotoMetadata.EMPTY);
+        List<String> emptyResolved = resolver.resolveList(emptyPhoto);
+        assertEquals("Other", emptyResolved.getFirst());
+        assertEquals("Other", emptyResolved.get(1));
+    }
+
+    @Test
+    void testFromPatternWithLiteralFallbacks() {
+        PhotoResolver resolver = PhotoResolver.fromPattern("make|Unknown/iso|999");
+        
+        // Bauer photo has make and iso
+        List<String> resolved = resolver.resolveList(getBauerPhoto());
+        assertEquals("Canon", resolved.getFirst());
+        assertEquals("1250", resolved.get(1));
+
+        // Empty photo should resolve to literals
+        Photo emptyPhoto = new Photo(java.nio.file.Paths.get("dummy.jpg"), io.huangsam.photohaul.model.PhotoMetadata.EMPTY);
+        List<String> emptyResolved = resolver.resolveList(emptyPhoto);
+        assertEquals("Unknown", emptyResolved.getFirst());
+        assertEquals("999", emptyResolved.get(1));
+    }
+
+    @Test
+    void testFromPatternWithCustomDefaultFallback() {
+        PhotoResolver resolver = PhotoResolver.fromPattern("make/iso", "Unsorted");
+        Photo emptyPhoto = new Photo(java.nio.file.Paths.get("dummy.jpg"), io.huangsam.photohaul.model.PhotoMetadata.EMPTY);
+        List<String> emptyResolved = resolver.resolveList(emptyPhoto);
+        assertEquals("Unsorted", emptyResolved.getFirst());
+        assertEquals("Unsorted", emptyResolved.get(1));
+    }
+
+    @Test
+    void testFromPatternWithInvalidFallbackFirstThrows() {
+        assertThrows(IllegalArgumentException.class, () -> PhotoResolver.fromPattern("Unknown|make"));
+    }
 }
+

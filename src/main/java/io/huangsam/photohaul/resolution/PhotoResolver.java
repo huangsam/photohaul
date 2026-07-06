@@ -46,7 +46,7 @@ public record PhotoResolver(List<Function<Photo, String>> photoFunctions) {
      */
     @NonNull
     public static PhotoResolver fromSettings(@NonNull Settings settings) {
-        return fromPattern(settings.getFolderStructure());
+        return fromPattern(settings.getFolderStructure(), settings.getFolderFallback());
     }
 
     /**
@@ -58,6 +58,19 @@ public record PhotoResolver(List<Function<Photo, String>> photoFunctions) {
      */
     @NonNull
     public static PhotoResolver fromPattern(@NonNull String pattern) {
+        return fromPattern(pattern, "Other");
+    }
+
+    /**
+     * Parse folder structure pattern and construct a photo resolver with a custom default fallback.
+     *
+     * @param pattern         pattern representing nested components separated by slash (e.g. "yearTaken|yearModified/make|Unknown")
+     * @param defaultFallback fallback folder name if all options in a component chain resolve to null/blank
+     * @return parsed photo resolver
+     * @throws IllegalArgumentException if the first option in a component fallback chain is not a valid metadata key
+     */
+    @NonNull
+    public static PhotoResolver fromPattern(@NonNull String pattern, @NonNull String defaultFallback) {
         String[] parts = pattern.split("/");
         List<Function<Photo, String>> functions = new ArrayList<>();
         for (String part : parts) {
@@ -65,17 +78,54 @@ public record PhotoResolver(List<Function<Photo, String>> photoFunctions) {
             if (trimmed.isEmpty()) {
                 continue;
             }
-            Function<Photo, String> fn = COMPONENT_MAP.get(trimmed);
-            if (fn == null) {
-                throw new IllegalArgumentException("Unsupported folder structure component: " + trimmed);
-            }
-            functions.add(fn);
+            functions.add(parseComponentChain(trimmed, defaultFallback));
         }
         if (functions.isEmpty()) {
-            functions.add(PhotoFunction.yearTaken());
+            functions.add(photo -> {
+                String res = PhotoFunction.yearTaken().apply(photo);
+                return (res != null && !res.isBlank()) ? res : defaultFallback;
+            });
         }
         return new PhotoResolver(functions);
     }
+
+    private static @NonNull Function<Photo, String> parseComponentChain(@NonNull String componentPart, @NonNull String defaultFallback) {
+        String[] subParts = componentPart.split("\\|");
+        List<Function<Photo, String>> chain = new ArrayList<>();
+
+        // The first sub-part must be a valid metadata key
+        String firstSub = subParts[0].trim();
+        Function<Photo, String> firstFn = COMPONENT_MAP.get(firstSub);
+        if (firstFn == null) {
+            throw new IllegalArgumentException("Unsupported folder structure component: " + firstSub);
+        }
+        chain.add(firstFn);
+
+        // Subsequent sub-parts can be metadata keys or literal fallback strings
+        for (int i = 1; i < subParts.length; i++) {
+            String sub = subParts[i].trim();
+            if (sub.isEmpty()) {
+                continue;
+            }
+            Function<Photo, String> fn = COMPONENT_MAP.get(sub);
+            if (fn != null) {
+                chain.add(fn);
+            } else {
+                chain.add(photo -> sub);
+            }
+        }
+
+        return photo -> {
+            for (Function<Photo, String> fn : chain) {
+                String res = fn.apply(photo);
+                if (res != null && !res.isBlank()) {
+                    return res;
+                }
+            }
+            return defaultFallback;
+        };
+    }
+
 
     /**
      * Resolve photo to a list of path components.

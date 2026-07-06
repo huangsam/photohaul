@@ -113,6 +113,31 @@ Example configuration to organize photos by year taken and then camera make (e.g
 folder.structure=yearTaken/make
 ```
 
+### Metadata Fallback Chains
+
+If a photo does not contain a specific EXIF tag, you can specify fallback options by separating them with a pipe character (`|`). The resolver will try each option from left to right, using the first one that successfully resolves.
+
+*   **Chaining Metadata:** Try the year taken first, and fall back to the year modified if the EXIF header is missing:
+    ```properties
+    folder.structure=yearTaken|yearModified/make
+    ```
+*   **Constant Literal Fallbacks:** Fall back to a constant string literal (like `Unknown`) if a metadata key is missing:
+    ```properties
+    folder.structure=yearTaken/make|Unknown
+    ```
+
+*Note: The first option in a fallback chain must be a valid metadata key. Literal fallbacks can only be placed as subsequent fallback options.*
+
+### Default Folder Fallback
+
+If all options in a fallback chain evaluate to null/blank, Photohaul uses a default folder name, which is `Other` by default. You can customize this default folder name via the `folder.fallback` property:
+
+```properties
+# Custom fallback folder name (default: Other)
+folder.fallback=Unsorted
+```
+
+
 ## Dry run (Simulation)
 
 Dry run mode allows you to simulate a migration without actually copying, moving, or uploading any files to the destination. It logs the exact source paths and intended target destinations, making it perfect for auditing your settings and folder structures before executing large data transfers.

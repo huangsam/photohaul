@@ -1,6 +1,6 @@
 [versions]
 aws-sdk-s3 = "2.48.3"
-dropbox-sdk = "8.0.1"
+dropbox-sdk = "8.0.2"
 google-api-client = "2.9.0"
 google-api-drive = "v3-rev20251210-2.0.0"
 google-auth-library = "1.49.0"

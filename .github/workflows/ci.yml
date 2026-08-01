@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   java-build:
-    name: Java LTS
+    name: Java
     runs-on: ubuntu-latest
 
     strategy:
@@ -21,7 +21,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
-      - name: Set up Java LTS
+      - name: Set up Java
         uses: actions/setup-java@v5
         with:
           java-version: ${{ matrix.java-version }}

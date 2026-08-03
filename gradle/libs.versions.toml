@@ -12,7 +12,7 @@ metadata-extractor = "2.21.0"
 mockito = "5.23.0"
 slf4j-api = "2.0.18"
 sshj = "0.40.0"
-jspecify = "1.0.0"
+jspecify = "1.0.1"
 task-tree = "4.0.1"
 
 [libraries]
